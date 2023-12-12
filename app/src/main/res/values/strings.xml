@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">CalenderApp</string>
+    <string name="forward"><![CDATA[->]]></string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="sun">SUN</string>
+    <string name="mon">MON</string>
+    <string name="tue">TUE</string>
+    <string name="wed">WED</string>
+    <string name="thur">THUR</string>
+    <string name="fri">FRI</string>
+    <string name="sat">SAT</string>
+    <string name="feb_2021">Feb 2021</string>
+    <string name="monday">Monday</string>
+    <string name="new_event">New Event</string>
+    <string name="daily">Daily</string>
+    <string name="month">Monthly</string>
+    <string name="weekly">Weekly</string>
+</resources>
