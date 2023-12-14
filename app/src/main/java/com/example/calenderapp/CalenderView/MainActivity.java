@@ -1,7 +1,7 @@
-package com.example.calenderapp;
+package com.example.calenderapp.CalenderView;
 
-import static com.example.calenderapp.CalendarUtils.daysInMonthArray;
-import static com.example.calenderapp.CalendarUtils.monthYearFromDate;
+import static com.example.calenderapp.CalenderView.CalendarUtils.daysInMonthArray;
+import static com.example.calenderapp.CalenderView.CalendarUtils.monthYearFromDate;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -11,11 +11,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.calenderapp.CalenderView.CalendarAdapter;
+import com.example.calenderapp.CalenderView.CalendarUtils;
+import com.example.calenderapp.CalenderView.DailyCalendarActivity;
+import com.example.calenderapp.CalenderView.WeekViewActivity;
+import com.example.calenderapp.R;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener

@@ -1,7 +1,7 @@
-package com.example.calenderapp;
+package com.example.calenderapp.CalenderView;
 
-import static com.example.calenderapp.CalendarUtils.daysInWeekArray;
-import static com.example.calenderapp.CalendarUtils.monthYearFromDate;
+import static com.example.calenderapp.CalenderView.CalendarUtils.daysInWeekArray;
+import static com.example.calenderapp.CalenderView.CalendarUtils.monthYearFromDate;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -12,7 +12,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.calenderapp.Events.Event;
+import com.example.calenderapp.Events.EventAdapter;
+import com.example.calenderapp.Events.EventEditActivity;
+import com.example.calenderapp.R;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

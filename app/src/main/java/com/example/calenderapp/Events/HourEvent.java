@@ -1,9 +1,11 @@
-package com.example.calenderapp;
+package com.example.calenderapp.Events;
+
+import com.example.calenderapp.Events.Event;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-class HourEvent
+public class HourEvent
 {
     LocalTime time;
     ArrayList<Event> events;

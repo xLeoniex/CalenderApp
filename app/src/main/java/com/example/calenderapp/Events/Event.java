@@ -1,4 +1,4 @@
-package com.example.calenderapp;
+package com.example.calenderapp.Events;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

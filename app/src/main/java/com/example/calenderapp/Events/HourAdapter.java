@@ -1,4 +1,4 @@
-package com.example.calenderapp;
+package com.example.calenderapp.Events;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.calenderapp.CalenderView.CalendarUtils;
+import com.example.calenderapp.Events.Event;
+import com.example.calenderapp.Events.HourEvent;
+import com.example.calenderapp.R;
 
 import java.time.LocalTime;
 import java.util.ArrayList;

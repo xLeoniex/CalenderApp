@@ -1,10 +1,9 @@
-package com.example.calenderapp;
+package com.example.calenderapp.CalenderView;
 
 
-import static com.example.calenderapp.CalendarUtils.selectedDate;
+import static com.example.calenderapp.CalenderView.CalendarUtils.selectedDate;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +11,15 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.calenderapp.Events.Event;
+import com.example.calenderapp.Events.EventEditActivity;
+import com.example.calenderapp.Events.HourAdapter;
+import com.example.calenderapp.Events.HourEvent;
+import com.example.calenderapp.R;
+
 import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class DailyCalendarActivity extends AppCompatActivity
