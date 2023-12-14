@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1096421623847",
+    "project_id": "lessstress-c8db0",
+    "storage_bucket": "lessstress-c8db0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096421623847:android:6d3fb54584b5d11e666602",
+        "android_client_info": {
+          "package_name": "com.example.calenderapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCltsOD1dQXaMjRwxDMtw7qHQnRzHwWNw8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
