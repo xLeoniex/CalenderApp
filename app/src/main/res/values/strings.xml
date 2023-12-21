@@ -15,4 +15,24 @@
     <string name="daily">Daily</string>
     <string name="month">Monthly</string>
     <string name="weekly">Weekly</string>
+    <string name="login">Login</string>
+    <string name="button">Button</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="click_to_login">Click to login</string>
+    <string name="click_to_register">Click to Register</string>
+    <string name="back_to_login">Back to login</string>
+    <string name="reset_password">Reset password</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="click_to_reset_password">Click to reset password</string>
+    <string name="username">Username</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="logout">Logout</string>
+    <string name="welcome_to_app">Welcome to app</string>
+    <string name="click_to_return">Click to return</string>
+    <string name="delet_account">Delete Account</string>
+    <string name="change_password">Change password</string>
+    <string name="save_changes">Save changes</string>
+    <string name="edit_profile">Edit profile</string>
 </resources>

@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CalenderApp">
+        android:theme="@style/Theme.Material3.Light">
         <activity
-            android:name=".CalenderView.DailyCalendarActivity"
-            android:exported="true" />
-        <activity android:name=".Events.EventEditActivity" />
-        <activity android:name=".CalenderView.WeekViewActivity" />
-        <activity android:name=".CalenderView.MainActivity"
+            android:name=".Points.PointsAchievment"
+            android:exported="false" />
+        <activity
+            android:name=".Points.PointsView"
+            android:exported="false" />
+        <activity
+            android:name=".Login.Register"
+            android:exported="false" />
+        <activity
+            android:name=".DashboardBar.Dashboard"
+            android:exported="false" />
+        <activity
+            android:name=".Login.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +32,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Login.ForgotPassword"
+            android:exported="false" />
+        <activity
+            android:name=".Login.EditProfile"
+            android:exported="false" />
+        <activity
+            android:name=".CalenderView.DailyCalendarActivity"
+            android:exported="true" />
+        <activity android:name=".Events.EventEditActivity" />
+        <activity android:name=".CalenderView.WeekViewActivity" />
+        <activity
+            android:name=".CalenderView.MainActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
