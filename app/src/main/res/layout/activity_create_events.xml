@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="EventViewModel"
+            type="com.example.calenderapp.events.ui.viewmodel.EventViewModel" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/CreatEventLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".events.ui.view.CreateEventsActivity">
+    <View
+        android:id="@+id/MainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/app_gradiant" />
+
+
+    <View
+        android:id="@+id/UserView"
+        android:layout_width="350dp"
+        android:layout_height="650dp"
+        android:background="@color/primary"
+        android:elevation="0dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.493" />
+
+
+    <TextView
+        android:id="@+id/DataOfEventText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="30dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/DateEvent"
+        android:textAlignment="center"
+        android:textColor="@color/text"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintStart_toStartOf="@+id/UserView"
+        app:layout_constraintTop_toTopOf="@+id/UserView" />
+
+    <View
+        android:id="@+id/FirstDivider"
+        android:layout_width="250dp"
+        android:layout_height="1dp"
+        android:layout_marginVertical="5dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="@+id/UserView"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintStart_toStartOf="@+id/UserView"
+        app:layout_constraintTop_toBottomOf="@+id/DataOfEventText"
+        app:layout_constraintVertical_bias="0" />
+
+
+    <EditText
+        android:id="@+id/StartingTimeEditText"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="@string/Starting_at"
+        android:inputType="time"
+        android:text="@={EventViewModel.startingTime}"
+        android:textColorHint="@color/text"
+        app:layout_constraintBottom_toBottomOf="@+id/UserView"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintStart_toStartOf="@+id/UserView"
+        app:layout_constraintTop_toBottomOf="@+id/FirstDivider"
+        app:layout_constraintVertical_bias="0.038" />
+
+    <EditText
+        android:id="@+id/EndingTimeEditText"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="@string/Ending_at"
+        android:inputType="time"
+        android:text="@={EventViewModel.endingTime}"
+        android:textColorHint="@color/text"
+        app:layout_constraintBottom_toBottomOf="@+id/StartingTimeEditText"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/StartingTimeEditText"
+        app:layout_constraintTop_toTopOf="@+id/StartingTimeEditText"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/SecondDivider"
+        android:layout_width="250dp"
+        android:layout_height="1dp"
+        android:layout_marginVertical="5dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="@+id/UserView"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintStart_toStartOf="@+id/UserView"
+        app:layout_constraintTop_toBottomOf="@+id/DataOfEventText"
+        app:layout_constraintVertical_bias="0.158" />
+
+    <EditText
+        android:id="@+id/EventNameEditText"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:autofillHints="name"
+        android:hint="@string/Event_name"
+        android:inputType="text"
+        android:text="@={EventViewModel.eventName}"
+        android:textColorHint="@color/text"
+        app:layout_constraintBottom_toBottomOf="@+id/UserView"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintHorizontal_bias="0.557"
+        app:layout_constraintStart_toStartOf="@+id/UserView"
+        app:layout_constraintTop_toBottomOf="@+id/SecondDivider"
+        app:layout_constraintVertical_bias="0.046" />
+
+    <Spinner
+        android:id="@+id/EventTypeSpinner"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginTop="12dp"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/event_types_spinner"
+        android:selectedItemPosition="@={EventViewModel.event_type_spinner_selectedItemPosition}"
+        app:layout_constraintBottom_toBottomOf="@+id/UserView"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintStart_toStartOf="@+id/UserView"
+        app:layout_constraintTop_toBottomOf="@+id/EventNameEditText"
+        app:layout_constraintVertical_bias="0.008" />
+
+    <Spinner
+        android:id="@+id/EventPointsEventSpinner"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginTop="10dp"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/event_weights_spinner"
+        android:selectedItemPosition="@={EventViewModel.event_weight_spinner_selectedItemPosition}"
+        app:layout_constraintBottom_toTopOf="@+id/EventDescriptionEditText"
+        app:layout_constraintEnd_toEndOf="@+id/RecurringEventSpinner"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/RecurringEventSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/RecurringEventSpinner"
+        app:layout_constraintVertical_bias="0.157" />
+
+    <Spinner
+        android:id="@+id/RecurringEventSpinner"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_gravity="fill_horizontal"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/recurring_event_spinner"
+        android:selectedItemPosition="@={EventViewModel.event_recurringType_spinner_selectedItemPosition}"
+        app:layout_constraintBottom_toBottomOf="@+id/UserView"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintStart_toStartOf="@+id/UserView"
+        app:layout_constraintTop_toBottomOf="@+id/EventTypeSpinner"
+        app:layout_constraintVertical_bias="0.04" />
+
+    <EditText
+        android:id="@+id/EventDescriptionEditText"
+        android:layout_width="278dp"
+        android:layout_height="67dp"
+        android:hint="@string/Event_description"
+        android:inputType="text"
+        android:text="@={EventViewModel.eventDescription}"
+        app:layout_constraintBottom_toBottomOf="@+id/UserView"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="@+id/UserView"
+        app:layout_constraintTop_toBottomOf="@+id/RecurringEventSpinner"
+        app:layout_constraintVertical_bias="0.359" />
+
+    <Button
+        android:id="@+id/Add_btn"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/secondary_second"
+        android:text="@string/Add_btn"
+        android:textColor="@color/primary"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/UserView"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintHorizontal_bias="0.542"
+        app:layout_constraintStart_toStartOf="@+id/UserView"
+        app:layout_constraintTop_toBottomOf="@+id/EventDescriptionEditText"
+        app:layout_constraintVertical_bias="0.195" />
+
+    <Button
+        android:id="@+id/Cancel_btn"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/secondary_second"
+        android:text="@string/cancel_btn"
+        android:textColor="@color/primary"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/UserView"
+        app:layout_constraintEnd_toEndOf="@+id/UserView"
+        app:layout_constraintHorizontal_bias="0.557"
+        app:layout_constraintStart_toStartOf="@+id/UserView"
+        app:layout_constraintTop_toBottomOf="@+id/EventDescriptionEditText"
+        app:layout_constraintVertical_bias="0.814" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ShowEvents_FAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="@color/text"
+        android:contentDescription="@string/View_Events"
+        android:src="@drawable/baseline_calendar_month_24"
+        app:layout_constraintBottom_toBottomOf="@+id/MainView"
+        app:layout_constraintEnd_toEndOf="@+id/UserView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
