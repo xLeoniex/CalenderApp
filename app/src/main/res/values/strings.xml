@@ -35,4 +35,43 @@
     <string name="change_password">Change password</string>
     <string name="save_changes">Save changes</string>
     <string name="edit_profile">Edit profile</string>
+    <string name="event_type">Event type</string>
+    <string name="DateEvent">21.11.2023</string>
+    <string name="Starting_at">Starting at </string>
+    <string name="Ending_at">Ending at </string>
+    <string name="Event_name">Event name</string>
+    <string name="Event_description">Event Description</string>
+    <string name="Add_btn">Add</string>
+    <string name="View_Events">View events</string>
+    <string name="Add_Events">Add events</string>
+    <string name="cancel_btn">Cancel</string>
+    <string-array name="event_weights_spinner">
+        <item>Event weight</item>
+        <item>Vital</item>
+        <item>Significant</item>
+        <item>Relevant</item>
+        <item>Minor</item>
+        <item>Simple</item>
+    </string-array>
+    <string-array name="event_types_spinner">
+        <item>Event Type</item>
+        <item>Athletic</item>
+        <item>Academic</item>
+        <item>Social</item>
+        <item>Professional</item>
+        <item>Culinary</item>
+    </string-array>
+    <string-array name="recurring_event_spinner">
+        <item>Recurring Event</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+    <string name="title_activity_crad_view_event_model">CradViewEventModelActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 </resources>

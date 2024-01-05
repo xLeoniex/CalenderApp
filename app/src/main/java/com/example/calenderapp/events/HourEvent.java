@@ -1,6 +1,4 @@
-package com.example.calenderapp.Events;
-
-import com.example.calenderapp.Events.Event;
+package com.example.calenderapp.events;
 
 import java.time.LocalTime;
 import java.util.ArrayList;

@@ -13,10 +13,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.calenderapp.Events.Event;
-import com.example.calenderapp.Events.EventAdapter;
-import com.example.calenderapp.Events.EventEditActivity;
+import com.example.calenderapp.events.Event;
+import com.example.calenderapp.events.EventAdapter;
+import com.example.calenderapp.events.EventEditActivity;
 import com.example.calenderapp.R;
+import com.example.calenderapp.events.ui.view.CreateEventsActivity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
 
     public void newEventAction(View view)
     {
-        startActivity(new Intent(this, EventEditActivity.class));
+        startActivity(new Intent(this, CreateEventsActivity.class));
     }
 
     public void dailyAction(View view)

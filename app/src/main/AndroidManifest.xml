@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.Light">
         <activity
+            android:name=".events.ui.view.CreateEventsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Points.PointsAchievment"
             android:exported="false" />
         <activity
@@ -41,7 +44,7 @@
         <activity
             android:name=".CalenderView.DailyCalendarActivity"
             android:exported="true" />
-        <activity android:name=".Events.EventEditActivity" />
+        <activity android:name=".events.EventEditActivity" />
         <activity android:name=".CalenderView.WeekViewActivity" />
         <activity
             android:name=".CalenderView.MainActivity"

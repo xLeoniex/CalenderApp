@@ -5,4 +5,8 @@
     <color name="blue">#0000FF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primary">#ECF4D6</color>
+    <color name="secondary_first">#9AD0C2</color>
+    <color name="secondary_second">#2D9596</color>
+    <color name="text">#265073</color>
 </resources>

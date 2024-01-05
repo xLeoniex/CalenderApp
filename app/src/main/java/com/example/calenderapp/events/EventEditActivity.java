@@ -1,4 +1,4 @@
-package com.example.calenderapp.Events;
+package com.example.calenderapp.events;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.calenderapp.CalenderView.CalendarUtils;
-import com.example.calenderapp.Events.Event;
 import com.example.calenderapp.R;
 
 import java.time.LocalTime;

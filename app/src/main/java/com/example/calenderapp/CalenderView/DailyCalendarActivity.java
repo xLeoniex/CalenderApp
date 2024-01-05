@@ -11,11 +11,12 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.calenderapp.Events.Event;
-import com.example.calenderapp.Events.EventEditActivity;
-import com.example.calenderapp.Events.HourAdapter;
-import com.example.calenderapp.Events.HourEvent;
+import com.example.calenderapp.events.Event;
+import com.example.calenderapp.events.EventEditActivity;
+import com.example.calenderapp.events.HourAdapter;
+import com.example.calenderapp.events.HourEvent;
 import com.example.calenderapp.R;
+import com.example.calenderapp.events.ui.view.CreateEventsActivity;
 
 import java.time.LocalTime;
 import java.time.format.TextStyle;
@@ -94,7 +95,7 @@ public class DailyCalendarActivity extends AppCompatActivity
 
     public void newEventAction(View view)
     {
-        startActivity(new Intent(this, EventEditActivity.class));
+        startActivity(new Intent(this, CreateEventsActivity.class));
     }
 
     public void monthAction(View view) {
