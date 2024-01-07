@@ -3,21 +3,28 @@ package com.example.calenderapp.CalenderView;
 import static com.example.calenderapp.CalenderView.CalendarUtils.daysInWeekArray;
 import static com.example.calenderapp.CalenderView.CalendarUtils.monthYearFromDate;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.events.Event;
 import com.example.calenderapp.events.EventAdapter;
 import com.example.calenderapp.events.EventEditActivity;
 import com.example.calenderapp.R;
 import com.example.calenderapp.events.ui.view.CreateEventsActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,6 +36,11 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private ListView eventListView;
+
+    //Aktuelle User
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    FirebaseUser user = mAuth.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -104,5 +116,19 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
 
     public void monthAction(View view) {
         startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(MenuHelper.handleMenuItem(item, user, this)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

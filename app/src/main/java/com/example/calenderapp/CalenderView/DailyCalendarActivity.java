@@ -3,20 +3,27 @@ package com.example.calenderapp.CalenderView;
 
 import static com.example.calenderapp.CalenderView.CalendarUtils.selectedDate;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.events.Event;
 import com.example.calenderapp.events.EventEditActivity;
 import com.example.calenderapp.events.HourAdapter;
 import com.example.calenderapp.events.HourEvent;
 import com.example.calenderapp.R;
 import com.example.calenderapp.events.ui.view.CreateEventsActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.time.LocalTime;
 import java.time.format.TextStyle;
@@ -29,6 +36,11 @@ public class DailyCalendarActivity extends AppCompatActivity
     private TextView monthDayText;
     private TextView dayOfWeekTV;
     private ListView hourListView;
+
+    //Aktuelle User
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    FirebaseUser user = mAuth.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -104,5 +116,20 @@ public class DailyCalendarActivity extends AppCompatActivity
 
     public void weeklyAction(View view) {
         startActivity(new Intent(this, WeekViewActivity.class));
+    }
+
+    //Home Button + Profile Button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(MenuHelper.handleMenuItem(item, user, this)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
