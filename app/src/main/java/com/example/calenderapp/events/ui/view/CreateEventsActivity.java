@@ -1,5 +1,6 @@
 package com.example.calenderapp.events.ui.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -8,18 +9,27 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.calenderapp.CalenderView.WeekViewActivity;
+import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
 import com.example.calenderapp.databinding.ActivityCreateEventsBinding;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.ui.viewmodel.EventViewModel;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class CreateEventsActivity extends AppCompatActivity {
     private EventViewModel myEventViewModel;
     private ActivityCreateEventsBinding binding;
+
+    //ToDo: Ibrahim user Variable erstellen!
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,4 +90,20 @@ public class CreateEventsActivity extends AppCompatActivity {
 
     }
     //endregion
+    //ToDo: Ibrahim du untere Funktionen aufrufen für Home und Profile Button
+    /*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(MenuHelper.handleMenuItem(item, user, this)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }*/
+
 }
