@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.calenderapp.CalenderView.CalendarUtils;
 import com.example.calenderapp.CalenderView.WeekViewActivity;
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
@@ -28,7 +29,6 @@ public class CreateEventsActivity extends AppCompatActivity {
     private EventViewModel myEventViewModel;
     private ActivityCreateEventsBinding binding;
 
-    //ToDo: Ibrahim user Variable erstellen!
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,10 @@ public class CreateEventsActivity extends AppCompatActivity {
         myEventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
         binding.setEventViewModel(myEventViewModel);
         binding.setLifecycleOwner(CreateEventsActivity.this);
+
+
+        // set event date from Calender
+        myEventViewModel.eventDate.setValue(CalendarUtils.selectedDate.toString());
         myEventViewModel.getEventDetails().observe(this, new Observer<EventModel>() {
             @Override
             public void onChanged(EventModel eventModel) {
@@ -90,8 +94,7 @@ public class CreateEventsActivity extends AppCompatActivity {
 
     }
     //endregion
-    //ToDo: Ibrahim du untere Funktionen aufrufen für Home und Profile Button
-    /*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -100,10 +103,10 @@ public class CreateEventsActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(MenuHelper.handleMenuItem(item, user, this)){
+        if(MenuHelper.handleMenuItem(item, myEventViewModel.getCurrentUser(), this)){
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
 }

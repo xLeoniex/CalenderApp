@@ -1,6 +1,8 @@
 package com.example.calenderapp.events.model;
 
 public class EventModel {
+
+    private String eventDate;
     private String eventName;
     private String startingTime;
     private String endingTime;
@@ -9,14 +11,15 @@ public class EventModel {
     private String eventDescription;
     private String eventWeight;
 
-
-    public EventModel(String eventName
-            , String startingTime
-            , String endingTime
-            , String eventType
-            , String recurringEventType
-            , String eventDescription
-            , String eventWeight) {
+    public EventModel(String eventDate,
+                      String eventName,
+                      String startingTime,
+                      String endingTime,
+                      String eventType,
+                      String recurringEventType,
+                      String eventDescription,
+                      String eventWeight) {
+        this.eventDate = eventDate;
         this.eventName = eventName;
         this.startingTime = startingTime;
         this.endingTime = endingTime;
@@ -88,5 +91,13 @@ public class EventModel {
 
     public void setEventWeight(String eventWeight) {
         this.eventWeight = eventWeight;
+    }
+
+    public String getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(String eventDate) {
+        this.eventDate = eventDate;
     }
 }

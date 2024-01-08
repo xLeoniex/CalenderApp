@@ -74,4 +74,19 @@ public class EventRepository {
         });
         return eventModelList;
     }
+
+    public String getUserEmail()
+    {
+        return currentUser.getEmail();
+    }
+
+    public String getUserUsername()
+    {
+        return currentUser.getUid();
+    }
+
+    public FirebaseUser getCurrentUser()
+    {
+        return currentUser;
+    }
 }

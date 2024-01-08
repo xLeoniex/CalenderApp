@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.source.EventRepository;
 import com.example.calenderapp.events.utils.ErrorMessages;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +33,7 @@ public class EventViewModel extends AndroidViewModel {
 
     // fields to be observed
     // They have to be public , otherwise i cannot bind them in the XML layout
+    public MutableLiveData<String> eventDate = new MutableLiveData<>();
     public MutableLiveData<String> eventName = new MutableLiveData<>();
     public MutableLiveData<String> startingTime = new MutableLiveData<>();
     public MutableLiveData<String> endingTime = new MutableLiveData<>();
@@ -69,6 +71,7 @@ public class EventViewModel extends AndroidViewModel {
 
     private EventModel CreateEvent()
     {
+        String eventDateValue = eventDate.getValue() !=null ? eventDate.getValue():"";
         String eventNameValue = eventName.getValue() !=null ? eventName.getValue():"";
         String startingTimeValue = startingTime.getValue()!=null ? startingTime.getValue():"";
         String endingTimeValue = endingTime.getValue()!=null ? endingTime.getValue():"";
@@ -76,7 +79,7 @@ public class EventViewModel extends AndroidViewModel {
         String recurringEventTypeValue = recurringEventType.getValue()!=null ? recurringEventType.getValue():"None";
         String eventDescriptionValue = eventDescription.getValue()!=null ? eventDescription.getValue():"Nothing";
         String eventWeightValue = eventWeight.getValue() !=null ?eventWeight.getValue():"None" ;
-        EventModel event = new EventModel(eventNameValue, startingTimeValue,
+        EventModel event = new EventModel(eventDateValue,eventNameValue, startingTimeValue,
                 endingTimeValue, eventTypeValue, recurringEventTypeValue, eventDescriptionValue,eventWeightValue);
 
         return event;
@@ -167,6 +170,25 @@ public class EventViewModel extends AndroidViewModel {
 
         return localTime;
     }
+    //endregion
+
+    //region UserInfos
+
+    public String getCurrentUserEmail()
+    {
+        return repository.getUserEmail();
+    }
+
+    public String getCurrentUserUsername()
+    {
+        return repository.getUserUsername();
+    }
+    public FirebaseUser getCurrentUser()
+    {
+        return repository.getCurrentUser();
+    }
+
+
     //endregion
 
 }
