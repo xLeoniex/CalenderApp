@@ -12,16 +12,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventRepository {
     private FirebaseDatabase database;
     private DatabaseReference reference;
-
     private FirebaseUser currentUser;
 
     private MutableLiveData<List<EventModel>> eventModelList = new MutableLiveData<>();
+    private MutableLiveData<List<EventModel>> eventListOfDate = new MutableLiveData<>();
 
 
 
@@ -73,6 +75,37 @@ public class EventRepository {
             }
         });
         return eventModelList;
+    }
+
+    public MutableLiveData<List<EventModel>> getEventsOfDateFromFirebase(LocalDate date)
+    {
+        List<EventModel> eventModelListOfDateInRepository = new ArrayList<>();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                eventModelListOfDateInRepository.clear();
+                EventModel currentEventModel = new EventModel();
+                final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    currentEventModel = dataSnapshot.getValue(EventModel.class);
+
+                    LocalDate parsedDate = LocalDate.parse(currentEventModel.getEventDate());
+                    if(parsedDate.isEqual(date))
+                    {
+                        eventModelListOfDateInRepository.add(currentEventModel);
+                    }
+                }
+                eventListOfDate.postValue(eventModelListOfDateInRepository);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return eventListOfDate;
     }
 
     public String getUserEmail()

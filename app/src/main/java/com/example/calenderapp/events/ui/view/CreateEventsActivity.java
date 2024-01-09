@@ -14,16 +14,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.calenderapp.CalenderView.CalendarUtils;
-import com.example.calenderapp.CalenderView.WeekViewActivity;
+import com.example.calenderapp.calenderView.CalendarUtils;
+import com.example.calenderapp.calenderView.WeekViewActivity;
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
 import com.example.calenderapp.databinding.ActivityCreateEventsBinding;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.ui.viewmodel.EventViewModel;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class CreateEventsActivity extends AppCompatActivity {
     private EventViewModel myEventViewModel;

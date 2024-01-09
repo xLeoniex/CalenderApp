@@ -1,7 +1,7 @@
-package com.example.calenderapp.CalenderView;
+package com.example.calenderapp.calenderView;
 
 
-import static com.example.calenderapp.CalenderView.CalendarUtils.selectedDate;
+import static com.example.calenderapp.calenderView.CalendarUtils.selectedDate;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.events.Event;
-import com.example.calenderapp.events.EventEditActivity;
 import com.example.calenderapp.events.HourAdapter;
 import com.example.calenderapp.events.HourEvent;
 import com.example.calenderapp.R;

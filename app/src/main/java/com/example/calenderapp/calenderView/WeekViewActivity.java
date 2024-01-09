@@ -1,10 +1,13 @@
-package com.example.calenderapp.CalenderView;
+package com.example.calenderapp.calenderView;
 
-import static com.example.calenderapp.CalenderView.CalendarUtils.daysInWeekArray;
-import static com.example.calenderapp.CalenderView.CalendarUtils.monthYearFromDate;
+import static com.example.calenderapp.calenderView.CalendarUtils.daysInWeekArray;
+import static com.example.calenderapp.calenderView.CalendarUtils.monthYearFromDate;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,21 +21,29 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
+import com.example.calenderapp.calenderView.ui.viewmodel.EventListViewModel;
+import com.example.calenderapp.databinding.ActivityCreateEventsBinding;
+import com.example.calenderapp.databinding.ActivityWeekViewBinding;
 import com.example.calenderapp.events.Event;
 import com.example.calenderapp.events.EventAdapter;
-import com.example.calenderapp.events.EventEditActivity;
 import com.example.calenderapp.R;
+import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.ui.view.CreateEventsActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class WeekViewActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener
 {
+
+    private ActivityWeekViewBinding binding;
+
+    private EventListViewModel eventListViewModel;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private ListView eventListView;
@@ -47,6 +58,8 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_week_view);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_week_view);
+        eventListViewModel = new ViewModelProvider(this).get(EventListViewModel.class);
         initWidgets();
         setWeekView();
     }
@@ -99,9 +112,23 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
 
     private void setEventAdpater()
     {
-        ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
-        EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
-        eventListView.setAdapter(eventAdapter);
+        eventListViewModel.getEventsOfDay(CalendarUtils.selectedDate).observe(this, new Observer<List<EventModel>>() {
+            @Override
+            public void onChanged(List<EventModel> eventModels) {
+                if(!eventModels.isEmpty())
+                {
+                    List<EventModel> dailyEvents = new ArrayList<>();
+                    dailyEvents.addAll(eventModels);
+                    EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
+                    eventListView.setAdapter(eventAdapter);
+                }
+                else
+                {
+                    Snackbar.make(binding.getRoot().getRootView(),"No events on this date",Snackbar.LENGTH_SHORT).show();
+
+                }
+            }
+        });
     }
 
     public void newEventAction(View view)

@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.calenderapp.CalenderView.CalendarUtils;
+import com.example.calenderapp.calenderView.CalendarUtils;
 import com.example.calenderapp.R;
 
 import java.time.LocalTime;

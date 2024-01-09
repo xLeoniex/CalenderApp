@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.calenderapp.CalenderView.CalendarUtils;
+import com.example.calenderapp.calenderView.CalendarUtils;
 import com.example.calenderapp.R;
 
 import java.time.LocalTime;

@@ -42,12 +42,12 @@
             android:name=".Login.EditProfile"
             android:exported="false" />
         <activity
-            android:name=".CalenderView.DailyCalendarActivity"
+            android:name=".calenderView.DailyCalendarActivity"
             android:exported="true" />
         <activity android:name=".events.EventEditActivity" />
-        <activity android:name=".CalenderView.WeekViewActivity" />
+        <activity android:name=".calenderView.WeekViewActivity" />
         <activity
-            android:name=".CalenderView.MainActivity"
+            android:name=".calenderView.MainActivity"
             android:exported="true" />
     </application>
 

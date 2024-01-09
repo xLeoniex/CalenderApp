@@ -12,8 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.calenderapp.CalenderView.MainActivity;
-import com.example.calenderapp.DashboardBar.MenuHelper;
+import com.example.calenderapp.calenderView.MainActivity;
 import com.example.calenderapp.Login.Login;
 import com.example.calenderapp.Points.PointsView;
 import com.example.calenderapp.R;
