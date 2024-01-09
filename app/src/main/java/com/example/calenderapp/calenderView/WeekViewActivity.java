@@ -66,6 +66,8 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
         eventListViewModel = new ViewModelProvider(this).get(EventListViewModel.class);
         initWidgets();
         setWeekView();
+
+        // when long click on an item -> genrate a pop up
         binding.eventListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
