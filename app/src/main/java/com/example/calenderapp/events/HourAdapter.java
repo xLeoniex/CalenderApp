@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.example.calenderapp.calenderView.CalendarUtils;
 import com.example.calenderapp.R;
+import com.example.calenderapp.events.model.EventModel;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -19,9 +20,10 @@ import java.util.List;
 
 public class HourAdapter extends ArrayAdapter<HourEvent>
 {
-    public HourAdapter(@NonNull Context context, List<HourEvent> hourEvents)
+
+    public HourAdapter(@NonNull Context context, ArrayList<HourEvent> hourEvents)
     {
-        super(context, 0, hourEvents);
+        super(context, 0,hourEvents);
     }
 
     @NonNull
@@ -33,8 +35,9 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.hour_cell, parent, false);
 
+        assert event != null;
         setHour(convertView, event.time);
-        setEvents(convertView, event.events);
+        setEvents(convertView, event.eventList);
 
         return convertView;
     }
@@ -45,7 +48,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         timeTV.setText(CalendarUtils.formattedShortTime(time));
     }
 
-    private void setEvents(View convertView, ArrayList<Event> events)
+    private void setEvents(View convertView, List<EventModel> events)
     {
         TextView event1 = convertView.findViewById(R.id.event1);
         TextView event2 = convertView.findViewById(R.id.event2);
@@ -84,11 +87,12 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
             eventsNotShown += " More Events";
             event3.setText(eventsNotShown);
         }
+
     }
 
-    private void setEvent(TextView textView, Event event)
+    private void setEvent(TextView textView, EventModel event)
     {
-        textView.setText(event.getName());
+        textView.setText(event.getEventName());
         textView.setVisibility(View.VISIBLE);
     }
 

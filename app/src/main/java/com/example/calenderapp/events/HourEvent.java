@@ -1,17 +1,22 @@
 package com.example.calenderapp.events;
 
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.calenderapp.events.model.EventModel;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class HourEvent
 {
     LocalTime time;
-    ArrayList<Event> events;
+    List<EventModel> eventList;
 
-    public HourEvent(LocalTime time, ArrayList<Event> events)
+    public HourEvent(LocalTime time, List<EventModel> eventList)
     {
         this.time = time;
-        this.events = events;
+        this.eventList = eventList;
     }
 
     public LocalTime getTime()
@@ -24,13 +29,13 @@ public class HourEvent
         this.time = time;
     }
 
-    public ArrayList<Event> getEvents()
+    public List<EventModel> getEvents()
     {
-        return events;
+        return eventList;
     }
 
-    public void setEvents(ArrayList<Event> events)
+    public void setEvents(List<EventModel> eventList)
     {
-        this.events = events;
+        this.eventList = eventList;
     }
 }
