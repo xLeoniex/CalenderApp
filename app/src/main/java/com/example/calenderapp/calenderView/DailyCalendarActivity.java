@@ -5,18 +5,24 @@ import static com.example.calenderapp.calenderView.CalendarUtils.*;
 import static com.example.calenderapp.calenderView.CalendarUtils.selectedDate;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,13 +41,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class DailyCalendarActivity extends AppCompatActivity
+public class DailyCalendarActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener
 {
 
     private TextView monthDayText;
@@ -64,17 +71,19 @@ public class DailyCalendarActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_calendar);
-        initWidgets();
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_week_view);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_daily_calendar);
         eventListViewModel = new ViewModelProvider(this).get(EventListViewModel.class);
         myeventRepository = new EventRepository();
+        initWidgets();
+        setDayView();
+
     }
 
     private void initWidgets()
     {
         monthDayText = findViewById(R.id.monthDayText);
         dayOfWeekTV = findViewById(R.id.dayOfWeekTV);
-        eventListView = findViewById(R.id.hourListView);
+        hourListView = findViewById(R.id.hourListView);
     }
 
     @Override
@@ -94,19 +103,18 @@ public class DailyCalendarActivity extends AppCompatActivity
 
     private void setHourAdapter()
     {
-        HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), hourEventList());
-        hourListView.setAdapter(hourAdapter);
-
-        eventListViewModel.getEventsOfDay(selectedDate).observe(this, new Observer<List<EventModel>>() {
+        //HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), hourEvents);
+        //hourListView.setAdapter(hourAdapter);
+        eventListViewModel.getEventsOfDay(CalendarUtils.selectedDate).observe(this, new Observer<List<EventModel>>() {
             @Override
             public void onChanged(List<EventModel> eventModels) {
                 List<EventModel> dailyEvents = new ArrayList<>();
                 dailyEvents.addAll(eventModels);
                 ArrayList<HourEvent> hourEvents = hourEventList();
                 HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), hourEvents);
+                hourListView.setAdapter(hourAdapter);
                 //EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
-                eventListView.setAdapter(hourAdapter);
-                //Snackbar.make(binding.getRoot().getRootView(),"No events on this date",Snackbar.LENGTH_SHORT).show();
+                //hourListView.setAdapter(eventAdapter);
             }
         });
 
@@ -119,7 +127,7 @@ public class DailyCalendarActivity extends AppCompatActivity
         for(int hour = 0; hour < 24; hour++)
         {
             LocalTime time = LocalTime.of(hour, 0);
-            List<EventModel> eventList = (List<EventModel>) myeventRepository.getEventsOfDateFromFirebase(selectedDate);
+            ArrayList<EventModel> eventList = myeventRepository.getEventsOfDateAndTimeFromFirebase(selectedDate,time);
             HourEvent hourEvent = new HourEvent(time, eventList);
             list.add(hourEvent);
         }
@@ -166,4 +174,11 @@ public class DailyCalendarActivity extends AppCompatActivity
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onItemClick(int position, LocalDate date) {
+        CalendarUtils.selectedDate = date;
+        setDayView();
+    }
+
 }

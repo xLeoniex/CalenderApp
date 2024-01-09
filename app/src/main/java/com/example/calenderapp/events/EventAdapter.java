@@ -46,7 +46,7 @@ public class EventAdapter extends ArrayAdapter<EventModel>
         else {
             TextView eventCellTV = convertView.findViewById(R.id.eventCellTV);
 
-            String eventTitle = event.getEventName() +" "+ event.getStartingTime() + "  ->  " + event.getEndingTime();
+            String eventTitle = event.getStartingTime() + " - " + event.getEndingTime()+"       " + event.getEventName() +" ";
             eventCellTV.setText(eventTitle);
             return convertView;
         }

@@ -1,5 +1,9 @@
 package com.example.calenderapp.events.model;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+
 public class EventModel {
     private String eventDate;
     private String eventName;
@@ -50,6 +54,12 @@ public class EventModel {
 
     public String getStartingTime() {
         return startingTime;
+    }
+
+    public LocalTime getHour(){
+        DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().appendPattern("hh:mm").toFormatter();
+        LocalTime localTime = LocalTime.parse(startingTime, parseFormat);
+        return localTime;
     }
 
     public void setStartingTime(String startingTime) {

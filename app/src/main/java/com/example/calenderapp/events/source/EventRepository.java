@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,40 @@ public class EventRepository {
             }
         });
         return eventModelList;
+    }
+
+    public ArrayList<EventModel> getEventsOfDateAndTimeFromFirebase(LocalDate date, LocalTime time){
+        List<EventModel> eventModelListInRepository = new ArrayList<>();
+        ArrayList<EventModel> events = new ArrayList<>();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                EventModel currentEventModel = new EventModel();
+                String currentKey;
+                eventModelListInRepository.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    currentEventModel = dataSnapshot.getValue(EventModel.class);
+                    eventModelListInRepository.add(currentEventModel);
+                }
+                eventModelList.postValue(eventModelListInRepository);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+       for (EventModel event : (List<EventModel>) eventModelList)
+        {
+            int eventHour = event.getHour().getHour();
+            int cellHour = time.getHour();
+            if (event.getEventDate().equals(date) && eventHour == cellHour) {
+                events.add(event);
+            }
+        }
+
+        return events;
     }
 
     public MutableLiveData<List<EventModel>> getEventsOfDateFromFirebase(LocalDate date)
