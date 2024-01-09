@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.events.Event;
-import com.example.calenderapp.events.EventEditActivity;
 import com.example.calenderapp.events.HourAdapter;
 import com.example.calenderapp.events.HourEvent;
 import com.example.calenderapp.R;
+import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.ui.view.CreateEventsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,6 +38,8 @@ public class DailyCalendarActivity extends AppCompatActivity
     private ListView hourListView;
 
     //Aktuelle User
+    //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+    //Query applesQuery = ref.child("firebase-test").orderByChild("title").equalTo("Apple");
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     FirebaseUser user = mAuth.getCurrentUser();
@@ -85,7 +87,7 @@ public class DailyCalendarActivity extends AppCompatActivity
         for(int hour = 0; hour < 24; hour++)
         {
             LocalTime time = LocalTime.of(hour, 0);
-            ArrayList<Event> events = Event.eventsForDateAndTime(selectedDate, time);
+            ArrayList<EventModel> events = EventModel.eventsForDateAndTime(selectedDate, time);
             HourEvent hourEvent = new HourEvent(time, events);
             list.add(hourEvent);
         }

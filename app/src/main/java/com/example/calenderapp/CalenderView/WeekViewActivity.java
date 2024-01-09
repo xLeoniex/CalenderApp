@@ -20,8 +20,8 @@ import android.widget.TextView;
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.events.Event;
 import com.example.calenderapp.events.EventAdapter;
-import com.example.calenderapp.events.EventEditActivity;
 import com.example.calenderapp.R;
+import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.ui.view.CreateEventsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -99,7 +99,7 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
 
     private void setEventAdpater()
     {
-        ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
+        ArrayList<EventModel> dailyEvents = EventModel.eventsForDate(CalendarUtils.selectedDate);
         EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
         eventListView.setAdapter(eventAdapter);
     }

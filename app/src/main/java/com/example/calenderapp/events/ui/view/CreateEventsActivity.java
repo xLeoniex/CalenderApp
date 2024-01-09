@@ -22,8 +22,6 @@ import com.example.calenderapp.databinding.ActivityCreateEventsBinding;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.ui.viewmodel.EventViewModel;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class CreateEventsActivity extends AppCompatActivity {
     private EventViewModel myEventViewModel;
@@ -42,10 +40,7 @@ public class CreateEventsActivity extends AppCompatActivity {
 
         // set event date from Calender
         myEventViewModel.eventDate.setValue(CalendarUtils.selectedDate.toString());
-        myEventViewModel.getEventDetails().observe(this, new Observer<EventModel>() {
-            @Override
-            public void onChanged(EventModel eventModel) {
-            }
+        myEventViewModel.getEventDetails().observe(this, (Observer<EventModel>) eventModel -> {
         });
 
         /// This is for the Spinners to grap their value and set them into the Viewmodel

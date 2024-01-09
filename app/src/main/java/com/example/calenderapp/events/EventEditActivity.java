@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.calenderapp.CalenderView.CalendarUtils;
 import com.example.calenderapp.R;
+import com.example.calenderapp.events.model.EventModel;
 
 import java.time.LocalTime;
 
@@ -39,8 +40,8 @@ public class EventEditActivity extends AppCompatActivity
     public void saveEventAction(View view)
     {
         String eventName = eventNameET.getText().toString();
-        Event newEvent = new Event(eventName, CalendarUtils.selectedDate, time);
-        Event.eventsList.add(newEvent);
+        EventModel newEvent = new EventModel();
+        EventModel.eventsList.add(newEvent);
         finish();
     }
 }

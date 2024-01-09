@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.example.calenderapp.CalenderView.CalendarUtils;
 import com.example.calenderapp.R;
+import com.example.calenderapp.events.model.EventModel;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         timeTV.setText(CalendarUtils.formattedShortTime(time));
     }
 
-    private void setEvents(View convertView, ArrayList<Event> events)
+    private void setEvents(View convertView, ArrayList<EventModel> events)
     {
         TextView event1 = convertView.findViewById(R.id.event1);
         TextView event2 = convertView.findViewById(R.id.event2);
@@ -86,7 +87,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         }
     }
 
-    private void setEvent(TextView textView, Event event)
+    private void setEvent(TextView textView, EventModel event)
     {
         textView.setText(event.getName());
         textView.setVisibility(View.VISIBLE);
