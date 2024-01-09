@@ -53,4 +53,5 @@ public class EventAdapter extends ArrayAdapter<EventModel>
 
     }
 
+
 }

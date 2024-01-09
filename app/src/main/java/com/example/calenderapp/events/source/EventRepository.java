@@ -49,19 +49,12 @@ public class EventRepository {
     }
     public void RemoveEventFromRepo(EventModel eventModel)
     {
-        if(eventModel !=null && eventModel.getEventName() != "")
+        if(eventModel !=null && eventModel.getEventId() != "")
         {
-            String key = findKeyofEventModel(eventModel);
-            Log.d("Event Key",eventModel.getEventName() + "has a key " + key);
-            reference.child(eventModel.getEventName()).removeValue();
+            reference.child(eventModel.getEventId()).removeValue();
         }
     }
 
-    public String findKeyofEventModel(EventModel eventModel)
-    {
-        String id =  reference.child(eventModel.getEventName()).getKey();
-        return id;
-    }
 
 
     public MutableLiveData<List<EventModel>> getEventModelList() {
