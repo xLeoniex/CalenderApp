@@ -42,7 +42,7 @@ public class EventViewModel extends AndroidViewModel {
     public MutableLiveData<String> eventDescription = new MutableLiveData<>();
     public MutableLiveData<String> eventWeight = new MutableLiveData<>();
 
-
+    public MutableLiveData<String> eventId = new MutableLiveData<>();
     private MutableLiveData<EventModel> eventModelMutableLiveData ;
 
     public EventViewModel(@NonNull Application application) {
@@ -71,6 +71,7 @@ public class EventViewModel extends AndroidViewModel {
 
     private EventModel CreateEvent()
     {
+        String eventIdvlaue = eventId.getValue() !=null ? eventId.getValue():"";
         String eventDateValue = eventDate.getValue() !=null ? eventDate.getValue():"";
         String eventNameValue = eventName.getValue() !=null ? eventName.getValue():"";
         String startingTimeValue = startingTime.getValue()!=null ? startingTime.getValue():"";
@@ -80,7 +81,7 @@ public class EventViewModel extends AndroidViewModel {
         String eventDescriptionValue = eventDescription.getValue()!=null ? eventDescription.getValue():"Nothing";
         String eventWeightValue = eventWeight.getValue() !=null ?eventWeight.getValue():"None" ;
         EventModel event = new EventModel(eventDateValue,eventNameValue, startingTimeValue,
-                endingTimeValue, eventTypeValue, recurringEventTypeValue, eventDescriptionValue,eventWeightValue);
+                endingTimeValue, eventTypeValue, recurringEventTypeValue, eventDescriptionValue,eventWeightValue,eventIdvlaue);
 
         return event;
     }

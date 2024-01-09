@@ -18,6 +18,7 @@ import java.util.List;
 
 public class EventAdapter extends ArrayAdapter<EventModel>
 {
+
     public EventAdapter(@NonNull Context context, List<EventModel> events)
     {
         super(context, 0, events);
@@ -33,17 +34,23 @@ public class EventAdapter extends ArrayAdapter<EventModel>
 
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_cell, parent, false);
-
         if(event == null)
         {
             TextView eventCellTV = convertView.findViewById(R.id.eventCellTV);
-            eventCellTV.setText("No events on this day");
+
+            String eventTitle = "There is no events on this Date";
+            eventCellTV.setText(eventTitle);
+            return convertView;
+
+        }
+        else {
+            TextView eventCellTV = convertView.findViewById(R.id.eventCellTV);
+
+            String eventTitle = event.getEventName() +" "+ event.getStartingTime() + "  ->  " + event.getEndingTime();
+            eventCellTV.setText(eventTitle);
             return convertView;
         }
-        TextView eventCellTV = convertView.findViewById(R.id.eventCellTV);
 
-        String eventTitle = event.getEventName() +" "+ event.getStartingTime() + "  ->  " + event.getEndingTime();
-        eventCellTV.setText(eventTitle);
-        return convertView;
     }
+
 }
