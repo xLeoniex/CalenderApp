@@ -1,7 +1,7 @@
-package com.example.calenderapp.CalenderView;
+package com.example.calenderapp.calenderView;
 
-import static com.example.calenderapp.CalenderView.CalendarUtils.daysInMonthArray;
-import static com.example.calenderapp.CalenderView.CalendarUtils.monthYearFromDate;
+import static com.example.calenderapp.calenderView.CalendarUtils.daysInMonthArray;
+import static com.example.calenderapp.calenderView.CalendarUtils.monthYearFromDate;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,10 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.calenderapp.CalenderView.CalendarAdapter;
-import com.example.calenderapp.CalenderView.CalendarUtils;
-import com.example.calenderapp.CalenderView.DailyCalendarActivity;
-import com.example.calenderapp.CalenderView.WeekViewActivity;
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
 import com.google.firebase.auth.FirebaseAuth;

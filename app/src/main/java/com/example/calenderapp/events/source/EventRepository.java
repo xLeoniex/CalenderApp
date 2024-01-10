@@ -1,5 +1,7 @@
 package com.example.calenderapp.events.source;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -12,16 +14,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventRepository {
     private FirebaseDatabase database;
     private DatabaseReference reference;
-
     private FirebaseUser currentUser;
 
     private MutableLiveData<List<EventModel>> eventModelList = new MutableLiveData<>();
+    private MutableLiveData<List<EventModel>> eventListOfDate = new MutableLiveData<>();
+
+
 
 
 
@@ -31,23 +38,24 @@ public class EventRepository {
         reference = database.getReference("users").child(currentUser.getUid()).child("Events");
 
     }
-
-
-
     public void AddEventToRepo(EventModel eventModel)
     {
         if(eventModel !=null)
         {
-            reference.push().setValue(eventModel);
+           DatabaseReference pushRef =  reference.push();
+           String mKey = pushRef.getKey();
+           eventModel.setEventId(mKey);
+           pushRef.setValue(eventModel);
         }
     }
     public void RemoveEventFromRepo(EventModel eventModel)
     {
-        if(eventModel !=null && eventModel.getEventName() != "")
+        if(eventModel !=null && eventModel.getEventId() != "")
         {
-            reference.child(eventModel.getEventName()).removeValue();
+            reference.child(eventModel.getEventId()).removeValue();
         }
     }
+
 
 
     public MutableLiveData<List<EventModel>> getEventModelList() {
@@ -57,10 +65,10 @@ public class EventRepository {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 EventModel currentEventModel = new EventModel();
+                String currentKey;
                 eventModelListInRepository.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren())
                 {
-
                     currentEventModel = dataSnapshot.getValue(EventModel.class);
                     eventModelListInRepository.add(currentEventModel);
                 }
@@ -73,6 +81,75 @@ public class EventRepository {
             }
         });
         return eventModelList;
+    }
+
+    public ArrayList<EventModel> getEventsOfDateAndTimeFromFirebase(LocalDate date, LocalTime time){
+        List<EventModel> eventModelListInRepository = new ArrayList<>();
+        ArrayList<EventModel> events = new ArrayList<>();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                EventModel currentEventModel = new EventModel();
+                String currentKey;
+                eventModelListInRepository.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    currentEventModel = dataSnapshot.getValue(EventModel.class);
+                    eventModelListInRepository.add(currentEventModel);
+                }
+                eventModelList.postValue(eventModelListInRepository);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+       for (EventModel event : (List<EventModel>) eventModelList)
+        {
+            int eventHour = event.getHour().getHour();
+            int cellHour = time.getHour();
+            if (event.getEventDate().equals(date) && eventHour == cellHour) {
+                events.add(event);
+            }
+        }
+
+        return events;
+    }
+
+    public MutableLiveData<List<EventModel>> getEventsOfDateFromFirebase(LocalDate date)
+    {
+        List<EventModel> eventModelListOfDateInRepository = new ArrayList<>();
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                eventModelListOfDateInRepository.clear();
+                EventModel currentEventModel = new EventModel();
+                final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+                String currentKey;
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    currentKey = dataSnapshot.getKey();
+                    Log.d("DataKey",currentKey);
+                    currentEventModel = dataSnapshot.getValue(EventModel.class);
+
+
+                    LocalDate parsedDate = LocalDate.parse(currentEventModel.getEventDate());
+                    if(parsedDate.isEqual(date))
+                    {
+                        eventModelListOfDateInRepository.add(currentEventModel);
+                    }
+                }
+                eventListOfDate.postValue(eventModelListOfDateInRepository);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return eventListOfDate;
     }
 
     public String getUserEmail()

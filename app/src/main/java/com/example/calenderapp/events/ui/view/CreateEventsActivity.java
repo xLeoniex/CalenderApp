@@ -14,8 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.calenderapp.CalenderView.CalendarUtils;
-import com.example.calenderapp.CalenderView.WeekViewActivity;
+import com.example.calenderapp.calenderView.CalendarUtils;
+import com.example.calenderapp.calenderView.WeekViewActivity;
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
 import com.example.calenderapp.databinding.ActivityCreateEventsBinding;

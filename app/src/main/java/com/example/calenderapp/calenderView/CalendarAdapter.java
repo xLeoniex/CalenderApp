@@ -1,4 +1,4 @@
-package com.example.calenderapp.CalenderView;
+package com.example.calenderapp.calenderView;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;

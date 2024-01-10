@@ -1,4 +1,4 @@
-package com.example.calenderapp.CalenderView;
+package com.example.calenderapp.calenderView;
 
 import android.view.View;
 import android.widget.TextView;
@@ -6,7 +6,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.calenderapp.CalenderView.CalendarAdapter;
 import com.example.calenderapp.R;
 
 import java.time.LocalDate;

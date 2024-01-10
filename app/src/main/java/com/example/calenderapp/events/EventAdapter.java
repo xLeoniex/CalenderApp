@@ -12,13 +12,12 @@ import androidx.annotation.Nullable;
 
 import com.example.calenderapp.CalenderView.CalendarUtils;
 import com.example.calenderapp.R;
-import com.example.calenderapp.events.model.EventModel;
 
 import java.util.List;
 
-public class EventAdapter extends ArrayAdapter<EventModel>
+public class EventAdapter extends ArrayAdapter<Event>
 {
-    public EventAdapter(@NonNull Context context, List<EventModel> events)
+    public EventAdapter(@NonNull Context context, List<Event> events)
     {
         super(context, 0, events);
     }
@@ -27,7 +26,7 @@ public class EventAdapter extends ArrayAdapter<EventModel>
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
     {
-        EventModel event = getItem(position);
+        Event event = getItem(position);
 
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_cell, parent, false);

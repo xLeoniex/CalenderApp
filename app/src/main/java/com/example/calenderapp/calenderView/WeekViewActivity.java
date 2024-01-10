@@ -1,38 +1,53 @@
-package com.example.calenderapp.CalenderView;
+package com.example.calenderapp.calenderView;
 
-import static com.example.calenderapp.CalenderView.CalendarUtils.daysInWeekArray;
-import static com.example.calenderapp.CalenderView.CalendarUtils.monthYearFromDate;
+import static com.example.calenderapp.calenderView.CalendarUtils.daysInWeekArray;
+import static com.example.calenderapp.calenderView.CalendarUtils.monthYearFromDate;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
+import com.example.calenderapp.calenderView.ui.viewmodel.EventListViewModel;
+import com.example.calenderapp.databinding.ActivityCreateEventsBinding;
+import com.example.calenderapp.databinding.ActivityWeekViewBinding;
 import com.example.calenderapp.events.Event;
 import com.example.calenderapp.events.EventAdapter;
 import com.example.calenderapp.R;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.ui.view.CreateEventsActivity;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 public class WeekViewActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener
 {
+
+    private ActivityWeekViewBinding binding;
+
+    private EventListViewModel eventListViewModel;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private ListView eventListView;
@@ -47,8 +62,41 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_week_view);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_week_view);
+        eventListViewModel = new ViewModelProvider(this).get(EventListViewModel.class);
         initWidgets();
         setWeekView();
+
+        // when long click on an item -> genrate a pop up
+        binding.eventListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog popUpDialog = new AlertDialog.Builder(WeekViewActivity.this).create();
+                popUpDialog.setTitle("Event Handler");
+                popUpDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Edit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Snackbar.make(binding.getRoot().getRootView(),"Edit window",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+                popUpDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Snackbar.make(binding.getRoot().getRootView(),"Done window",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+
+                popUpDialog.setButton(Dialog.BUTTON_NEGATIVE, "Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Snackbar.make(binding.getRoot().getRootView(),"Delete window",Snackbar.LENGTH_SHORT).show();
+                    }
+                });
+                popUpDialog.show();
+                return false;
+            }
+        });
+
     }
 
     private void initWidgets()
@@ -99,9 +147,15 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
 
     private void setEventAdpater()
     {
-        ArrayList<EventModel> dailyEvents = EventModel.eventsForDate(CalendarUtils.selectedDate);
-        EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
-        eventListView.setAdapter(eventAdapter);
+        eventListViewModel.getEventsOfDay(CalendarUtils.selectedDate).observe(this, new Observer<List<EventModel>>() {
+            @Override
+            public void onChanged(List<EventModel> eventModels) {
+                List<EventModel> dailyEvents = new ArrayList<>();
+                dailyEvents.addAll(eventModels);
+                EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
+                eventListView.setAdapter(eventAdapter);
+            }
+        });
     }
 
     public void newEventAction(View view)

@@ -1,4 +1,4 @@
-package com.example.calenderapp.CalenderView;
+package com.example.calenderapp.calenderView;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
