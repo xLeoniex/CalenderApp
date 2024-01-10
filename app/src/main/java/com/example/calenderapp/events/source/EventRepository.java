@@ -152,6 +152,42 @@ public class EventRepository {
         return eventListOfDate;
     }
 
+    public MutableLiveData<List<EventModel>> getEventsOfDateAndTimeFromFirebaseMut(LocalDate date, LocalTime time){
+        List<EventModel> eventModelListOfDateInRepository = new ArrayList<>();
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                eventModelListOfDateInRepository.clear();
+                EventModel currentEventModel = new EventModel();
+                final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+                String currentKey;
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    currentKey = dataSnapshot.getKey();
+                    Log.d("DataKey",currentKey);
+                    currentEventModel = dataSnapshot.getValue(EventModel.class);
+
+
+                    LocalDate parsedDate = LocalDate.parse(currentEventModel.getEventDate());
+                    LocalTime parsedTime = LocalTime.parse(currentEventModel.getStartingTime());
+                    if (parsedTime.getHour() == (time.getHour()))
+                        if (parsedDate.isEqual(date)) {
+                            eventModelListOfDateInRepository.add(currentEventModel);
+                        }
+                }
+                eventListOfDate.postValue(eventModelListOfDateInRepository);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return eventListOfDate;
+    }
+
     public String getUserEmail()
     {
         return currentUser.getEmail();

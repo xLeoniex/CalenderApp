@@ -10,6 +10,7 @@ import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.source.EventRepository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public class EventListViewModel extends AndroidViewModel {
@@ -33,6 +34,12 @@ public class EventListViewModel extends AndroidViewModel {
     public MutableLiveData<List<EventModel>> getEventsOfDay(LocalDate date)
     {
         eventsOfDay = repository.getEventsOfDateFromFirebase(date);
+        return eventsOfDay;
+    }
+
+    public MutableLiveData<List<EventModel>> getEventsOfDayAndTime(LocalDate date, LocalTime time)
+    {
+        eventsOfDay = repository.getEventsOfDateAndTimeFromFirebaseMut(date,time);
         return eventsOfDay;
     }
 }

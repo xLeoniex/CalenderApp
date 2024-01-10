@@ -99,6 +99,7 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         db.getNamedQuery(user.getUid());
+                        //RemoveEventFromRepo(EventModel eventModel);
                         Snackbar.make(binding.getRoot().getRootView(),"Delete window",Snackbar.LENGTH_SHORT).show();
                     }
                 });
