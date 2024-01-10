@@ -41,7 +41,7 @@ public class EventEditActivity extends AppCompatActivity
     {
         String eventName = eventNameET.getText().toString();
         EventModel newEvent = new EventModel();
-        EventModel.eventsList.add(newEvent);
+        //EventModel.eventsList.add(newEvent);
         finish();
     }
 }

@@ -1,7 +1,10 @@
 package com.example.calenderapp.events.model;
 
-public class EventModel {
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
+public class EventModel {
     private String eventDate;
     private String eventName;
     private String startingTime;
@@ -11,6 +14,8 @@ public class EventModel {
     private String eventDescription;
     private String eventWeight;
 
+    private String eventId;
+
     public EventModel(String eventDate,
                       String eventName,
                       String startingTime,
@@ -18,7 +23,8 @@ public class EventModel {
                       String eventType,
                       String recurringEventType,
                       String eventDescription,
-                      String eventWeight) {
+                      String eventWeight,
+                      String eventId) {
         this.eventDate = eventDate;
         this.eventName = eventName;
         this.startingTime = startingTime;
@@ -27,6 +33,7 @@ public class EventModel {
         this.recurringEventType = recurringEventType;
         this.eventDescription = eventDescription;
         this.eventWeight = eventWeight;
+        this.eventId = eventId;
     }
 
     public EventModel(String eventName) {
@@ -47,6 +54,12 @@ public class EventModel {
 
     public String getStartingTime() {
         return startingTime;
+    }
+
+    public LocalTime getHour(){
+        DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().appendPattern("hh:mm").toFormatter();
+        LocalTime localTime = LocalTime.parse(startingTime, parseFormat);
+        return localTime;
     }
 
     public void setStartingTime(String startingTime) {
@@ -99,5 +112,13 @@ public class EventModel {
 
     public void setEventDate(String eventDate) {
         this.eventDate = eventDate;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 }

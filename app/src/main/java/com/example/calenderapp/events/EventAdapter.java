@@ -10,14 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.calenderapp.CalenderView.CalendarUtils;
+import com.example.calenderapp.calenderView.CalendarUtils;
 import com.example.calenderapp.R;
+import com.example.calenderapp.events.model.EventModel;
 
 import java.util.List;
 
-public class EventAdapter extends ArrayAdapter<Event>
+public class EventAdapter extends ArrayAdapter<EventModel>
 {
-    public EventAdapter(@NonNull Context context, List<Event> events)
+
+    public EventAdapter(@NonNull Context context, List<EventModel> events)
     {
         super(context, 0, events);
     }
@@ -26,15 +28,30 @@ public class EventAdapter extends ArrayAdapter<Event>
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
     {
-        Event event = getItem(position);
+
+        EventModel event = getItem(position);
+
 
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.event_cell, parent, false);
+        if(event == null)
+        {
+            TextView eventCellTV = convertView.findViewById(R.id.eventCellTV);
 
-        TextView eventCellTV = convertView.findViewById(R.id.eventCellTV);
+            String eventTitle = "There is no events on this Date";
+            eventCellTV.setText(eventTitle);
+            return convertView;
 
-        String eventTitle = event.getName() +" "+ CalendarUtils.formattedTime(event.getTime());
-        eventCellTV.setText(eventTitle);
-        return convertView;
+        }
+        else {
+            TextView eventCellTV = convertView.findViewById(R.id.eventCellTV);
+
+            String eventTitle = event.getStartingTime() + " - " + event.getEndingTime()+"       " + event.getEventName() +" ";
+            eventCellTV.setText(eventTitle);
+            return convertView;
+        }
+
     }
+
+
 }
