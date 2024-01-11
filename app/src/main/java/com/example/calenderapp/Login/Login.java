@@ -3,6 +3,9 @@ package com.example.calenderapp.Login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calenderapp.DashboardBar.Dashboard;
+import com.example.calenderapp.Notification.AlarmNotificationHelper;
+import com.example.calenderapp.Notification.DateTimeHelper;
+import com.example.calenderapp.Notification.MyBroadcastReceiver;
 import com.example.calenderapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,13 +45,14 @@ public class Login extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
+        if (currentUser != null) {
             //Wenn angemeldet ist dann Main öffnen
             Intent intent = new Intent(getApplicationContext(), Dashboard.class);
             startActivity(intent);
             finish();
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,13 +90,13 @@ public class Login extends AppCompatActivity {
                 password = editTextPassword.getText().toString();
 
                 //Untersuchen, ob die Felder leer sind
-                if (TextUtils.isEmpty(email)){
-                    Toast.makeText(Login.this, "Enter a Email-Adress",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(Login.this, "Enter a Email-Adress", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
-                if (TextUtils.isEmpty(password)){
-                    Toast.makeText(Login.this, "Enter a Password",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(Login.this, "Enter a Password", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
@@ -103,7 +110,7 @@ public class Login extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                                     //einen Intent um MainAktivity zu offnen
-                                    Intent intent = new Intent(getApplicationContext(),Dashboard.class);
+                                    Intent intent = new Intent(getApplicationContext(), Dashboard.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
@@ -125,5 +132,37 @@ public class Login extends AppCompatActivity {
             }
         });
 
+        /*
+        // Planen der Alarme
+        scheduleAlarms();
+
+        // Registrieren des BroadcastReceivers
+        registerBroadcastReceiver();
+
+         */
     }
+/*
+    private void scheduleAlarms() {
+        // Alarm für jeden Sonntag um Mitternacht
+        AlarmNotificationHelper.scheduleAlarm(this, DateTimeHelper.getMidnightTimestampForSunday());
+
+        // Alarm für den letzten Tag des Monats um Mitternacht
+        AlarmNotificationHelper.scheduleAlarm(this, DateTimeHelper.getMidnightTimestampForLastDayOfMonth());
+    }
+
+    private PendingIntent getAlarmIntent() {
+        return AlarmNotificationHelper.getAlarmIntent(this);
+    }
+
+
+    private void registerBroadcastReceiver() {
+        // Registrieren des BroadcastReceivers
+        Intent intent = new Intent(this, MyBroadcastReceiver.class);
+        PendingIntent pendingIntent = getAlarmIntent();
+
+        // Registrieren des Alarms mit dem PendingIntent
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+    */
 }

@@ -55,4 +55,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-livedata:$lifecycle_version")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.0")
+    implementation ("nl.dionsegijn:konfetti:1.2.6")
 }

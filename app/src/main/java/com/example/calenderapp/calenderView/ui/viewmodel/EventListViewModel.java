@@ -36,3 +36,4 @@ public class EventListViewModel extends AndroidViewModel {
         return eventsOfDay;
     }
 }
+

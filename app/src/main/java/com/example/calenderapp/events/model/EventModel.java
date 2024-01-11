@@ -56,12 +56,6 @@ public class EventModel {
         return startingTime;
     }
 
-    public LocalTime getHour(){
-        DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().appendPattern("hh:mm").toFormatter();
-        LocalTime localTime = LocalTime.parse(startingTime, parseFormat);
-        return localTime;
-    }
-
     public void setStartingTime(String startingTime) {
         this.startingTime = startingTime;
     }

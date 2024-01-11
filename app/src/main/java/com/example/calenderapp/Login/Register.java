@@ -121,6 +121,13 @@ public class Register extends AppCompatActivity {
                                                         //Nach dem User erstellt wurde speichern wir diese in den Datenbank
                                                         String uid = user.getUid();
                                                         dbref.child(uid).child("name").setValue(username);
+                                                        dbref.child(uid).child("points").child("Month").child("High_Score_Month").setValue("0");
+                                                        dbref.child(uid).child("points").child("Month").child("Total_Current_Month").setValue("0");
+                                                        dbref.child(uid).child("points").child("Month").child("Total_Last_Month").setValue("0");
+                                                        dbref.child(uid).child("points").child("Week").child("High_Score_Week").setValue("0");
+                                                        dbref.child(uid).child("points").child("Week").child("Total_Current_Week").setValue("0");
+                                                        dbref.child(uid).child("points").child("Week").child("Total_Last_Week").setValue("0");
+                                                        //ToDo: (Ehsan) Default Events zuweisen
                                                     }
                                                 }
                                             });

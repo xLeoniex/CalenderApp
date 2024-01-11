@@ -48,19 +48,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class DailyCalendarActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener
-{
-
+public class DailyCalendarActivity extends AppCompatActivity{
     private TextView monthDayText;
     private TextView dayOfWeekTV;
-
     private ListView hourListView;
 
     //Aktuelle User
+    //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+    //Query applesQuery = ref.child("firebase-test").orderByChild("title").equalTo("Apple");
+
+
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     FirebaseUser user = mAuth.getCurrentUser();
+
     private EventRepository myeventRepository;
+
     private ActivityWeekViewBinding binding;
 
     private EventListViewModel eventListViewModel;
@@ -73,12 +76,11 @@ public class DailyCalendarActivity extends AppCompatActivity implements Calendar
         setContentView(R.layout.activity_daily_calendar);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_daily_calendar);
         eventListViewModel = new ViewModelProvider(this).get(EventListViewModel.class);
-        myeventRepository = new EventRepository();
+        //myeventRepository = new EventRepository();
         initWidgets();
         setDayView();
 
     }
-
     private void initWidgets()
     {
         monthDayText = findViewById(R.id.monthDayText);
@@ -103,18 +105,20 @@ public class DailyCalendarActivity extends AppCompatActivity implements Calendar
 
     private void setHourAdapter()
     {
-        //HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), hourEvents);
-        //hourListView.setAdapter(hourAdapter);
+ /*       List<HourEvent> hourList = new ArrayList<HourEvent>();
+        HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), hourList);
+        hourListView.setAdapter(hourAdapter);*/
         eventListViewModel.getEventsOfDay(CalendarUtils.selectedDate).observe(this, new Observer<List<EventModel>>() {
             @Override
             public void onChanged(List<EventModel> eventModels) {
                 List<EventModel> dailyEvents = new ArrayList<>();
                 dailyEvents.addAll(eventModels);
-                ArrayList<HourEvent> hourEvents = hourEventList();
-                HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), hourEvents);
-                hourListView.setAdapter(hourAdapter);
-                //EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
-                //hourListView.setAdapter(eventAdapter);
+
+                //ArrayList<HourEvent> hourEvents = hourEventList();
+                //HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), dailyEvents);
+                //hourListView.setAdapter(hourAdapter);
+                EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
+                hourListView.setAdapter(eventAdapter);
             }
         });
 
@@ -127,9 +131,9 @@ public class DailyCalendarActivity extends AppCompatActivity implements Calendar
         for(int hour = 0; hour < 24; hour++)
         {
             LocalTime time = LocalTime.of(hour, 0);
-            ArrayList<EventModel> eventList = myeventRepository.getEventsOfDateAndTimeFromFirebase(selectedDate,time);
-            HourEvent hourEvent = new HourEvent(time, eventList);
-            list.add(hourEvent);
+            //ArrayList<EventModel> eventList = myeventRepository.getEventsOfDateAndTimeFromFirebase(selectedDate,time);
+            //HourEvent hourEvent = new HourEvent(time, eventList);
+            //list.add(hourEvent);
         }
 
         return list;
@@ -174,11 +178,4 @@ public class DailyCalendarActivity extends AppCompatActivity implements Calendar
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onItemClick(int position, LocalDate date) {
-        CalendarUtils.selectedDate = date;
-        setDayView();
-    }
-
 }
