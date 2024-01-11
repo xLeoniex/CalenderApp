@@ -1,14 +1,16 @@
 package com.example.calenderapp.events;
 
+import com.example.calenderapp.events.model.EventModel;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class HourEvent
 {
     LocalTime time;
-    ArrayList<Event> events;
+    ArrayList<EventModel> events;
 
-    public HourEvent(LocalTime time, ArrayList<Event> events)
+    public HourEvent(LocalTime time, ArrayList<EventModel> events)
     {
         this.time = time;
         this.events = events;
@@ -24,12 +26,12 @@ public class HourEvent
         this.time = time;
     }
 
-    public ArrayList<Event> getEvents()
+    public ArrayList<EventModel> getEvents()
     {
         return events;
     }
 
-    public void setEvents(ArrayList<Event> events)
+    public void setEvents(ArrayList<EventModel> events)
     {
         this.events = events;
     }

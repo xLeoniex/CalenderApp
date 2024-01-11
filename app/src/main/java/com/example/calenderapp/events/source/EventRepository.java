@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +42,10 @@ public class EventRepository {
     {
         if(eventModel !=null)
         {
-           DatabaseReference pushRef =  reference.push();
-           String mKey = pushRef.getKey();
-           eventModel.setEventId(mKey);
-           pushRef.setValue(eventModel);
+            DatabaseReference pushRef =  reference.push();
+            String mKey = pushRef.getKey();
+            eventModel.setEventId(mKey);
+            pushRef.setValue(eventModel);
         }
     }
     public void RemoveEventFromRepo(EventModel eventModel)

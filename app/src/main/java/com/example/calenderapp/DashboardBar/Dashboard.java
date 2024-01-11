@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.calenderapp.calenderView.MainActivity;
 import com.example.calenderapp.Login.Login;
+import com.example.calenderapp.Points.AllEventsView;
 import com.example.calenderapp.Points.PointsView;
 import com.example.calenderapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +26,7 @@ public class Dashboard extends AppCompatActivity {
     //Zwei-Variabeln, Einmal für User und einmal für Firebase Authentification
     FirebaseAuth auth;
 
-    Button btn_calender, btn_points, btn_tips;
+    Button btn_calender, btn_points, btn_tips, btn_events;
     FirebaseUser user;
     TextView textView;
     TextView textWelcome;
@@ -38,6 +39,7 @@ public class Dashboard extends AppCompatActivity {
         btn_calender = findViewById(R.id.btn_calenderView);
         btn_points = findViewById(R.id.btn_pointsView);
         btn_tips = findViewById(R.id.btn_tipsView);
+        btn_events = findViewById(R.id.btn_eventsView);
 
         //Firebase-Variablen
         auth = FirebaseAuth.getInstance();
@@ -73,6 +75,15 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //ToDo: zu Tips-Anzeige/erstellen gehen (Ibrahim)
+            }
+        });
+
+        btn_events.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AllEventsView.class);
+                startActivity(intent);
+                finish();
             }
         });
 

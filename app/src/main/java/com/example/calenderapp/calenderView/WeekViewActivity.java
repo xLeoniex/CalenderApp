@@ -154,10 +154,10 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
         eventListViewModel.getEventsOfDay(CalendarUtils.selectedDate).observe(this, new Observer<List<EventModel>>() {
             @Override
             public void onChanged(List<EventModel> eventModels) {
-                    List<EventModel> dailyEvents = new ArrayList<>();
-                    dailyEvents.addAll(eventModels);
-                    EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
-                    eventListView.setAdapter(eventAdapter);
+                List<EventModel> dailyEvents = new ArrayList<>();
+                dailyEvents.addAll(eventModels);
+                EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
+                eventListView.setAdapter(eventAdapter);
             }
         });
     }

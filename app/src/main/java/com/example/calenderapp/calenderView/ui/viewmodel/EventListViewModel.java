@@ -42,3 +42,4 @@ public class EventListViewModel extends AndroidViewModel {
         repository.RemoveEventFromRepo(eventModel);
     }
 }
+

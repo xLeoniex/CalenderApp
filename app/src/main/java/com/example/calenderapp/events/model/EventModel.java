@@ -1,5 +1,9 @@
 package com.example.calenderapp.events.model;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+
 public class EventModel {
 
     //ToDo add a new attriubuite eventState defulte it to "inProgress"
