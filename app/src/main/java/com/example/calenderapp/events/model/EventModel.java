@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 
 public class EventModel {
+
+    //ToDo add a new attriubuite eventState defulte it to "inProgress"
     private String eventDate;
     private String eventName;
     private String startingTime;
