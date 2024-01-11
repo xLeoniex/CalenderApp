@@ -1,4 +1,4 @@
-package com.example.calenderapp.Notification;
+package com.example.calenderapp.Notification.PointsNotification;
 
 import android.app.AlarmManager;
 import android.app.NotificationChannel;

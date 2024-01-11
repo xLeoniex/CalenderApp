@@ -1,4 +1,4 @@
-package com.example.calenderapp.Notification;
+package com.example.calenderapp.Notification.PointsNotification;
 
 import android.icu.util.Calendar;
 

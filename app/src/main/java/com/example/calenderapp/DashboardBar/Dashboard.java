@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.calenderapp.Notification.AllTipsView;
 import com.example.calenderapp.calenderView.MainActivity;
 import com.example.calenderapp.Login.Login;
 import com.example.calenderapp.Points.AllEventsView;
@@ -74,7 +75,9 @@ public class Dashboard extends AppCompatActivity {
         btn_tips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ToDo: zu Tips-Anzeige/erstellen gehen (Ibrahim)
+                Intent intent = new Intent(getApplicationContext(), AllTipsView.class);
+                startActivity(intent);
+                finish();
             }
         });
 

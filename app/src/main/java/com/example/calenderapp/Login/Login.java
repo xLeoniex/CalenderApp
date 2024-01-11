@@ -3,9 +3,6 @@ package com.example.calenderapp.Login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,9 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calenderapp.DashboardBar.Dashboard;
-import com.example.calenderapp.Notification.AlarmNotificationHelper;
-import com.example.calenderapp.Notification.DateTimeHelper;
-import com.example.calenderapp.Notification.MyBroadcastReceiver;
 import com.example.calenderapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

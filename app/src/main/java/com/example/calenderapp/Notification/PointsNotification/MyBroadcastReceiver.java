@@ -1,4 +1,4 @@
-package com.example.calenderapp.Notification;
+package com.example.calenderapp.Notification.PointsNotification;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
