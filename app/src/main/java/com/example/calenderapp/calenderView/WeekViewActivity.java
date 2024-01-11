@@ -152,6 +152,13 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
             public void onChanged(List<EventModel> eventModels) {
                 List<EventModel> dailyEvents = new ArrayList<>();
                 dailyEvents.addAll(eventModels);
+                for(int i=0; i< dailyEvents.size();i++){
+                    for(int x = 0; x< dailyEvents.size()-1;x++){
+                        //if(dailyEvents.get(x).getStartingTime().compareTo(dailyEvents.get(x+1).getStartingTime())){
+
+                        //}
+                    }
+                }
                 EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
                 eventListView.setAdapter(eventAdapter);
             }

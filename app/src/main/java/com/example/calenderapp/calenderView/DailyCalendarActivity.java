@@ -38,7 +38,6 @@ import com.example.calenderapp.events.ui.view.CreateEventsActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalTime;
 import java.time.format.TextStyle;
@@ -57,7 +56,6 @@ public class DailyCalendarActivity extends AppCompatActivity
     //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
     //Query applesQuery = ref.child("firebase-test").orderByChild("title").equalTo("Apple");
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     FirebaseUser user = mAuth.getCurrentUser();
@@ -80,37 +78,35 @@ public class DailyCalendarActivity extends AppCompatActivity
         initWidgets();
         setDayView();
 
-        // when long click on an item -> genrate a pop up
-       /* binding.eventListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                AlertDialog popUpDialog = new AlertDialog.Builder(DailyCalendarActivity.this).create();
-                popUpDialog.setTitle("Event Handler");
-                popUpDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Edit", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Snackbar.make(binding.getRoot().getRootView(),"Edit window",Snackbar.LENGTH_SHORT).show();
-                    }
-                });
-                popUpDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Snackbar.make(binding.getRoot().getRootView(),"Done window",Snackbar.LENGTH_SHORT).show();
-                    }
-                });
-
-                popUpDialog.setButton(Dialog.BUTTON_NEGATIVE, "Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        db.getNamedQuery(user.getUid());
-                        //RemoveEventFromRepo(EventModel eventModel);
-                        Snackbar.make(binding.getRoot().getRootView(),"Delete window",Snackbar.LENGTH_SHORT).show();
-                    }
-                });
-                popUpDialog.show();
-                return false;
-            }
-        });*/
+//        // when long click on an item -> genrate a pop up
+//        binding.eventListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                AlertDialog popUpDialog = new AlertDialog.Builder(DailyCalendarActivity.this).create();
+//                popUpDialog.setTitle("Event Handler");
+//                popUpDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Edit", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Snackbar.make(binding.getRoot().getRootView(),"Edit window",Snackbar.LENGTH_SHORT).show();
+//                    }
+//                });
+//                popUpDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Done", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Snackbar.make(binding.getRoot().getRootView(),"Done window",Snackbar.LENGTH_SHORT).show();
+//                    }
+//                });
+//
+//                popUpDialog.setButton(Dialog.BUTTON_NEGATIVE, "Delete", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Snackbar.make(binding.getRoot().getRootView(),"Delete window",Snackbar.LENGTH_SHORT).show();
+//                    }
+//                });
+//                popUpDialog.show();
+//                return false;
+//            }
+//        });
     }
 
     private void initWidgets()
