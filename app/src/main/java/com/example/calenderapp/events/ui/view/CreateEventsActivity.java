@@ -40,7 +40,10 @@ public class CreateEventsActivity extends AppCompatActivity {
 
         // set event date from Calender
         myEventViewModel.eventDate.setValue(CalendarUtils.selectedDate.toString());
-        myEventViewModel.getEventDetails().observe(this, (Observer<EventModel>) eventModel -> {
+        myEventViewModel.getEventDetails().observe(this, new Observer<EventModel>() {
+            @Override
+            public void onChanged(EventModel eventModel) {
+            }
         });
 
         /// This is for the Spinners to grap their value and set them into the Viewmodel

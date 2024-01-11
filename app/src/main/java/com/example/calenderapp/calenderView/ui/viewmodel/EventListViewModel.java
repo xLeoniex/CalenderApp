@@ -39,7 +39,7 @@ public class EventListViewModel extends AndroidViewModel {
 
     public MutableLiveData<List<EventModel>> getEventsOfDayAndTime(LocalDate date, LocalTime time)
     {
-        eventsOfDay = repository.getEventsOfDateAndTimeFromFirebaseMut(date,time);
+        //eventsOfDay = repository.getEventsOfDateAndTimeFromFirebaseMut(date,time);
         return eventsOfDay;
     }
 }

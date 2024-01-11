@@ -163,7 +163,7 @@ public class DailyCalendarActivity extends AppCompatActivity
         for(int hour = 0; hour < 24; hour++)
         {
             LocalTime time = LocalTime.of(hour, 0);
-            ArrayList<EventModel> eventList = myeventRepository.getEventsOfDateAndTimeFromFirebase(selectedDate,time);
+            //ArrayList<EventModel> eventList = myeventRepository.getEventsOfDateAndTimeFromFirebase(selectedDate,time);
             //HourEvent hourEvent = new HourEvent(time, eventList);
             //list.add(hourEvent);
         }
