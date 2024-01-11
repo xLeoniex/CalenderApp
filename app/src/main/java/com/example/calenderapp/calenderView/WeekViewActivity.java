@@ -71,6 +71,7 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
         binding.eventListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
                 AlertDialog popUpDialog = new AlertDialog.Builder(WeekViewActivity.this).create();
                 popUpDialog.setTitle("Event Handler");
                 popUpDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Edit", new DialogInterface.OnClickListener() {
@@ -83,13 +84,16 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Snackbar.make(binding.getRoot().getRootView(),"Done window",Snackbar.LENGTH_SHORT).show();
+                        //ToDo (Ehsan) eventState -> Done (Back to Weekly View)
                     }
                 });
 
                 popUpDialog.setButton(Dialog.BUTTON_NEGATIVE, "Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        EventModel currenEventModel = (EventModel) parent.getItemAtPosition(position);
                         Snackbar.make(binding.getRoot().getRootView(),"Delete window",Snackbar.LENGTH_SHORT).show();
+                        eventListViewModel.removeEventFromRepository(currenEventModel);
                     }
                 });
                 popUpDialog.show();

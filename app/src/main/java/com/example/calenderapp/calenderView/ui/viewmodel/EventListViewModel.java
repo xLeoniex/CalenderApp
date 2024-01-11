@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.calenderapp.events.Event;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.source.EventRepository;
 
@@ -34,5 +35,10 @@ public class EventListViewModel extends AndroidViewModel {
     {
         eventsOfDay = repository.getEventsOfDateFromFirebase(date);
         return eventsOfDay;
+    }
+
+    public void removeEventFromRepository(EventModel eventModel)
+    {
+        repository.RemoveEventFromRepo(eventModel);
     }
 }

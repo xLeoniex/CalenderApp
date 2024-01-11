@@ -1,6 +1,8 @@
 package com.example.calenderapp.events.model;
 
 public class EventModel {
+
+    //ToDo add a new attriubuite eventState defulte it to "inProgress"
     private String eventDate;
     private String eventName;
     private String startingTime;
