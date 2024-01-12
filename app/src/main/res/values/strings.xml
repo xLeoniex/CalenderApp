@@ -74,4 +74,15 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+    <string name="tip_title_hint">Tip Title</string>
+    <string name="tip_description_hint">Tip Description</string>
+    <string name="tip_Add_btn">Add</string>
+    <string name="tip_cancel_btn">Cancel</string>
+    <string-array name="tip_type_spinner">
+        <item>Tip Type</item>
+        <item>Exercise</item>
+        <item>Relaxation</item>
+        <item>Nutrition</item>
+    </string-array>
 </resources>

@@ -3,6 +3,7 @@ package com.example.calenderapp.Notification;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +13,7 @@ import android.widget.Button;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
+import com.example.calenderapp.tips.ui.view.CreateTipsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +36,8 @@ public class AllTipsView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //ToDo: (Ibrahim) mache ein Intent zu deinem Tip-Add
+                Intent createTipsIntent = new Intent(AllTipsView.this,CreateTipsActivity.class);
+                startActivity(createTipsIntent);
             }
         });
     }

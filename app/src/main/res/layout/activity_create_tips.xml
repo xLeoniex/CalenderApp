@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="TipViewModel"
+            type="com.example.calenderapp.tips.ui.viewmodel.TipViewModel" />
+    </data>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".tips.ui.view.CreateTipsActivity">
+    <View
+        android:id="@+id/MainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/app_gradiant">
+    </View>
+
+    <View
+        android:id="@+id/UserView"
+        android:layout_width="350dp"
+        android:layout_height="650dp"
+        android:background="@color/primary"
+        app:layout_constraintBottom_toBottomOf="@+id/MainView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/MainView"/>
+
+    <EditText
+        android:id="@+id/TipTitle"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="@={TipViewModel.tipTitle}"
+        android:inputType="text"
+        android:textColor="@color/text"
+        android:textColorHint="@color/text"
+        android:layout_marginTop="40dp"
+        android:textSize="18sp"
+        android:hint="@string/tip_title_hint"
+        app:layout_constraintTop_toTopOf="@id/UserView"
+        app:layout_constraintLeft_toLeftOf="@id/UserView"
+        app:layout_constraintRight_toRightOf="@id/UserView"/>
+    <Spinner
+        android:id="@+id/TipTypeSpinner"
+        android:layout_width="300dp"
+        android:selectedItemPosition="@={TipViewModel.tipType_spinner_position}"
+        android:layout_height="50dp"
+        android:entries="@array/tip_type_spinner"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/TipTitle"
+        app:layout_constraintRight_toRightOf="@id/UserView"
+        app:layout_constraintLeft_toLeftOf="@id/UserView"/>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/Divider"
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/TipTypeSpinner"
+        app:layout_constraintRight_toRightOf="@id/UserView"
+        app:layout_constraintLeft_toLeftOf="@id/UserView"/>
+    <EditText
+        android:id="@+id/TipDescription"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="30dp"
+        android:textColorHint="@color/text"
+        android:textColor="@color/text"
+        android:text="@={TipViewModel.tipDescription}"
+        android:textSize="18sp"
+        android:hint="@string/tip_description_hint"
+        app:layout_constraintTop_toBottomOf="@id/Divider"
+        app:layout_constraintRight_toRightOf="@id/UserView"
+        app:layout_constraintLeft_toLeftOf="@id/UserView"
+        android:layout_marginRight="160dp"/>
+
+    <ImageView
+        android:id="@+id/TipImageView"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintLeft_toLeftOf="@id/TipDescription"
+        app:layout_constraintRight_toRightOf="@id/UserView"
+        app:layout_constraintTop_toBottomOf="@id/Divider"
+        android:src="@drawable/ic_image"
+        android:clickable="true"
+        android:layout_marginLeft="150dp"
+
+        />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/Divider2"
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/TipDescription"
+        app:layout_constraintLeft_toLeftOf="@id/UserView"
+        app:layout_constraintRight_toRightOf="@id/UserView"/>
+    <Button
+        android:id="@+id/AddTipButton"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:text="@string/tip_Add_btn"
+        android:textSize="18sp"
+        android:backgroundTint="@color/text"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/Divider2"
+        app:layout_constraintRight_toRightOf="@id/UserView"
+        app:layout_constraintLeft_toLeftOf="@id/UserView"/>
+    <Button
+        android:id="@+id/CancelButton"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/tip_cancel_btn"
+        android:backgroundTint="@color/text"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/AddTipButton"
+        app:layout_constraintLeft_toLeftOf="@id/UserView"
+        app:layout_constraintRight_toRightOf="@id/UserView"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

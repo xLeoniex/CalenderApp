@@ -41,6 +41,7 @@ android {
 
 dependencies {
 
+    implementation("com.google.firebase:firebase-storage:20.3.0")
     val lifecycle_version = "2.6.2"
     implementation("androidx.navigation:navigation-fragment:2.5.3")
     implementation("androidx.navigation:navigation-ui:2.5.3")
