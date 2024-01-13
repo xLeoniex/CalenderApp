@@ -76,10 +76,12 @@ public class CreateTipsActivity extends AppCompatActivity {
         tipViewModel.getDataFromRepository().observe(this, new Observer<List<TipModel>>() {
             @Override
             public void onChanged(List<TipModel> tipModels) {
-                Random random = new Random();
-                int idx = random.nextInt(tipModels.size());
-                Log.d("AlarmStarted","Alarm is startin...." );
-                setRepeatingAlarm(tipModels.get(idx));
+                if(!tipModels.isEmpty()){
+                    Random random = new Random();
+                    int idx = random.nextInt(tipModels.size());
+                    Log.d("AlarmStarted","Alarm is startin...." );
+                    setRepeatingAlarm(tipModels.get(idx));
+                }
             }
         });
         tipViewModel.getTipDetails().observe(this, new Observer<TipModel>() {

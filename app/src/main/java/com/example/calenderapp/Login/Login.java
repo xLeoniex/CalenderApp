@@ -3,6 +3,9 @@ package com.example.calenderapp.Login;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calenderapp.DashboardBar.Dashboard;
+import com.example.calenderapp.Notification.PointsNotification.MyAlarmService;
+import com.example.calenderapp.Notification.PointsNotification.MyBroadcastReceiver;
+import com.example.calenderapp.Notification.PointsNotification.myJobIntentService;
 import com.example.calenderapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -51,6 +57,9 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        startAlert();
+
         //Firebase variable Authentification zuweisen
         mAuth = FirebaseAuth.getInstance();
 
@@ -126,37 +135,18 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        /*
-        // Planen der Alarme
-        scheduleAlarms();
 
-        // Registrieren des BroadcastReceivers
-        registerBroadcastReceiver();
-
-         */
     }
-/*
-    private void scheduleAlarms() {
-        // Alarm für jeden Sonntag um Mitternacht
-        AlarmNotificationHelper.scheduleAlarm(this, DateTimeHelper.getMidnightTimestampForSunday());
-
-        // Alarm für den letzten Tag des Monats um Mitternacht
-        AlarmNotificationHelper.scheduleAlarm(this, DateTimeHelper.getMidnightTimestampForLastDayOfMonth());
-    }
-
-    private PendingIntent getAlarmIntent() {
-        return AlarmNotificationHelper.getAlarmIntent(this);
-    }
-
-
-    private void registerBroadcastReceiver() {
-        // Registrieren des BroadcastReceivers
-        Intent intent = new Intent(this, MyBroadcastReceiver.class);
-        PendingIntent pendingIntent = getAlarmIntent();
-
-        // Registrieren des Alarms mit dem PendingIntent
+    public void startAlert() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        Intent intent = new Intent(this, myJobIntentService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        // Alarm auf alle 100 Millisekunden
+        long intervalMillis = 100;
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), intervalMillis, pendingIntent);
+
     }
-    */
 }
+
+
