@@ -58,8 +58,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        startAlert();
-
         //Firebase variable Authentification zuweisen
         mAuth = FirebaseAuth.getInstance();
 
@@ -135,23 +133,6 @@ public class Login extends AppCompatActivity {
             }
         });
 
-
-    }
-    public void startAlert() {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent alarmIntent = new Intent(this, MyBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        long intervalMillis = 1000; //every second
-
-        if (alarmManager != null) {
-            alarmManager.setInexactRepeating(
-                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + intervalMillis,
-                    intervalMillis,
-                    pendingIntent
-            );
-            Log.d("AlarmStarted","Alarm is startin...." );
-        }
 
     }
 

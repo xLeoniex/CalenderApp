@@ -5,11 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calenderapp.Notification.AllTipsView;
+import com.example.calenderapp.Notification.PointsNotification.MyBroadcastReceiver;
 import com.example.calenderapp.calenderView.MainActivity;
 import com.example.calenderapp.Login.Login;
 import com.example.calenderapp.Points.AllEventsView;
@@ -50,6 +55,7 @@ public class Dashboard extends AppCompatActivity {
         btn_events = findViewById(R.id.btn_eventsView);
 
         requestRunTimePermission();
+        startAlert();
 
         //Firebase-Variablen
         auth = FirebaseAuth.getInstance();
@@ -145,5 +151,23 @@ public class Dashboard extends AppCompatActivity {
                     new String[]{Manifest.permission.POST_NOTIFICATIONS},
                     PERMISSION_CODE);
         }
+    }
+
+    public void startAlert() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this, MyBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        long intervalMillis = 1000; //every second
+
+        if (alarmManager != null) {
+            alarmManager.setInexactRepeating(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + intervalMillis,
+                    intervalMillis,
+                    pendingIntent
+            );
+            Log.d("AlarmStarted","Alarm is startin...." );
+        }
+
     }
 }
