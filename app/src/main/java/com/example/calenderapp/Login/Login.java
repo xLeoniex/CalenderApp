@@ -2,11 +2,16 @@ package com.example.calenderapp.Login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +25,7 @@ import com.example.calenderapp.Notification.PointsNotification.MyAlarmService;
 import com.example.calenderapp.Notification.PointsNotification.MyBroadcastReceiver;
 import com.example.calenderapp.Notification.PointsNotification.myJobIntentService;
 import com.example.calenderapp.R;
+import com.example.calenderapp.tips.ui.view.CreateTipsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -37,6 +43,7 @@ public class Login extends AppCompatActivity {
     //Für TextView Click to Login
     TextView textView;
     TextView resetPassword;
+
 
     //Dies hier ist der Launch, daher sollte zuerst untersucht werden, ob den Anwender angemeldet ist
     //Von der Website!
@@ -147,6 +154,7 @@ public class Login extends AppCompatActivity {
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), intervalMillis, pendingIntent);
 
     }
+
 }
 
 

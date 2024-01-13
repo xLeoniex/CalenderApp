@@ -2,8 +2,13 @@ package com.example.calenderapp.DashboardBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.calenderapp.Notification.AllTipsView;
 import com.example.calenderapp.calenderView.MainActivity;
@@ -31,6 +37,7 @@ public class Dashboard extends AppCompatActivity {
     FirebaseUser user;
     TextView textView;
     TextView textWelcome;
+    private static final int PERMISSION_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +48,8 @@ public class Dashboard extends AppCompatActivity {
         btn_points = findViewById(R.id.btn_pointsView);
         btn_tips = findViewById(R.id.btn_tipsView);
         btn_events = findViewById(R.id.btn_eventsView);
+
+        requestRunTimePermission();
 
         //Firebase-Variablen
         auth = FirebaseAuth.getInstance();
@@ -105,5 +114,36 @@ public class Dashboard extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void requestRunTimePermission() {
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            Toast.makeText(this,"Permission is Granted",Toast.LENGTH_SHORT).show();
+        }else if(ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.POST_NOTIFICATIONS))
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("This app requiers Notification Permission!")
+                    .setTitle("Permission Requierd")
+                    .setCancelable(false)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(Dashboard.this,
+                                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                                    PERMISSION_CODE);
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Cancel",(dialog, which) -> dialog.dismiss());
+            builder.show();
+        }
+        else
+        {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                    PERMISSION_CODE);
+        }
     }
 }

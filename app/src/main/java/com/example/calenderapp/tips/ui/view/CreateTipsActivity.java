@@ -41,7 +41,7 @@ public class CreateTipsActivity extends AppCompatActivity {
     private ActivityCreateTipsBinding binding;
     private TipViewModel tipViewModel;
     private Uri currentUri ;
-    private static final int PERMISSION_CODE = 100;
+
 
 
     @Override
@@ -51,7 +51,6 @@ public class CreateTipsActivity extends AppCompatActivity {
         tipViewModel = new ViewModelProvider(this).get(TipViewModel.class);
         binding.setTipViewModel(tipViewModel);
         binding.setLifecycleOwner(CreateTipsActivity.this);
-        requestRunTimePermission();
 
         // Notification Channel:
         TipNotificationChannel tipNotificationChannel = new TipNotificationChannel("TIP_ID","Tips_Notifications", NotificationManager.IMPORTANCE_HIGH);
@@ -128,37 +127,6 @@ public class CreateTipsActivity extends AppCompatActivity {
         });
     }
 
-    private void requestRunTimePermission() {
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                == PackageManager.PERMISSION_GRANTED)
-        {
-            Toast.makeText(this,"Permission is Granted",Toast.LENGTH_SHORT).show();
-        }else if(ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.POST_NOTIFICATIONS))
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("This app requiers Notification Permission!")
-                    .setTitle("Permission Requierd")
-                    .setCancelable(false)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(CreateTipsActivity.this,
-                                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                                    PERMISSION_CODE);
-                            dialog.dismiss();
-                        }
-                    })
-                    .setNegativeButton("Cancel",(dialog, which) -> dialog.dismiss());
-            builder.show();
-        }
-        else
-        {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                    PERMISSION_CODE);
-        }
-    }
     private void setRepeatingAlarm(TipModel tipModel) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(this, TipNotificationPublisher.class);
