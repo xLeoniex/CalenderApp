@@ -2,18 +2,14 @@ package com.example.calenderapp.Login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -21,11 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calenderapp.DashboardBar.Dashboard;
-import com.example.calenderapp.Notification.PointsNotification.MyAlarmService;
 import com.example.calenderapp.Notification.PointsNotification.MyBroadcastReceiver;
-import com.example.calenderapp.Notification.PointsNotification.myJobIntentService;
 import com.example.calenderapp.R;
-import com.example.calenderapp.tips.ui.view.CreateTipsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -145,13 +138,20 @@ public class Login extends AppCompatActivity {
 
     }
     public void startAlert() {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, myJobIntentService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this, MyBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        long intervalMillis = 1000; //every second
 
-        // Alarm auf alle 100 Millisekunden
-        long intervalMillis = 100;
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), intervalMillis, pendingIntent);
+        if (alarmManager != null) {
+            alarmManager.setInexactRepeating(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + intervalMillis,
+                    intervalMillis,
+                    pendingIntent
+            );
+            Log.d("AlarmStarted","Alarm is startin...." );
+        }
 
     }
 

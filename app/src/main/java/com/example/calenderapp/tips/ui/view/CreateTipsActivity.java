@@ -145,7 +145,7 @@ public class CreateTipsActivity extends AppCompatActivity {
             );
             Log.d("AlarmStarted","Alarm is startin...." );
         }
-
+        //ToDo: (Ibrahim) Cancel Button --> to View, Home-Button, Profile-Button
     }
 
 }
