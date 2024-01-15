@@ -40,7 +40,7 @@ public class MyMonthlyBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Calendar calendar = Calendar.getInstance();
 
-        // heute der erste Tag des Monats?
+        //ToDo: (Ehsan) Alle States von den Tipps sollen am letzten Tag des Monats auf inProgress gestzt werden
         if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
             Log.d("MonthlyAlarmTriggered", "Aktionen für den ersten Tag des Monats um 00:00 durchgeführt");
             monthRef.addListenerForSingleValueEvent(new ValueEventListener() {

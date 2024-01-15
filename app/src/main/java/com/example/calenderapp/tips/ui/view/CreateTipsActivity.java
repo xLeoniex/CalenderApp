@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.calenderapp.R;
 import com.example.calenderapp.databinding.ActivityCreateTipsBinding;
+import com.example.calenderapp.tips.AllTipsView;
 import com.example.calenderapp.tips.model.HandlerItems.TipNotificationChannel;
 import com.example.calenderapp.tips.model.TipModel;
 import com.example.calenderapp.tips.ui.viewmodel.TipViewModel;
@@ -115,6 +116,9 @@ public class CreateTipsActivity extends AppCompatActivity {
 
                     }
                 });
+                Intent intent = new Intent(getApplicationContext(), AllTipsView.class);
+                startActivity(intent);
+                finish();
             }
         });
         binding.TipImageView.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +128,14 @@ public class CreateTipsActivity extends AppCompatActivity {
                 Intent galleryIntent = new Intent(Intent.ACTION_PICK);
                 galleryIntent.setType("image/*");
                 galleryIntentActivityLauncher.launch(galleryIntent);
+            }
+        });
+        binding.CancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AllTipsView.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

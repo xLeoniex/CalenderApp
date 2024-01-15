@@ -8,13 +8,11 @@ import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +22,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.calenderapp.Notification.AllTipsView;
+import com.example.calenderapp.tips.AllTipsView;
 import com.example.calenderapp.Notification.PointsNotification.MyMonthlyBroadcastReceiver;
 import com.example.calenderapp.Notification.PointsNotification.MyWeeklyBroadcastReceiver;
 import com.example.calenderapp.calenderView.MainActivity;
@@ -34,8 +32,6 @@ import com.example.calenderapp.Points.PointsView;
 import com.example.calenderapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Date;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -179,7 +175,7 @@ public class Dashboard extends AppCompatActivity {
             alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
                     calendar.getTimeInMillis(),
-                    AlarmManager.INTERVAL_DAY * 7 ,  // Wiederhole jede Woche
+                    7 * 24 * 60 * 60 * 1000 ,  // Wiederhole jede Woche
                     pendingIntent
             );
             Log.d("WeeklyAlarmStarted","Alarm wird jeden Sonntag um 23:59 gestartet" );
@@ -203,7 +199,7 @@ public class Dashboard extends AppCompatActivity {
             alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
                     calendar.getTimeInMillis(),
-                    AlarmManager.INTERVAL_DAY,  // Wiederhole jeden Tag
+                     24 * 60 * 60 * 1000,  // Wiederhole jeden Tag
                     pendingIntent
             );
 

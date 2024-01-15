@@ -84,7 +84,6 @@ public class ToDoneEventView extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
-                //ToDo: (Ehsan) Item einen Wert zuweisen
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

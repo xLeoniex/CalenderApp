@@ -18,17 +18,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.Light">
-        <receiver android:name=".tips.ui.viewmodel.handlers.TipNotificationPublisher"
-            android:enabled="true"/>
-        <receiver android:name=".Notification.PointsNotification.MyWeeklyBroadcastReceiver"
-            android:enabled="true"/>
-        <receiver android:name=".Notification.PointsNotification.MyMonthlyBroadcastReceiver"
-            android:enabled="true"/>
+        <activity
+            android:name=".tips.OpenTipView"
+            android:exported="false" />
+        <activity
+            android:name=".ui.login.AllArchivedTipsView"
+            android:exported="false"
+            android:label="@string/title_activity_all_archived_tips_view" />
+
+        <receiver
+            android:name=".tips.ui.viewmodel.handlers.TipNotificationPublisher"
+            android:enabled="true" />
+        <receiver
+            android:name=".Notification.PointsNotification.MyWeeklyBroadcastReceiver"
+            android:enabled="true" />
+        <receiver
+            android:name=".Notification.PointsNotification.MyMonthlyBroadcastReceiver"
+            android:enabled="true" />
+
         <activity
             android:name=".tips.ui.view.CreateTipsActivity"
             android:exported="false" />
         <activity
-            android:name=".Notification.AllTipsView"
+            android:name=".tips.AllTipsView"
             android:exported="false" />
         <activity
             android:name=".Points.ToDoneEventView"
