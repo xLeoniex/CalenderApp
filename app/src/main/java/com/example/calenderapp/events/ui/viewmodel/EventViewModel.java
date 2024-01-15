@@ -33,6 +33,7 @@ public class EventViewModel extends AndroidViewModel {
 
     // fields to be observed
     // They have to be public , otherwise i cannot bind them in the XML layout
+
     public MutableLiveData<String> eventDate = new MutableLiveData<>();
     public MutableLiveData<String> eventName = new MutableLiveData<>();
     public MutableLiveData<String> startingTime = new MutableLiveData<>();
@@ -43,6 +44,7 @@ public class EventViewModel extends AndroidViewModel {
     public MutableLiveData<String> eventWeight = new MutableLiveData<>();
 
     public MutableLiveData<String> eventId = new MutableLiveData<>();
+    public MutableLiveData<String> eventState = new MutableLiveData<>();
     private MutableLiveData<EventModel> eventModelMutableLiveData ;
 
     public EventViewModel(@NonNull Application application) {
@@ -71,6 +73,7 @@ public class EventViewModel extends AndroidViewModel {
 
     private EventModel CreateEvent()
     {
+        String eventStateValue = eventState.getValue() !=null ? eventState.getValue():"inProgress";
         String eventIdvlaue = eventId.getValue() !=null ? eventId.getValue():"";
         String eventDateValue = eventDate.getValue() !=null ? eventDate.getValue():"";
         String eventNameValue = eventName.getValue() !=null ? eventName.getValue():"";
@@ -81,7 +84,7 @@ public class EventViewModel extends AndroidViewModel {
         String eventDescriptionValue = eventDescription.getValue()!=null ? eventDescription.getValue():"Nothing";
         String eventWeightValue = eventWeight.getValue() !=null ?eventWeight.getValue():"None" ;
         EventModel event = new EventModel(eventDateValue,eventNameValue, startingTimeValue,
-                endingTimeValue, eventTypeValue, recurringEventTypeValue, eventDescriptionValue,eventWeightValue,eventIdvlaue);
+                endingTimeValue, eventTypeValue, recurringEventTypeValue, eventDescriptionValue,eventWeightValue,eventIdvlaue,eventStateValue);
 
         return event;
     }

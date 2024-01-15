@@ -15,8 +15,9 @@ public class EventModel {
     private String recurringEventType;
     private String eventDescription;
     private String eventWeight;
-
     private String eventId;
+
+    private String eventState;
 
     public EventModel(String eventDate,
                       String eventName,
@@ -26,7 +27,8 @@ public class EventModel {
                       String recurringEventType,
                       String eventDescription,
                       String eventWeight,
-                      String eventId) {
+                      String eventId,
+                      String eventState) {
         this.eventDate = eventDate;
         this.eventName = eventName;
         this.startingTime = startingTime;
@@ -36,6 +38,7 @@ public class EventModel {
         this.eventDescription = eventDescription;
         this.eventWeight = eventWeight;
         this.eventId = eventId;
+        this.eventState = eventState;
     }
 
     public EventModel(String eventName) {
@@ -116,5 +119,13 @@ public class EventModel {
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+    }
+
+    public String getEventState() {
+        return eventState;
+    }
+
+    public void setEventState(String eventState) {
+        this.eventState = eventState;
     }
 }
