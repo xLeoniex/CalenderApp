@@ -15,17 +15,20 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.calenderapp.calenderView.CalendarUtils;
+import com.example.calenderapp.calenderView.MainActivity;
 import com.example.calenderapp.calenderView.WeekViewActivity;
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
 import com.example.calenderapp.databinding.ActivityCreateEventsBinding;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.ui.viewmodel.EventViewModel;
+import com.example.calenderapp.events.utils.ErrorMessages;
 import com.google.android.material.snackbar.Snackbar;
 
 public class CreateEventsActivity extends AppCompatActivity {
     private EventViewModel myEventViewModel;
     private ActivityCreateEventsBinding binding;
+    private ErrorMessages eventErrorMessages;
 
 
     @Override
@@ -36,6 +39,7 @@ public class CreateEventsActivity extends AppCompatActivity {
         myEventViewModel = new ViewModelProvider(this).get(EventViewModel.class);
         binding.setEventViewModel(myEventViewModel);
         binding.setLifecycleOwner(CreateEventsActivity.this);
+        eventErrorMessages = new ErrorMessages();
 
 
         // set event date from Calender
@@ -77,6 +81,20 @@ public class CreateEventsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String msg = myEventViewModel.OnClickHandler();
                 Snackbar.make(v,msg,Snackbar.LENGTH_SHORT).show();
+                if(msg == eventErrorMessages.getConfirmation_msg_Event_Is_Added_To_Repository())
+                {
+                    Intent backtomonthlyIntent = new Intent(CreateEventsActivity.this, MainActivity.class);
+                    startActivity(backtomonthlyIntent);
+                }
+
+            }
+        });
+
+        binding.CancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent backtomonthlyIntent = new Intent(CreateEventsActivity.this, MainActivity.class);
+                startActivity(backtomonthlyIntent);
             }
         });
 
