@@ -18,13 +18,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Month"
-            android:textSize="12sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <Switch
             android:id="@+id/swt_weekMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <TextView
@@ -32,17 +32,17 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Week"
-            android:textSize="12sp"
+            android:textSize="24dp"
             android:textStyle="bold" />
 
     </LinearLayout>
+
 
     <TextView
         android:id="@+id/totalPoints"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
-        android:text="Total Points of the month:"
+        android:text="Monthly points so far:"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -55,9 +55,25 @@
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/totalLastPoints"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="25dp"
+        android:text="Total points last month:"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/num_lastPoints"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Recent Achevements:"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -65,7 +81,25 @@
     <ListView
         android:id="@+id/list_recentEvents"
         android:layout_width="match_parent"
+        android:layout_marginTop="25dp"
         android:layout_height="214dp" />
+
+    <TextView
+        android:id="@+id/highScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Full month high score:"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/num_highScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btn_viewAchievments"

@@ -18,13 +18,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Month"
-            android:textSize="12sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <Switch
             android:id="@+id/swt_weekMonth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <TextView
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Week"
-            android:textSize="12sp"
+            android:textSize="24dp"
             android:textStyle="bold" />
 
     </LinearLayout>

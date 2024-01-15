@@ -20,7 +20,9 @@
         android:theme="@style/Theme.Material3.Light">
         <receiver android:name=".tips.ui.viewmodel.handlers.TipNotificationPublisher"
             android:enabled="true"/>
-        <receiver android:name=".Notification.PointsNotification.MyBroadcastReceiver"
+        <receiver android:name=".Notification.PointsNotification.MyWeeklyBroadcastReceiver"
+            android:enabled="true"/>
+        <receiver android:name=".Notification.PointsNotification.MyMonthlyBroadcastReceiver"
             android:enabled="true"/>
         <activity
             android:name=".tips.ui.view.CreateTipsActivity"

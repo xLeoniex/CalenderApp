@@ -8,9 +8,11 @@ import android.Manifest;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -23,7 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calenderapp.Notification.AllTipsView;
-import com.example.calenderapp.Notification.PointsNotification.MyBroadcastReceiver;
+import com.example.calenderapp.Notification.PointsNotification.MyMonthlyBroadcastReceiver;
+import com.example.calenderapp.Notification.PointsNotification.MyWeeklyBroadcastReceiver;
 import com.example.calenderapp.calenderView.MainActivity;
 import com.example.calenderapp.Login.Login;
 import com.example.calenderapp.Points.AllEventsView;
@@ -31,6 +34,8 @@ import com.example.calenderapp.Points.PointsView;
 import com.example.calenderapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Date;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -54,8 +59,12 @@ public class Dashboard extends AppCompatActivity {
         btn_tips = findViewById(R.id.btn_tipsView);
         btn_events = findViewById(R.id.btn_eventsView);
 
+        //Premission für Notifications
         requestRunTimePermission();
-        startAlert();
+        //Alarm für jeden Sonntag 23:59 konfiguriert
+        startWeeklyAlert();
+        //Alarm für letzten Tag des Monats 23:59
+        startMonthlyAlert();
 
         //Firebase-Variablen
         auth = FirebaseAuth.getInstance();
@@ -153,20 +162,52 @@ public class Dashboard extends AppCompatActivity {
         }
     }
 
-    public void startAlert() {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent alarmIntent = new Intent(this, MyBroadcastReceiver.class);
+    //Wochen Alarm konfigurieren
+    public void startWeeklyAlert() {
+       AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this, MyWeeklyBroadcastReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        long intervalMillis = 1000; //every second
+
+        // Alarm auf jeden Sonntag um 23:59 Uhr
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 0);
 
         if (alarmManager != null) {
-            alarmManager.setInexactRepeating(
-                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + intervalMillis,
-                    intervalMillis,
+            alarmManager.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY * 7 ,  // Wiederhole jede Woche
                     pendingIntent
             );
-            Log.d("AlarmStarted","Alarm is startin...." );
+            Log.d("WeeklyAlarmStarted","Alarm wird jeden Sonntag um 23:59 gestartet" );
+        }
+    }
+    //Alarm am letzten Tag des Monats ausführen
+    public void startMonthlyAlert() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this, MyMonthlyBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Alarm am erster Tag des nächsten Monats um 00:00 Uhr
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1); // Erster Tag des aktuellen Monats
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.add(Calendar.MONTH, 1); // Nächste Monat einstellen
+
+        if (alarmManager != null) {
+            alarmManager.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY,  // Wiederhole jeden Tag
+                    pendingIntent
+            );
+
+            Log.d("MonthlyAlarmStarted","Alarm wird jeden letzten Monatstag um 23:59 gestartet" );
         }
 
     }

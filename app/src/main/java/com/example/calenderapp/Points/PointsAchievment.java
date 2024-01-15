@@ -42,6 +42,7 @@ public class PointsAchievment extends AppCompatActivity {
 
     FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference pointsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("points");
+    DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Events");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +63,14 @@ public class PointsAchievment extends AppCompatActivity {
                 if(isChecked){
                     events.clear();
                     achievments.setText("Weekly achevements");
+                    events.clear();
+                    listview.setAdapter(adapter);
                     MonthWeekInfos(events, "Week");
                 }else{
                     events.clear();
                     achievments.setText("Monthly achevements");
+                    events.clear();
+                    listview.setAdapter(adapter);
                     MonthWeekInfos(events, "Month");
                 }
             }
@@ -85,22 +90,48 @@ public class PointsAchievment extends AppCompatActivity {
         objectsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                activities.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    String ID = (String) dataSnapshot.getKey();
+                if (snapshot.exists()){
 
-                    if (ID != null) {
-                        String time = dataSnapshot.child("time").getValue(String.class); // Zeitwert
-                        String point = dataSnapshot.child("point").getValue(String.class); // Punktwert
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String ID = (String) dataSnapshot.getKey();
+                        if (ID != null) {
+                            //Event-Daten aus dem Datenbank ablesen
+                            DatabaseReference eventRef = eventsRef.child(ID); // Referenz zum spezifischen Event
+                            eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    //WICHTIG: Alle Aktualisierungen der von der DatenBank abhängen müssen in diesen Block geschehen
+                                    if (dataSnapshot.exists()) {
+                                        String name = dataSnapshot.child("eventName").getValue(String.class);
+                                        String date = dataSnapshot.child("eventDate").getValue(String.class);
+                                        String startingTime = dataSnapshot.child("startingTime").getValue(String.class);
+                                        String endingTime = dataSnapshot.child("endingTime").getValue(String.class);
+                                        String weight = dataSnapshot.child("eventWeight").getValue(String.class);
 
-                        if (time != null && point != null) {
-                            String out = ID + ", Done at " + time + ", Points: " + point;
-                            activities.add(out);
+
+                                        if (name != null && date != null && startingTime != null && endingTime != null && weight != null) {
+                                            String out = name + " at  " + date + " (" + startingTime + "-" + endingTime + ") " + " level: " + weight;
+                                            activities.add(out);
+                                        }
+                                    }
+                                    adapter.notifyDataSetChanged();
+                                    listview.setAdapter(adapter);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Toast.makeText(PointsAchievment.this, "Something wrong, retry later...", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
                         }
                     }
+                }else {
+                    activities.add("You have not yet completed any activities");
+                    adapter.notifyDataSetChanged();
+                    listview.setAdapter(adapter);
                 }
-                adapter.notifyDataSetChanged();
-                listview.setAdapter(adapter);
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

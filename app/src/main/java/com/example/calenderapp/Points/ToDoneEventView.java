@@ -146,21 +146,24 @@ public class ToDoneEventView extends AppCompatActivity {
                 String selectedValue = spinner.getSelectedItem().toString();
                 point = pointsNumber(selectedValue);
                 //in Points DatenBank eintragen --> Datum ablesen Monat oder Woche zuordnen
-                if(dataChecker.currentMonth(eventDate)){
+                if(dataChecker.currentMonth(eventDate)) {
                     addpoints("Month");
-                    if(dataChecker.currentWeek(eventDate)){
-                        addpoints("Week");
-                    }else if(dataChecker.lastWeek(eventDate)){
-                        addpoints("lastWeek");
-                    }
-                    Toast.makeText(ToDoneEventView.this, "You have received " + point + " points.", Toast.LENGTH_SHORT).show();
-                    //State auf Done setzen
-                    eventsRef.child(eventID).child("eventState").setValue("Done");
-                    startKonfetti();
-
-                }else{
-                    Toast.makeText(ToDoneEventView.this, "You can only collect points for events from the current month.", Toast.LENGTH_LONG).show();
                 }
+
+                if(dataChecker.currentWeek(eventDate)){
+                    addpoints("Week");
+                }else if(dataChecker.lastWeek(eventDate)){
+                    addpoints("lastWeek");
+                }else{
+                    Toast.makeText(ToDoneEventView.this, "Events is too old to score points with it!", Toast.LENGTH_LONG).show();
+                }
+
+                Toast.makeText(ToDoneEventView.this, "You have received " + point + " points.", Toast.LENGTH_SHORT).show();
+                //State auf Done setzen
+                eventsRef.child(eventID).child("eventState").setValue("Done");
+                startKonfetti();
+
+
             }
         });
     }

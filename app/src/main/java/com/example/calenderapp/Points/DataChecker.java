@@ -25,8 +25,6 @@ public class DataChecker {
                 // Überprüfung, ob das Datum im aktuellen Monat liegt
                 if (eventYear == currentYear && eventMonth == currentMonth) {
                     return true;
-                } else {
-                    return false;
                 }
             }
         } catch (ParseException e) {
@@ -36,41 +34,31 @@ public class DataChecker {
     }
     //Überprüfen ob ein Datum in aktuellen Monat Liegt
     public boolean currentWeek(String eventDate) {
-        Calendar cal = Calendar.getInstance();
-        if (!currentMonth(eventDate)){
-            return false;
-        }else{
-            try {
-                date = dateForm.parse(eventDate);
-                if (date != null) {
-                    cal.setTime(date);
-                    int eventWeek = cal.get(Calendar.WEEK_OF_YEAR);
-                    int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
-                    return eventWeek == currentWeek;
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
+        try {
+            date = dateForm.parse(eventDate);
+            if (date != null) {
+                cal.setTime(date);
+                int eventWeek = cal.get(Calendar.WEEK_OF_YEAR);
+                int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+                return eventWeek == currentWeek;
             }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return false;
     }
     public boolean lastWeek(String eventDate) {
-        Calendar cal = Calendar.getInstance();
-        if (!currentMonth(eventDate)){
-            return false;
-        }else{
-            try {
-                date = dateForm.parse(eventDate);
-                if (date != null) {
-                    cal.setTime(date);
-                    int eventWeek = cal.get(Calendar.WEEK_OF_YEAR);
-                    int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
-                    int lastWeek = (currentWeek - 1) % cal.getActualMaximum(Calendar.WEEK_OF_YEAR);
-                    return eventWeek == lastWeek;
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
+        try {
+            date = dateForm.parse(eventDate);
+            if (date != null) {
+                cal.setTime(date);
+                int eventWeek = cal.get(Calendar.WEEK_OF_YEAR);
+                int currentWeek = Calendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+                int lastWeek = (currentWeek - 1) % cal.getActualMaximum(Calendar.WEEK_OF_YEAR);
+                return eventWeek == lastWeek;
             }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return false;
     }

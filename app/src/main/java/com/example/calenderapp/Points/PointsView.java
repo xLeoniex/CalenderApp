@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class PointsView extends AppCompatActivity {
     Switch swt_weekMonth;
 
-    TextView total, points;
+    TextView total, points, highScoreTitle, highScore, totalLast, pointsLast;
     ListView recentEvents;
 
     Button btn_ViewAll;
@@ -46,8 +46,9 @@ public class PointsView extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     FirebaseUser user = mAuth.getCurrentUser();
-    //ToDo: Points und total Points später in Firebase als String speicehrn
+
     DatabaseReference pointsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("points");
+    DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Events");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,10 @@ public class PointsView extends AppCompatActivity {
         swt_weekMonth = findViewById(R.id.swt_weekMonth);
         total = findViewById(R.id.totalPoints);
         points = findViewById(R.id.num_points);
+        highScoreTitle = findViewById(R.id.highScore);
+        highScore = findViewById(R.id.num_highScore);
+        totalLast = findViewById(R.id.totalLastPoints);
+        pointsLast = findViewById(R.id.num_lastPoints);
         recentEvents = findViewById(R.id.list_recentEvents);
         btn_ViewAll = findViewById(R.id.btn_viewAchievments);
 
@@ -68,19 +73,29 @@ public class PointsView extends AppCompatActivity {
         MonthWeekInfos(monthActivities,  "Month");
 
 
-
         swt_weekMonth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    total.setText("Total Points of the week");
+                    total.setText("Weekly points so far:");
+                    highScoreTitle.setText("Full week high score:");
+                    totalLast.setText("Total points last week:");
+
                     viewTotalPoints("Week");
+                    weekActivities.clear();
+                    dataToShow.clear();
+                    recentEvents.setAdapter(adapter);
                     MonthWeekInfos(weekActivities,  "Week");
 
 
                 }else{
-                    total.setText("Total Points of the month");
+                    total.setText("Monthly points so far:");
+                    highScoreTitle.setText("Full month high score:");
+                    totalLast.setText("Total points last month:");
                     viewTotalPoints("Month");
+                    monthActivities.clear();
+                    dataToShow.clear();
+                    recentEvents.setAdapter(adapter);
                     MonthWeekInfos(monthActivities,  "Month");
 
                 }
@@ -105,23 +120,46 @@ public class PointsView extends AppCompatActivity {
         objectsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                activities.clear();
-                dataToShow.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    String ID = (String) dataSnapshot.getKey();
+                if(snapshot.exists()) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String ID = (String) dataSnapshot.getKey();
 
-                    if (ID != null) {
-                        String time = dataSnapshot.child("time").getValue(String.class); // Zeitwert
-                        String point = dataSnapshot.child("point").getValue(String.class); // Punktwert
+                        if (ID != null) {
+                            //Event-Daten aus dem Datenbank ablesen
+                            DatabaseReference eventRef = eventsRef.child(ID); // Referenz zum spezifischen Event
+                            eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    //WICHTIG: Alle Aktualisierungen der von der DatenBank abhängen müssen in diesen Block geschehen
+                                    if (dataSnapshot.exists()) {
+                                        String name = dataSnapshot.child("eventName").getValue(String.class);
+                                        String date = dataSnapshot.child("eventDate").getValue(String.class);
+                                        String startingTime = dataSnapshot.child("startingTime").getValue(String.class);
+                                        String endingTime = dataSnapshot.child("endingTime").getValue(String.class);
+                                        String weight = dataSnapshot.child("eventWeight").getValue(String.class);
 
-                        if (time != null && point != null) {
-                            String out = ID + ", Done at " + time + ", Points: " + point;
-                            activities.add(out);
+
+                                        if (name != null && date != null && startingTime != null && endingTime != null && weight != null) {
+                                            String out = name + " at  " + date + " (" + startingTime + "-" + endingTime + ") " + " level: " + weight;
+                                            activities.add(out);
+                                        }
+                                    }
+                                    dataToShow = prepareDataToShow(activities);
+                                    recentEvents.setAdapter(adapter);
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    Toast.makeText(PointsView.this, "Something wrong, retry later...", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
                     }
+                }else {
+                    dataToShow.add("You have not yet completed any activities");
+                    recentEvents.setAdapter(adapter);
                 }
-                dataToShow = prepareDataToShow(activities);
-                recentEvents.setAdapter(adapter);
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -133,12 +171,15 @@ public class PointsView extends AppCompatActivity {
     }
     //Anzeige der Totalen Punktzahl für den Monat oder Woche
     public void viewTotalPoints(String MonthOrWeek){
-        pointsRef.child(MonthOrWeek).child("Total_Current_"+MonthOrWeek).addListenerForSingleValueEvent(new ValueEventListener() {
+        pointsRef.child(MonthOrWeek).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String sumPoints = dataSnapshot.getValue(String.class);
+                String sumPoints = dataSnapshot.child("Total_Current_"+MonthOrWeek).getValue(String.class);
+                String lastPoints = dataSnapshot.child("Total_Last_"+MonthOrWeek).getValue(String.class);
+                String highScorePoints = dataSnapshot.child("High_Score_"+MonthOrWeek).getValue(String.class);
                 points.setText(sumPoints);
-
+                pointsLast.setText(lastPoints);
+                highScore.setText(highScorePoints);
             }
 
             @Override
@@ -152,19 +193,15 @@ public class PointsView extends AppCompatActivity {
 
     //Um letzte 3 elemente der Aktivitäten Array zuspeichern
     private ArrayList<String> prepareDataToShow(ArrayList<String> activities) {
+        dataToShow.clear();
         int size = activities.size();
-
         if (size > 0) {
             // Falls mehr als 0 Elemente vorhanden sind
             int endIndex = Math.min(size, 3);
             for (int i = 0; i < endIndex; i++) {
                 dataToShow.add(activities.get(i));
             }
-        } else {
-            // Falls die Liste leer ist
-            dataToShow.add("You have not yet completed any activities");
         }
-
         return dataToShow;
     }
 
