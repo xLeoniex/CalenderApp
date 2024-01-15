@@ -8,7 +8,7 @@ import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 
-import com.example.calenderapp.Notification.AllTipsView;
+import com.example.calenderapp.tips.AllTipsView;
 import com.example.calenderapp.tips.model.HandlerItems.TipNotification;
 import com.example.calenderapp.tips.model.HandlerItems.TipNotificationChannel;
 
