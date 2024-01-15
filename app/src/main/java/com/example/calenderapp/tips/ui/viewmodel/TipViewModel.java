@@ -26,6 +26,8 @@ public class TipViewModel extends AndroidViewModel {
     public MutableLiveData<String> tipTitle = new MutableLiveData<>();
     public MutableLiveData<String> tipDescription = new MutableLiveData<>();
     public MutableLiveData<String> tipType = new MutableLiveData<>();
+
+    public MutableLiveData<String> tipState = new MutableLiveData<>();
     private MutableLiveData<List<TipModel>> FetchedData = new MutableLiveData<>();
     private MutableLiveData<TipModel> tipModelMutableLiveData;
 
@@ -37,11 +39,12 @@ public class TipViewModel extends AndroidViewModel {
 
     private TipModel CreateTip()
     {
+        String tipStateValue  = tipState.getValue() !=null ? tipState.getValue():"inProgress";
         String tipTitleValue = tipTitle.getValue() != null ? tipTitle.getValue():"";
         String tipDescriptionValue = tipDescription.getValue() !=null ? tipDescription.getValue():"";
         String tipTypeValue = tipType.getValue() !=null ? tipType.getValue():"";
         String tipImageValue = tipImageUrl.getValue() !=null ? tipImageUrl.getValue():null;
-        TipModel tipModel = new TipModel(tipTitleValue,tipDescriptionValue,tipTypeValue,tipImageValue);
+        TipModel tipModel = new TipModel(tipTitleValue,tipStateValue,tipDescriptionValue,tipTypeValue,tipImageValue);
 
         return tipModel;
     }

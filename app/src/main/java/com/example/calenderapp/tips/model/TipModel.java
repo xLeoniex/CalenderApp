@@ -5,11 +5,13 @@ public class TipModel {
     private String TipDescription;
     private String TipType;
     private String imageUrl;
+    private String TipState;
 
 
 
-    public TipModel(String tipTitle, String tipDescription, String tipType, String imageUrl) {
+    public TipModel(String tipTitle,String tipState,String tipDescription, String tipType, String imageUrl) {
         TipTitle = tipTitle;
+        TipState = tipState;
         TipDescription = tipDescription;
         TipType = tipType;
         this.imageUrl = imageUrl;
@@ -48,5 +50,13 @@ public class TipModel {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getTipState() {
+        return TipState;
+    }
+
+    public void setTipState(String tipState) {
+        TipState = tipState;
     }
 }

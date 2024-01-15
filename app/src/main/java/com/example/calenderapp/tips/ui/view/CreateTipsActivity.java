@@ -51,6 +51,7 @@ public class CreateTipsActivity extends AppCompatActivity {
         tipViewModel = new ViewModelProvider(this).get(TipViewModel.class);
         binding.setTipViewModel(tipViewModel);
         binding.setLifecycleOwner(CreateTipsActivity.this);
+        tipViewModel.tipState.setValue("inProgress");
 
         // Notification Channel:
         TipNotificationChannel tipNotificationChannel = new TipNotificationChannel("TIP_ID","Tips_Notifications", NotificationManager.IMPORTANCE_HIGH);
