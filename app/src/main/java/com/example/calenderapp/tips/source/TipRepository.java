@@ -70,7 +70,10 @@ public class TipRepository {
     {
         if(tipModel != null)
         {
-            reference.push().setValue(tipModel);
+            DatabaseReference pushref = reference.push();
+            String mKey = pushref.getKey();
+            tipModel.setTipId(mKey);
+            pushref.setValue(tipModel);
         }
     }
 

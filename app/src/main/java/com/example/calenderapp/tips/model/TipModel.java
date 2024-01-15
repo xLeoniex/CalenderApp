@@ -7,9 +7,12 @@ public class TipModel {
     private String imageUrl;
     private String TipState;
 
+    private String TipId;
 
 
-    public TipModel(String tipTitle,String tipState,String tipDescription, String tipType, String imageUrl) {
+
+    public TipModel(String tipTitle,String tipId,String tipState,String tipDescription, String tipType, String imageUrl) {
+        TipId = tipId;
         TipTitle = tipTitle;
         TipState = tipState;
         TipDescription = tipDescription;
@@ -58,5 +61,13 @@ public class TipModel {
 
     public void setTipState(String tipState) {
         TipState = tipState;
+    }
+
+    public String getTipId() {
+        return TipId;
+    }
+
+    public void setTipId(String tipId) {
+        TipId = tipId;
     }
 }
