@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.calenderapp.events.Event;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.source.EventRepository;
 import com.example.calenderapp.events.utils.ErrorMessages;
@@ -74,7 +75,7 @@ public class EventViewModel extends AndroidViewModel {
     private EventModel CreateEvent()
     {
         String eventStateValue = eventState.getValue() !=null ? eventState.getValue():"inProgress";
-        String eventIdvlaue = eventId.getValue() !=null ? eventId.getValue():"";
+        String eventIdValue = eventId.getValue() !=null ? eventId.getValue():"";
         String eventDateValue = eventDate.getValue() !=null ? eventDate.getValue():"";
         String eventNameValue = eventName.getValue() !=null ? eventName.getValue():"";
         String startingTimeValue = startingTime.getValue()!=null ? startingTime.getValue():"";
@@ -84,7 +85,7 @@ public class EventViewModel extends AndroidViewModel {
         String eventDescriptionValue = eventDescription.getValue()!=null ? eventDescription.getValue():"Nothing";
         String eventWeightValue = eventWeight.getValue() !=null ?eventWeight.getValue():"None" ;
         EventModel event = new EventModel(eventDateValue,eventNameValue, startingTimeValue,
-                endingTimeValue, eventTypeValue, recurringEventTypeValue, eventDescriptionValue,eventWeightValue,eventIdvlaue,eventStateValue);
+                endingTimeValue, eventTypeValue, recurringEventTypeValue, eventDescriptionValue,eventWeightValue,eventIdValue,eventStateValue);
 
         return event;
     }
@@ -105,12 +106,29 @@ public class EventViewModel extends AndroidViewModel {
         msg = ValidateAddEvent(myEvent,errorMessages);
         if(msg.equals(errorMessages.getConfirmation_msg_Event_Is_Added_To_Repository()))
         {
-            PushEventToRepo(myEvent);
+            if(myEvent.getEventId().isEmpty())
+            {
+                PushEventToRepo(myEvent);
+                msg = errorMessages.getConfirmation_msg_Event_Is_Added_To_Repository();
+            }else
+            {
+                updateEventToRepo(myEvent);
+                msg = errorMessages.getUpdate_msg_Event_Is_Updated_And_Added_To_Repository();
+            }
+
         }
 
         return msg;
     }
 
+    public void updateEventToRepo(EventModel eventModel)
+    {
+        repository.updateEvent(eventModel);
+    }
+    public void updateEvent(EventModel eventModel)
+    {
+
+    }
 
 
     //endregion

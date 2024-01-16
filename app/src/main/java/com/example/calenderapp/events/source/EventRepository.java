@@ -154,6 +154,14 @@ public class EventRepository {
         return eventListOfMonth;
     }
 
+    public void updateEvent(EventModel eventModel)
+    {
+        if(eventModel !=null)
+        {
+            reference.child(eventModel.getEventId()).setValue(eventModel);
+        }
+    }
+
 
 
 

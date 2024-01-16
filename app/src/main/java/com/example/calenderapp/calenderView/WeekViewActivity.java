@@ -79,6 +79,21 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Snackbar.make(binding.getRoot().getRootView(),"Edit window",Snackbar.LENGTH_SHORT).show();
+                        EventModel currentevent = (EventModel) parent.getItemAtPosition(position);
+                        Intent editIntent = new Intent(WeekViewActivity.this, CreateEventsActivity.class);
+                        editIntent.putExtra("Name",currentevent.getEventName());
+                        editIntent.putExtra("Date",currentevent.getEventDate());
+                        editIntent.putExtra("StartingTime",currentevent.getStartingTime());
+                        editIntent.putExtra("EndingTime",currentevent.getEndingTime());
+                        editIntent.putExtra("Description",currentevent.getEventDescription());
+                        editIntent.putExtra("Id",currentevent.getEventId());
+                        editIntent.putExtra("State",currentevent.getEventState());
+                        editIntent.putExtra("Recurring",currentevent.getRecurringEventType());
+                        editIntent.putExtra("Type",currentevent.getEventType());
+                        editIntent.putExtra("Weight",currentevent.getEventWeight());
+                        editIntent.putExtra("UpdateFlag","Update");
+                        startActivity(editIntent);
+
                     }
                 });
                 popUpDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Done", new DialogInterface.OnClickListener() {

@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Spinner;
 
 import com.example.calenderapp.calenderView.CalendarUtils;
 import com.example.calenderapp.calenderView.MainActivity;
@@ -42,7 +43,22 @@ public class CreateEventsActivity extends AppCompatActivity {
         eventErrorMessages = new ErrorMessages();
 
 
-        // set event date from Calender
+        // if we are updating events
+
+        Intent update = getIntent();
+        if(update.hasExtra("Id"))
+        {
+            binding.AddBtn.setText("Update");
+            myEventViewModel.eventName.setValue(update.getStringExtra("Name"));
+            myEventViewModel.eventId.setValue(update.getStringExtra("Id"));
+            myEventViewModel.eventDescription.setValue(update.getStringExtra("Description"));
+            myEventViewModel.eventState.setValue(update.getStringExtra("State"));
+            myEventViewModel.endingTime.setValue(update.getStringExtra("EndingTime"));
+            myEventViewModel.startingTime.setValue(update.getStringExtra("StartingTime"));
+            myEventViewModel.eventDate.setValue(update.getStringExtra("Date"));
+        }
+
+        // if we are adding a new event then grab the date
         myEventViewModel.eventDate.setValue(CalendarUtils.selectedDate.toString());
         myEventViewModel.getEventDetails().observe(this, new Observer<EventModel>() {
             @Override
@@ -99,7 +115,38 @@ public class CreateEventsActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent update = getIntent();
+        if(update.hasExtra("Id"))
+        {
+            myEventViewModel.eventType.setValue(update.getStringExtra("Type"));
+            int typeIdx = getIndex(binding.EventTypeSpinner,update.getStringExtra("Type"));
+            binding.EventTypeSpinner.setSelection(typeIdx);
+            myEventViewModel.eventWeight.setValue(update.getStringExtra("Weight"));
+            int weightIdx = getIndex(binding.EventPointsEventSpinner,update.getStringExtra("Weight"));
+            binding.EventPointsEventSpinner.setSelection(weightIdx);
+            myEventViewModel.recurringEventType.setValue(update.getStringExtra("Recurring"));
+            int recurringIdx = getIndex(binding.EventPointsEventSpinner,update.getStringExtra("Recurring"));
+            binding.EventPointsEventSpinner.setSelection(recurringIdx);
+        }
+
+    }
+
     //endregion
+    private int getIndex(Spinner spinner, String myString){
+
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).equals(myString)){
+                index = i;
+            }
+        }
+        return index;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
