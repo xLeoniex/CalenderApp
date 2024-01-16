@@ -58,7 +58,6 @@ public class AllEventsView extends AppCompatActivity {
                 eventIDs.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     String ID = (String) dataSnapshot.getKey();
-                    eventIDs.add(ID);
                     if (ID != null) {
                         String name = dataSnapshot.child("eventName").getValue(String.class);
                         String date = dataSnapshot.child("eventDate").getValue(String.class);
@@ -71,6 +70,7 @@ public class AllEventsView extends AppCompatActivity {
                         if (name != null && date != null && startingTime != null && endingTime != null && weight != null) {
                             String out = name + " at  " + date + " (" + startingTime + "-"+ endingTime + ") " + " level: " + weight;
                             allEvents.add(out);
+                            eventIDs.add(ID);
                         }
                     }
                 }

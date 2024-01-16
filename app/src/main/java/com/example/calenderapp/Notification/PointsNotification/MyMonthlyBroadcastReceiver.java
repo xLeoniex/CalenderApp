@@ -39,8 +39,6 @@ public class MyMonthlyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Calendar calendar = Calendar.getInstance();
-
-        //ToDo: (Ehsan) Alle States von den Tipps sollen am letzten Tag des Monats auf inProgress gestzt werden
         if (calendar.get(Calendar.DAY_OF_MONTH) == 1) {
             Log.d("MonthlyAlarmTriggered", "Aktionen für den ersten Tag des Monats um 00:00 durchgeführt");
             monthRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -77,13 +75,14 @@ public class MyMonthlyBroadcastReceiver extends BroadcastReceiver {
                     }
                 }
 
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
 
             });
-
+        refreshTips();
 
         }
     }
@@ -106,4 +105,29 @@ public class MyMonthlyBroadcastReceiver extends BroadcastReceiver {
             notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
     }
+
+    //am Ende von Monat, werden alle Tips wieder als frei geschaltet
+    public void refreshTips(){
+        DatabaseReference tipsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Tips");
+        tipsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String ID = (String) dataSnapshot.getKey();
+                    if (ID != null) {
+                        DatabaseReference tipRef = tipsRef.child(ID);
+                        tipRef.child("tipState").setValue("inProgress");
+
+                    }
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
 }
+

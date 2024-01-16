@@ -54,6 +54,10 @@ public class MyWeeklyBroadcastReceiver extends BroadcastReceiver {
                         int totalCurrentWeek = Integer.parseInt(Objects.requireNonNull(dataSnapshot.child("Total_Current_Week").getValue(String.class)));
                         int totalLastWeek = Integer.parseInt(Objects.requireNonNull(dataSnapshot.child("Total_Last_Week").getValue(String.class)));
 
+                        if (totalLastWeek == 0 || totalCurrentWeek == 0){
+                            totalLastWeek = 1;
+                            totalCurrentWeek = 1;
+                        }
                         if (highScoreWeek < totalCurrentWeek) {
                             //Hammer
                             String points = Integer.toString(totalCurrentWeek);

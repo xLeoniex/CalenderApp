@@ -35,7 +35,7 @@ public class AllTipsView extends AppCompatActivity {
     FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference tipsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Tips");
 
-    Button btn_addTip;
+    Button btn_addTip , btn_reset, btn_delet;
     ListView listView;
     ArrayAdapter<String> adapter;
     ArrayList<String> allTips = new ArrayList<>();
@@ -47,6 +47,8 @@ public class AllTipsView extends AppCompatActivity {
         setContentView(R.layout.activity_all_tips_view);
 
         btn_addTip = findViewById(R.id.btn_addTip);
+        btn_delet = findViewById(R.id.btn_deleteAll);
+        btn_reset = findViewById(R.id.btn_resetAll);
         listView = findViewById(R.id.list_allTips);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,allTips);
 
@@ -55,20 +57,25 @@ public class AllTipsView extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 allTips.clear();
                 tipsIDs.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    String ID = (String) dataSnapshot.getKey();
-                    tipsIDs.add(ID);
-                    if (ID != null) {
-                        String name = dataSnapshot.child("tipTitle").getValue(String.class);
-                        String type = dataSnapshot.child("tipType").getValue(String.class);
-                        String state = dataSnapshot.child("tipState").getValue(String.class);
-                        if (name != null && type != null && state != null) {
-                            String out = name + " (" +type + ") ";
-                           if(state.equals("inProgress")) {
-                                //ToDo (Ehsan) oder auch hier alle zeigen und die erledigte mit grünes Hintergrund
-                               out = out + "Not completed";
-                           }
-                            allTips.add(out);
+                if (snapshot.getChildrenCount() == 0) {
+                    String tmp = "No tips available";
+                    allTips.add(tmp);
+                }else{
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        String ID = (String) dataSnapshot.getKey();
+                        if (ID != null) {
+                            String name = dataSnapshot.child("tipTitle").getValue(String.class);
+                            String type = dataSnapshot.child("tipType").getValue(String.class);
+                            String state = dataSnapshot.child("tipState").getValue(String.class);
+                            if (name != null && type != null && state != null) {
+                                String out = name + " (" +type + ") ";
+                                if(state.equals("inProgress")) {
+                                    //ToDo (Ehsan) oder auch hier alle zeigen und die erledigte mit grünes Hintergrund
+                                    out = out + "Not completed";
+                                }
+                                allTips.add(out);
+                                tipsIDs.add(ID);
+                            }
                         }
                     }
                 }
@@ -97,6 +104,35 @@ public class AllTipsView extends AppCompatActivity {
                 //ToDo: (Ibrahim) mache ein Intent zu deinem Tip-Add
                 Intent createTipsIntent = new Intent(AllTipsView.this,CreateTipsActivity.class);
                 startActivity(createTipsIntent);
+            }
+        });
+        btn_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tipsRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            String ID = (String) dataSnapshot.getKey();
+                            if (ID != null) {
+                                DatabaseReference tipRef = tipsRef.child(ID);
+                                tipRef.child("tipState").setValue("inProgress");
+
+                            }
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+        btn_delet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tipsRef.removeValue();
             }
         });
     }

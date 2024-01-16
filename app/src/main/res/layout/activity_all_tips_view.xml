@@ -20,12 +20,22 @@
     <ListView
         android:id="@+id/list_allTips"
         android:layout_width="match_parent"
-        android:layout_height="484dp" />
+        android:layout_height="291dp" />
 
     <Button
         android:id="@+id/btn_addTip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Add Tip" />
+    <Button
+        android:id="@+id/btn_resetAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reset All Tips" />
+    <Button
+        android:id="@+id/btn_deleteAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete All Tips" />
 
 </LinearLayout>

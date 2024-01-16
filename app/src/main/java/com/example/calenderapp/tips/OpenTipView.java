@@ -14,9 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.calenderapp.Points.AllEventsView;
-import com.example.calenderapp.Points.DataChecker;
-import com.example.calenderapp.Points.ToDoneEventView;
+
 import com.example.calenderapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,7 +43,6 @@ public class OpenTipView extends AppCompatActivity {
     FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference tipsRef;
     DatabaseReference pointsRef;
-    DataChecker dataChecker = new DataChecker();
 
     KonfettiView viewKonfetti;
 
@@ -63,6 +60,7 @@ public class OpenTipView extends AppCompatActivity {
         btn_done = findViewById(R.id.btn_doneTip);
         btn_delete = findViewById(R.id.btn_deleteTip);
         btn_cancel = findViewById(R.id.btn_cancel);
+        viewKonfetti = findViewById(R.id.view_konfetti);
 
         point = "1";
         pointsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("points");
@@ -141,7 +139,7 @@ public class OpenTipView extends AppCompatActivity {
                     String sumPoints = dataSnapshot.getValue(String.class);
                     assert sumPoints != null;
                     int oldSum = Integer.parseInt(sumPoints);
-                    int newSum = oldSum + Integer.parseInt(point);
+                    int newSum = oldSum + 1;
                     pointsRef.child(weekMonth).child(tmp).setValue(Integer.toString(newSum));
                 }
 
@@ -167,12 +165,7 @@ public class OpenTipView extends AppCompatActivity {
                 .streamFor(300, 2000L);
 
         //eine Verzögerung hinzuzufügen
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Hier wird der Code ausgeführt, der nach der Konfetti-Animation erfolgen soll
-                goBack();
-            }
-        }, 2000L);
+        // nach der Konfetti-Animation zurueck gehen
+        new Handler().postDelayed(this::goBack, 2000L);
     }
 }
