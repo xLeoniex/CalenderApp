@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.calenderapp.tips.model.TipModel;
 import com.example.calenderapp.tips.source.TipRepository;
 import com.example.calenderapp.tips.utils.ErrorMessages;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -102,5 +103,9 @@ public class TipViewModel extends AndroidViewModel {
 
     }
 
+    public FirebaseUser getCurrentUser()
+    {
+        return tipRepository.getcurrentUser();
+    }
 
 }

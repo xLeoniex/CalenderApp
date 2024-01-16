@@ -98,16 +98,6 @@ public class CreateEventsActivity extends AppCompatActivity {
             }
         });
 
-        binding.ShowEventsFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CreateEventsActivity.this, WeekViewActivity.class);
-                startActivity(intent);
-                Log.i("SWITCHSCREENS","go to Event lists");
-            }
-        });
-
-
     }
     //endregion
 

@@ -103,5 +103,9 @@ public class TipRepository {
 
         return currentUrl;
     }
+    public FirebaseUser getcurrentUser()
+    {
+        return currentUser;
+    }
 
 }

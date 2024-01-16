@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -22,9 +23,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
 import com.example.calenderapp.databinding.ActivityCreateTipsBinding;
 import com.example.calenderapp.tips.AllTipsView;
@@ -34,6 +39,7 @@ import com.example.calenderapp.tips.ui.viewmodel.TipViewModel;
 import com.example.calenderapp.tips.ui.viewmodel.handlers.NotificationChannelHelper;
 import com.example.calenderapp.tips.ui.viewmodel.handlers.TipNotificationPublisher;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.Random;
@@ -159,6 +165,20 @@ public class CreateTipsActivity extends AppCompatActivity {
             Log.d("AlarmStarted","Alarm is startin...." );
         }
         //ToDo: (Ibrahim) Cancel Button --> to View, Home-Button, Profile-Button
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        FirebaseUser currentUser = tipViewModel.getCurrentUser();
+        if(MenuHelper.handleMenuItem(item, currentUser, this)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

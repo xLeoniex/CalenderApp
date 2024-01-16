@@ -20,6 +20,7 @@ public class EventListViewModel extends AndroidViewModel {
     private MutableLiveData<List<EventModel>> currentEventsForUser = new MutableLiveData<>();
     private MutableLiveData<List<EventModel>> eventsOfDay = new MutableLiveData<>();
 
+    private MutableLiveData<List<EventModel>> eventOfMonth = new MutableLiveData<>();
 
     public EventListViewModel(@NonNull Application application) {
         super(application);
@@ -40,6 +41,11 @@ public class EventListViewModel extends AndroidViewModel {
     public void removeEventFromRepository(EventModel eventModel)
     {
         repository.RemoveEventFromRepo(eventModel);
+    }
+    public MutableLiveData<List<EventModel>> getEventOfMonth(LocalDate Date)
+    {
+        eventOfMonth = repository.getEventsOfMonth(Date);
+        return eventOfMonth;
     }
 }
 

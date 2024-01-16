@@ -2,9 +2,13 @@ package com.example.calenderapp.calenderView;
 
 import static com.example.calenderapp.calenderView.CalendarUtils.daysInMonthArray;
 import static com.example.calenderapp.calenderView.CalendarUtils.monthYearFromDate;
+import static com.example.calenderapp.calenderView.CalendarUtils.selectedDate;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,16 +22,23 @@ import android.widget.TextView;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
+import com.example.calenderapp.calenderView.ui.viewmodel.EventListViewModel;
+import com.example.calenderapp.databinding.ActivityMainBinding;
+import com.example.calenderapp.events.model.EventModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener
 {
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
+    private EventListViewModel eventListViewModel;
+
+    private ActivityMainBinding binding;
 
     //Aktuelle User
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -40,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        eventListViewModel = new ViewModelProvider(this).get(EventListViewModel.class);
         initWidgets();
         CalendarUtils.selectedDate = LocalDate.now();
         setMonthView();
@@ -53,13 +66,30 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     private void setMonthView()
     {
+        // in order to present the events on the monthly views
+        //changes needs to be done here !
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
-        ArrayList<LocalDate> daysInMonth = daysInMonthArray();
+        ArrayList<LocalDate> currentDates = new ArrayList<>();
+        eventListViewModel.getEventOfMonth(selectedDate).observe(this, new Observer<List<EventModel>>() {
+            @Override
+            public void onChanged(List<EventModel> eventModels) {
+                currentDates.clear();
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
-        calendarRecyclerView.setLayoutManager(layoutManager);
-        calendarRecyclerView.setAdapter(calendarAdapter);
+                // set date into a list :
+                for(EventModel eventModel: eventModels)
+                {
+                    currentDates.add(LocalDate.parse(eventModel.getEventDate()));
+                }
+                ArrayList<LocalDate> daysInMonth = daysInMonthArray();
+
+                CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth,currentDates, MainActivity.this);
+                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
+                calendarRecyclerView.setLayoutManager(layoutManager);
+                calendarRecyclerView.setAdapter(calendarAdapter);
+            }
+        });
+
+
     }
 
     public void previousMonthAction(View view)

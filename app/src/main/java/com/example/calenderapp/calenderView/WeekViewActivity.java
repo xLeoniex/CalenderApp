@@ -2,6 +2,7 @@ package com.example.calenderapp.calenderView;
 
 import static com.example.calenderapp.calenderView.CalendarUtils.daysInWeekArray;
 import static com.example.calenderapp.calenderView.CalendarUtils.monthYearFromDate;
+import static com.example.calenderapp.calenderView.CalendarUtils.selectedDate;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -114,12 +115,24 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
     {
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
         ArrayList<LocalDate> days = daysInWeekArray(CalendarUtils.selectedDate);
+        ArrayList<LocalDate> daysWithEvents = new ArrayList<>();
+        eventListViewModel.getEventOfMonth(selectedDate).observe(this, new Observer<List<EventModel>>() {
+            @Override
+            public void onChanged(List<EventModel> eventModels) {
+                daysWithEvents.clear();
+                for(EventModel eventModel: eventModels)
+                {
+                    daysWithEvents.add(LocalDate.parse(eventModel.getEventDate()));
+                }
+                CalendarAdapter calendarAdapter = new CalendarAdapter(days,daysWithEvents, WeekViewActivity.this);
+                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
+                calendarRecyclerView.setLayoutManager(layoutManager);
+                calendarRecyclerView.setAdapter(calendarAdapter);
+                setEventAdpater();
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(days, this);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
-        calendarRecyclerView.setLayoutManager(layoutManager);
-        calendarRecyclerView.setAdapter(calendarAdapter);
-        setEventAdpater();
+            }
+        });
+
     }
 
 

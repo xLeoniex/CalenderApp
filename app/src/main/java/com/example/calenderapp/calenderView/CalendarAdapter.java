@@ -16,10 +16,13 @@ import java.util.ArrayList;
 class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
 {
     private final ArrayList<LocalDate> days;
+
+    private ArrayList<LocalDate> daysWithEvents;
     private final OnItemListener onItemListener;
 
-    public CalendarAdapter(ArrayList<LocalDate> days, OnItemListener onItemListener)
+    public CalendarAdapter(ArrayList<LocalDate> days,ArrayList<LocalDate> daysWithEvents, OnItemListener onItemListener)
     {
+        this.daysWithEvents = daysWithEvents;
         this.days = days;
         this.onItemListener = onItemListener;
     }
@@ -43,6 +46,11 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position)
     {
         final LocalDate date = days.get(position);
+
+        if(daysWithEvents.contains(date))
+        {
+            holder.dayOfMonth.setBackgroundColor(Color.parseColor("#00f400"));
+        }
 
         holder.dayOfMonth.setText(String.valueOf(date.getDayOfMonth()));
 

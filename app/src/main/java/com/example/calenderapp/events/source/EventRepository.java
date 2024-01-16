@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.calenderapp.events.Event;
 import com.example.calenderapp.events.model.EventModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ public class EventRepository {
 
     private MutableLiveData<List<EventModel>> eventModelList = new MutableLiveData<>();
     private MutableLiveData<List<EventModel>> eventListOfDate = new MutableLiveData<>();
+    private MutableLiveData<List<EventModel>> eventListOfMonth = new MutableLiveData<>();
 
 
 
@@ -117,6 +120,42 @@ public class EventRepository {
         });
         return eventListOfDate;
     }
+
+    public MutableLiveData<List<EventModel>> getEventsOfMonth(LocalDate month)
+    {
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<EventModel> currentEventsOfMonth = new ArrayList<>();
+                EventModel currentEventModel = new EventModel();
+                currentEventsOfMonth.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    currentEventModel = dataSnapshot.getValue(EventModel.class);
+                    Month currentMonth = LocalDate.parse(currentEventModel.getEventDate()).getMonth();
+                    int currentMonthValue = currentMonth.getValue();
+                    int givenMonthValue = month.getMonth().getValue();
+                    if(currentMonthValue == givenMonthValue)
+                    {
+                        Log.d("DateToFind","Date is :"+ currentEventModel.getEventDate());
+                        currentEventsOfMonth.add(currentEventModel);
+                    }
+                }
+                eventListOfMonth.postValue(currentEventsOfMonth);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return eventListOfMonth;
+    }
+
+
+
 
     public String getUserEmail()
     {
