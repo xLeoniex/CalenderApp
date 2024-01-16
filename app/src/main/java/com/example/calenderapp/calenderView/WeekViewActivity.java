@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
+import com.example.calenderapp.Points.ToDoneEventView;
 import com.example.calenderapp.calenderView.ui.viewmodel.EventListViewModel;
 import com.example.calenderapp.databinding.ActivityCreateEventsBinding;
 import com.example.calenderapp.databinding.ActivityWeekViewBinding;
@@ -100,7 +101,11 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Snackbar.make(binding.getRoot().getRootView(),"Done window",Snackbar.LENGTH_SHORT).show();
-                        //ToDo (Ehsan) eventState -> Done (Back to Weekly View)
+                        String ID = ""; //ToDo: (Ibrahim) ich brauche den ID von dem event hier, wo man darauf geklickt hat
+                        Intent intent = new Intent(getApplicationContext(), ToDoneEventView.class);
+                        intent.putExtra("event-ID",ID);
+                        startActivity(intent);
+                        finish();
                     }
                 });
 

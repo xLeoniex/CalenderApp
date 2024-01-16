@@ -90,35 +90,15 @@ public class AllEventsView extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 //Int Position gibt uns an wo der Item sich befindet
                 String ID = eventIDs.get(position);
-                doneState(ID);
+                Intent intent = new Intent(getApplicationContext(), ToDoneEventView.class);
+                intent.putExtra("event-ID",ID);
+                startActivity(intent);
+                finish();
             }
         });
 
     }
 
-    //Event-State auf Done überprüfen
-    public void doneState(String ID){
-        eventsRef.child(ID).child("eventState").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String state = dataSnapshot.getValue(String.class);
-                if (state != null && state.equals("inProgress")) {
-                    Intent intent = new Intent(getApplicationContext(), ToDoneEventView.class);
-                    intent.putExtra("event-ID",ID);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    Toast.makeText(AllEventsView.this, "Points already collected!", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(),"Error",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
+import com.example.calenderapp.calenderView.WeekViewActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -54,6 +55,7 @@ public class ToDoneEventView extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference eventsRef;
+    DatabaseReference eventRef;
     DatabaseReference pointsRef;
 
     DataChecker dataChecker = new DataChecker();
@@ -99,7 +101,7 @@ public class ToDoneEventView extends AppCompatActivity {
         spinner.setAdapter(adapter);
 
         //Event-Daten aus dem Datenbank ablesen
-        DatabaseReference eventRef = eventsRef.child(eventID); // Referenz zum spezifischen Event
+        eventRef = eventsRef.child(eventID); // Referenz zum spezifischen Event
         eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -142,25 +144,42 @@ public class ToDoneEventView extends AppCompatActivity {
         btn_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String selectedValue = spinner.getSelectedItem().toString();
-                point = pointsNumber(selectedValue);
-                //in Points DatenBank eintragen --> Datum ablesen Monat oder Woche zuordnen
-                if(dataChecker.currentMonth(eventDate)) {
-                    addpoints("Month");
-                }
+                eventRef.child("eventState").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String state = snapshot.getValue(String.class);
+                        if (state != null && state.equals("inProgress")) {
+                            String selectedValue = spinner.getSelectedItem().toString();
+                            point = pointsNumber(selectedValue);
+                            //in Points DatenBank eintragen --> Datum ablesen Monat oder Woche zuordnen
+                            if(dataChecker.currentMonth(eventDate)) {
+                                addpoints("Month");
+                            }
 
-                if(dataChecker.currentWeek(eventDate)){
-                    addpoints("Week");
-                }else if(dataChecker.lastWeek(eventDate)){
-                    addpoints("lastWeek");
-                }else{
-                    Toast.makeText(ToDoneEventView.this, "Events is too old to score points with it!", Toast.LENGTH_LONG).show();
-                }
+                            if(dataChecker.currentWeek(eventDate)){
+                                addpoints("Week");
+                            }else if(dataChecker.lastWeek(eventDate)){
+                                addpoints("lastWeek");
+                            }else{
+                                Toast.makeText(ToDoneEventView.this, "Events is too old to score points with it!", Toast.LENGTH_LONG).show();
+                            }
 
-                Toast.makeText(ToDoneEventView.this, "You have received " + point + " points.", Toast.LENGTH_SHORT).show();
-                //State auf Done setzen
-                eventsRef.child(eventID).child("eventState").setValue("Done");
-                startKonfetti();
+                            Toast.makeText(ToDoneEventView.this, "You have received " + point + " points.", Toast.LENGTH_SHORT).show();
+                            //State auf Done setzen
+                            eventsRef.child(eventID).child("eventState").setValue("Done");
+                            startKonfetti();
+                        }else{
+                            Toast.makeText(ToDoneEventView.this, "Points already collected!", Toast.LENGTH_SHORT).show();
+                            goBack();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
 
 
             }
@@ -230,8 +249,7 @@ public class ToDoneEventView extends AppCompatActivity {
     }
 
     public void goBack() {
-        //ToDo: (Ehsan) später anpassen dass an Kalender zurück geht
-        Intent intent = new Intent(getApplicationContext(), AllEventsView.class);
+        Intent intent = new Intent(getApplicationContext(), WeekViewActivity.class);
         startActivity(intent);
         finish();
     }
