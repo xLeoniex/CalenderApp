@@ -68,8 +68,20 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
         eventListViewModel = new ViewModelProvider(this).get(EventListViewModel.class);
         initWidgets();
         setWeekView();
-
-        // when long click on an item -> genrate a pop up
+        // Normal Click on an item -> Done and info
+        binding.eventListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Snackbar.make(binding.getRoot().getRootView(),"Done window",Snackbar.LENGTH_SHORT).show();
+                EventModel currentevent = (EventModel) parent.getItemAtPosition(position);
+                String ID = currentevent.getEventId();
+                Intent intent = new Intent(getApplicationContext(), ToDoneEventView.class);
+                intent.putExtra("event-ID",ID);
+                startActivity(intent);
+                finish();
+            }
+        });
+        // when long click on an item -> Edit or Delete
         binding.eventListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -92,24 +104,10 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
                         editIntent.putExtra("Recurring",currentevent.getRecurringEventType());
                         editIntent.putExtra("Type",currentevent.getEventType());
                         editIntent.putExtra("Weight",currentevent.getEventWeight());
-                        editIntent.putExtra("UpdateFlag","Update");
                         startActivity(editIntent);
 
                     }
                 });
-                popUpDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Snackbar.make(binding.getRoot().getRootView(),"Done window",Snackbar.LENGTH_SHORT).show();
-                        EventModel currentevent = (EventModel) parent.getItemAtPosition(position);
-                        String ID = currentevent.getEventId();
-                        Intent intent = new Intent(getApplicationContext(), ToDoneEventView.class);
-                        intent.putExtra("event-ID",ID);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-
                 popUpDialog.setButton(Dialog.BUTTON_NEGATIVE, "Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
