@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.calenderapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,7 +83,10 @@ public class OpenTipView extends AppCompatActivity {
                     name.setText(nameStr);
                     description.setText(descriptionStr);
                     type.setText(typeStr);
-                    //ToDo: (Ibrahim) Bild noch zeigen lassen aus Datenbank
+                    Glide.with(OpenTipView.this).
+                            load(imageURL).
+                            diskCacheStrategy(DiskCacheStrategy.ALL).
+                            into(image);
                 } else {
                     Toast.makeText(OpenTipView.this, "Something wrong, retry!", Toast.LENGTH_SHORT).show();
                 }

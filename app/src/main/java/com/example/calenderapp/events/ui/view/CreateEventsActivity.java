@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Spinner;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.calenderapp.calenderView.CalendarUtils;
 import com.example.calenderapp.calenderView.MainActivity;
 import com.example.calenderapp.calenderView.WeekViewActivity;
@@ -77,6 +79,11 @@ public class CreateEventsActivity extends AppCompatActivity {
             myEventViewModel.endingTime.setValue(update.getStringExtra("EndingTime"));
             myEventViewModel.startingTime.setValue(update.getStringExtra("StartingTime"));
             myEventViewModel.eventDate.setValue(update.getStringExtra("Date"));
+            myEventViewModel.eventImageUrl.setValue(update.getStringExtra("Url"));
+            Glide.with(this).
+                    load(update.getStringExtra("Url")).
+                    diskCacheStrategy(DiskCacheStrategy.ALL).
+                    into(binding.EventImageView);
         }
 
         // if we are adding a new event then grab the date
@@ -170,6 +177,7 @@ public class CreateEventsActivity extends AppCompatActivity {
             myEventViewModel.recurringEventType.setValue(update.getStringExtra("Recurring"));
             int recurringIdx = getIndex(binding.EventPointsEventSpinner,update.getStringExtra("Recurring"));
             binding.EventPointsEventSpinner.setSelection(recurringIdx);
+
         }
 
     }

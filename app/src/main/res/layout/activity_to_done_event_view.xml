@@ -19,6 +19,11 @@
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/DisplayEventImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_image"/>
 
     <TextView
         android:id="@+id/eventDate"

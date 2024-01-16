@@ -173,7 +173,7 @@ public class EventRepository {
                         @Override
                         public void onSuccess(Uri url) {
                             currentUrl.setValue(url);
-                            Log.d("Uploadint","iamge has  url of : " +url.toString());
+                            //Log.d("Uploadint","iamge has  url of : " +url.toString());
                         }
                     });
                 }

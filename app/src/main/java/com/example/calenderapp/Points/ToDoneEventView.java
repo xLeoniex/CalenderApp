@@ -17,10 +17,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
 import com.example.calenderapp.calenderView.WeekViewActivity;
@@ -49,7 +52,8 @@ public class ToDoneEventView extends AppCompatActivity {
 
     String eventID; //wird von Intent übergeben
     TextView name, date, time, description, typ;
-    String endingTime,startingTime, eventDate, eventDescription, eventName, eventType, eventWeight;
+    ImageView image;
+    String ImageUrl,endingTime,startingTime, eventDate, eventDescription, eventName, eventType, eventWeight;
     Button btn_done, btn_cancel;
     String point;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -69,7 +73,7 @@ public class ToDoneEventView extends AppCompatActivity {
         eventsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Events");
         pointsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("points");
         eventID = getIntent().getStringExtra("event-ID");
-
+        image = findViewById(R.id.DisplayEventImageView);
         name = findViewById(R.id.eventName);
         date = findViewById(R.id.eventDate);
         time = findViewById(R.id.eventTime);
@@ -108,6 +112,7 @@ public class ToDoneEventView extends AppCompatActivity {
                 //WICHTIG: Alle Aktualisierungen der von der DatenBank abhängen müssen in diesen Block geschehen
                 if (dataSnapshot.exists()) {
                     // Daten für das Event gefunden
+                    ImageUrl = dataSnapshot.child("eventImageUrl").getValue(String.class);
                     endingTime = dataSnapshot.child("endingTime").getValue(String.class);
                     startingTime = dataSnapshot.child("startingTime").getValue(String.class);
                     eventDate = dataSnapshot.child("eventDate").getValue(String.class);
@@ -122,6 +127,10 @@ public class ToDoneEventView extends AppCompatActivity {
                     description.setText(eventDescription);
                     typ.setText(eventType);
                     spinner.setSelection(eventLevels.indexOf(eventWeight));
+                    Glide.with(ToDoneEventView.this).
+                            load(ImageUrl).
+                            diskCacheStrategy(DiskCacheStrategy.ALL).
+                            into(image);
                 } else {
                     Toast.makeText(ToDoneEventView.this, "Something wrong, retry!", Toast.LENGTH_SHORT).show();
                 }

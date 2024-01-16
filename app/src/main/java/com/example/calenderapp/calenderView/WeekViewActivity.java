@@ -105,6 +105,7 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
                         editIntent.putExtra("Recurring",currentevent.getRecurringEventType());
                         editIntent.putExtra("Type",currentevent.getEventType());
                         editIntent.putExtra("Weight",currentevent.getEventWeight());
+                        editIntent.putExtra("Url",currentevent.getEventImageUrl());
                         startActivity(editIntent);
 
                     }
