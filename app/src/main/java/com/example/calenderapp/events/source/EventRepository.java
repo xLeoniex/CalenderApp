@@ -1,5 +1,6 @@
 package com.example.calenderapp.events.source;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.calenderapp.events.Event;
 import com.example.calenderapp.events.model.EventModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +17,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -26,11 +32,13 @@ public class EventRepository {
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private FirebaseUser currentUser;
+    private StorageReference storageRef;
+    private FirebaseStorage storage;
 
     private MutableLiveData<List<EventModel>> eventModelList = new MutableLiveData<>();
     private MutableLiveData<List<EventModel>> eventListOfDate = new MutableLiveData<>();
     private MutableLiveData<List<EventModel>> eventListOfMonth = new MutableLiveData<>();
-
+    private MutableLiveData<Uri> currentUrl = new MutableLiveData<>();
 
 
 
@@ -39,7 +47,8 @@ public class EventRepository {
         database = FirebaseDatabase.getInstance();
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         reference = database.getReference("users").child(currentUser.getUid()).child("Events");
-
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference().child("Images").child("Gallery");
     }
     public void AddEventToRepo(EventModel eventModel)
     {
@@ -153,6 +162,32 @@ public class EventRepository {
 
         return eventListOfMonth;
     }
+    public MutableLiveData<Uri> uploadEventImageToStorage(Uri uri)
+    {
+        if(uri != null)
+        {
+            storageRef.child(uri.getLastPathSegment()).putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    storageRef.child(uri.getLastPathSegment()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri url) {
+                            currentUrl.setValue(url);
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("UploadFails",e.toString());
+                }
+            });
+        }else {
+            currentUrl.setValue(null);
+        }
+
+        return currentUrl;
+    }
 
     public void updateEvent(EventModel eventModel)
     {
@@ -161,9 +196,6 @@ public class EventRepository {
             reference.child(eventModel.getEventId()).setValue(eventModel);
         }
     }
-
-
-
 
     public String getUserEmail()
     {

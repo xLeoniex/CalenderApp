@@ -108,7 +108,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         if(date != null)
         {
             CalendarUtils.selectedDate = date;
+            Intent gotoDailyIntent = new Intent(MainActivity.this,DailyCalendarActivity.class);
             setMonthView();
+            startActivity(gotoDailyIntent);
         }
     }
 

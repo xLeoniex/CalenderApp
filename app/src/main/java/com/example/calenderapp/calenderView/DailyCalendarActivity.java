@@ -27,7 +27,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
+import com.example.calenderapp.Points.ToDoneEventView;
 import com.example.calenderapp.calenderView.ui.viewmodel.EventListViewModel;
+import com.example.calenderapp.databinding.ActivityDailyCalendarBinding;
 import com.example.calenderapp.databinding.ActivityWeekViewBinding;
 import com.example.calenderapp.events.Event;
 import com.example.calenderapp.events.EventAdapter;
@@ -37,6 +39,7 @@ import com.example.calenderapp.R;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.source.EventRepository;
 import com.example.calenderapp.events.ui.view.CreateEventsActivity;
+import com.example.calenderapp.events.utils.EventSorting;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,10 +55,10 @@ public class DailyCalendarActivity extends AppCompatActivity{
     private TextView monthDayText;
     private TextView dayOfWeekTV;
     private ListView hourListView;
+    private ActivityDailyCalendarBinding binding;
+    private EventListViewModel eventListViewModel;
 
-    //Aktuelle User
-    //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-    //Query applesQuery = ref.child("firebase-test").orderByChild("title").equalTo("Apple");
+    //Todo Sort the events according to starting time
 
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -64,9 +67,7 @@ public class DailyCalendarActivity extends AppCompatActivity{
 
     private EventRepository myeventRepository;
 
-    private ActivityWeekViewBinding binding;
 
-    private EventListViewModel eventListViewModel;
     private ListView eventListView;
 
     @Override
@@ -76,7 +77,56 @@ public class DailyCalendarActivity extends AppCompatActivity{
         setContentView(R.layout.activity_daily_calendar);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_daily_calendar);
         eventListViewModel = new ViewModelProvider(this).get(EventListViewModel.class);
-        //myeventRepository = new EventRepository();
+        // normal click on the element -> Done and info
+        binding.hourListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Snackbar.make(binding.getRoot().getRootView(),"Done window",Snackbar.LENGTH_SHORT).show();
+                EventModel currentevent = (EventModel) parent.getItemAtPosition(position);
+                String ID = currentevent.getEventId();
+                Intent intent = new Intent(getApplicationContext(), ToDoneEventView.class);
+                intent.putExtra("event-ID",ID);
+                startActivity(intent);
+                finish();
+            }
+        });
+        binding.hourListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog popUpDialog = new AlertDialog.Builder(DailyCalendarActivity.this).create();
+                popUpDialog.setTitle("Event Handler");
+                popUpDialog.setButton(DialogInterface.BUTTON_NEUTRAL, "Edit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Snackbar.make(binding.getRoot().getRootView(),"Edit window",Snackbar.LENGTH_SHORT).show();
+                        EventModel currentevent = (EventModel) parent.getItemAtPosition(position);
+                        Intent editIntent = new Intent(DailyCalendarActivity.this, CreateEventsActivity.class);
+                        editIntent.putExtra("Name",currentevent.getEventName());
+                        editIntent.putExtra("Date",currentevent.getEventDate());
+                        editIntent.putExtra("StartingTime",currentevent.getStartingTime());
+                        editIntent.putExtra("EndingTime",currentevent.getEndingTime());
+                        editIntent.putExtra("Description",currentevent.getEventDescription());
+                        editIntent.putExtra("Id",currentevent.getEventId());
+                        editIntent.putExtra("State",currentevent.getEventState());
+                        editIntent.putExtra("Recurring",currentevent.getRecurringEventType());
+                        editIntent.putExtra("Type",currentevent.getEventType());
+                        editIntent.putExtra("Weight",currentevent.getEventWeight());
+                        startActivity(editIntent);
+                    }
+                });
+                popUpDialog.setButton(Dialog.BUTTON_NEGATIVE, "Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EventModel currenEventModel = (EventModel) parent.getItemAtPosition(position);
+                        Snackbar.make(binding.getRoot().getRootView(),"Delete window",Snackbar.LENGTH_SHORT).show();
+                        eventListViewModel.removeEventFromRepository(currenEventModel);
+                    }
+                });
+                popUpDialog.show();
+                return false;
+            }
+        });
+
         initWidgets();
         setDayView();
 
@@ -105,24 +155,19 @@ public class DailyCalendarActivity extends AppCompatActivity{
 
     private void setHourAdapter()
     {
- /*       List<HourEvent> hourList = new ArrayList<HourEvent>();
-        HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), hourList);
-        hourListView.setAdapter(hourAdapter);*/
         eventListViewModel.getEventsOfDay(CalendarUtils.selectedDate).observe(this, new Observer<List<EventModel>>() {
             @Override
             public void onChanged(List<EventModel> eventModels) {
                 List<EventModel> dailyEvents = new ArrayList<>();
                 dailyEvents.addAll(eventModels);
-
-                //ArrayList<HourEvent> hourEvents = hourEventList();
-                //HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), dailyEvents);
-                //hourListView.setAdapter(hourAdapter);
+                EventSorting.sortEventsByStartingTime(dailyEvents);
                 EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
                 hourListView.setAdapter(eventAdapter);
             }
         });
 
     }
+
 
     private ArrayList<HourEvent> hourEventList()
     {

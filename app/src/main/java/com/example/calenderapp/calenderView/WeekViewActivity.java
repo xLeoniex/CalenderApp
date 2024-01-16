@@ -35,6 +35,7 @@ import com.example.calenderapp.events.EventAdapter;
 import com.example.calenderapp.R;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.ui.view.CreateEventsActivity;
+import com.example.calenderapp.events.utils.EventSorting;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -143,6 +144,7 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
                 {
                     daysWithEvents.add(LocalDate.parse(eventModel.getEventDate()));
                 }
+
                 CalendarAdapter calendarAdapter = new CalendarAdapter(days,daysWithEvents, WeekViewActivity.this);
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
                 calendarRecyclerView.setLayoutManager(layoutManager);
@@ -188,6 +190,7 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
             public void onChanged(List<EventModel> eventModels) {
                 List<EventModel> dailyEvents = new ArrayList<>();
                 dailyEvents.addAll(eventModels);
+                EventSorting.sortEventsByStartingTime(eventModels);
                 EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
                 eventListView.setAdapter(eventAdapter);
             }
