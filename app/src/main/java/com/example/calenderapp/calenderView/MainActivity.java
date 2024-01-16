@@ -66,8 +66,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     private void setMonthView()
     {
-        // in order to present the events on the monthly views
-        //changes needs to be done here !
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
         ArrayList<LocalDate> currentDates = new ArrayList<>();
         eventListViewModel.getEventOfMonth(selectedDate).observe(this, new Observer<List<EventModel>>() {
