@@ -1,5 +1,9 @@
 package com.example.calenderapp.events.ui.view;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -7,6 +11,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +35,7 @@ public class CreateEventsActivity extends AppCompatActivity {
     private EventViewModel myEventViewModel;
     private ActivityCreateEventsBinding binding;
     private ErrorMessages eventErrorMessages;
+    private Uri currentUri;
 
 
     @Override
@@ -41,6 +47,21 @@ public class CreateEventsActivity extends AppCompatActivity {
         binding.setEventViewModel(myEventViewModel);
         binding.setLifecycleOwner(CreateEventsActivity.this);
         eventErrorMessages = new ErrorMessages();
+
+        ActivityResultLauncher<Intent> galleryIntentActivityLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == AppCompatActivity.RESULT_OK)
+                        {
+                            Intent data  = result.getData();
+                            currentUri = data.getData();
+                            binding.EventImageView.setImageURI(currentUri);
+                        }
+                    }
+                }
+        );
 
 
         // if we are updating events
@@ -95,13 +116,23 @@ public class CreateEventsActivity extends AppCompatActivity {
         binding.AddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = myEventViewModel.OnClickHandler();
-                Snackbar.make(v,msg,Snackbar.LENGTH_SHORT).show();
-                if(msg == eventErrorMessages.getConfirmation_msg_Event_Is_Added_To_Repository())
-                {
-                    Intent backtomonthlyIntent = new Intent(CreateEventsActivity.this, MainActivity.class);
-                    startActivity(backtomonthlyIntent);
-                }
+                myEventViewModel.uploadImage(currentUri).observe(CreateEventsActivity.this, new Observer<Uri>() {
+                    @Override
+                    public void onChanged(Uri uri) {
+                        if(uri != null)
+                        {
+                            myEventViewModel.eventImageUrl.setValue(uri.toString());
+                        }else {
+                            myEventViewModel.eventImageUrl.setValue("NoImage");
+                        }
+                        String msg = myEventViewModel.OnClickHandler();
+                        Snackbar.make(v,msg,Snackbar.LENGTH_SHORT).show();
+                        Intent backtomonthlyIntent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(backtomonthlyIntent);
+                        finish();
+
+                    }
+                });
 
             }
         });
@@ -111,6 +142,14 @@ public class CreateEventsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent backtomonthlyIntent = new Intent(CreateEventsActivity.this, MainActivity.class);
                 startActivity(backtomonthlyIntent);
+            }
+        });
+        binding.EventImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+                galleryIntent.setType("image/*");
+                galleryIntentActivityLauncher.launch(galleryIntent);
             }
         });
 

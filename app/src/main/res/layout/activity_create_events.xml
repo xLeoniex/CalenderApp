@@ -9,10 +9,15 @@
             name="EventViewModel"
             type="com.example.calenderapp.events.ui.viewmodel.EventViewModel" />
     </data>
+
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/CreatEventLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/app_gradiant"
     tools:context=".events.ui.view.CreateEventsActivity">
     <View
         android:id="@+id/MainView"
@@ -23,8 +28,8 @@
 
     <View
         android:id="@+id/UserView"
-        android:layout_width="350dp"
-        android:layout_height="650dp"
+        android:layout_width="380dp"
+        android:layout_height="1000dp"
         android:background="@color/primary"
         android:elevation="0dp"
 
@@ -174,30 +179,32 @@
         android:id="@+id/EventDescriptionEditText"
         android:layout_width="278dp"
         android:layout_height="67dp"
+        android:layout_marginTop="50dp"
         android:hint="@string/Event_description"
         android:inputType="text"
         android:text="@={EventViewModel.eventDescription}"
         app:layout_constraintBottom_toBottomOf="@+id/UserView"
         app:layout_constraintEnd_toEndOf="@+id/UserView"
-        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintHorizontal_bias="0.539"
         app:layout_constraintStart_toStartOf="@+id/UserView"
         app:layout_constraintTop_toBottomOf="@+id/RecurringEventSpinner"
-        app:layout_constraintVertical_bias="0.359" />
+        app:layout_constraintVertical_bias="0.522" />
 
     <Button
         android:id="@+id/Add_btn"
         android:layout_width="280dp"
         android:layout_height="50dp"
+        android:layout_marginTop="50dp"
         android:backgroundTint="@color/secondary_second"
         android:text="@string/Add_btn"
         android:textColor="@color/primary"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/UserView"
+        app:flow_horizontalAlign="center"
+        app:layout_constraintBottom_toTopOf="@+id/Cancel_btn"
         app:layout_constraintEnd_toEndOf="@+id/UserView"
-        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="@+id/UserView"
         app:layout_constraintTop_toBottomOf="@+id/EventDescriptionEditText"
-        app:layout_constraintVertical_bias="0.195" />
+        />
 
     <Button
         android:id="@+id/Cancel_btn"
@@ -206,13 +213,14 @@
         android:backgroundTint="@color/secondary_second"
         android:text="@string/cancel_btn"
         android:textColor="@color/primary"
+        android:layout_marginTop="2dp"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/UserView"
         app:layout_constraintEnd_toEndOf="@+id/UserView"
-        app:layout_constraintHorizontal_bias="0.557"
         app:layout_constraintStart_toStartOf="@+id/UserView"
-        app:layout_constraintTop_toBottomOf="@+id/EventDescriptionEditText"
-        app:layout_constraintVertical_bias="0.814" />
+        app:layout_constraintTop_toBottomOf="@+id/Add_btn"
+        app:flow_horizontalAlign="center"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -226,7 +234,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_percent="0.05352798" />
+
+    <ImageView
+        android:id="@+id/EventImageView"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="50dp"
+        app:srcCompat="@drawable/ic_image"
+        app:layout_constraintLeft_toLeftOf="@id/UserView"
+        app:layout_constraintRight_toRightOf="@id/UserView"
+        app:layout_constraintTop_toBottomOf="@id/EventPointsEventSpinner"
+        app:layout_constraintBottom_toBottomOf="@id/EventDescriptionEditText"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
 </layout>

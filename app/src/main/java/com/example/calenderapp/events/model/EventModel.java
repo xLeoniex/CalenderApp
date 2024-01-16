@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatterBuilder;
 
 public class EventModel {
 
-    //ToDo add a new attriubuite eventState defulte it to "inProgress"
     private String eventDate;
     private String eventName;
     private String startingTime;
@@ -16,10 +15,11 @@ public class EventModel {
     private String eventDescription;
     private String eventWeight;
     private String eventId;
-
     private String eventState;
+    private String eventImageUrl;
 
     public EventModel(String eventDate,
+                      String eventImageUrl,
                       String eventName,
                       String startingTime,
                       String endingTime,
@@ -29,6 +29,7 @@ public class EventModel {
                       String eventWeight,
                       String eventId,
                       String eventState) {
+        this.eventImageUrl = eventImageUrl;
         this.eventDate = eventDate;
         this.eventName = eventName;
         this.startingTime = startingTime;
@@ -127,5 +128,13 @@ public class EventModel {
 
     public void setEventState(String eventState) {
         this.eventState = eventState;
+    }
+
+    public String getEventImageUrl() {
+        return eventImageUrl;
+    }
+
+    public void setEventImageUrl(String eventImageUrl) {
+        this.eventImageUrl = eventImageUrl;
     }
 }

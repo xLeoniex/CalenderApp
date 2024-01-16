@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class AllTipsView extends AppCompatActivity {
+    //Todo (Ehsan) this Activity shall also be accessble after collecting points
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference tipsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Tips");
@@ -101,7 +102,6 @@ public class AllTipsView extends AppCompatActivity {
         btn_addTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ToDo: (Ibrahim) mache ein Intent zu deinem Tip-Add
                 Intent createTipsIntent = new Intent(AllTipsView.this,CreateTipsActivity.class);
                 startActivity(createTipsIntent);
             }

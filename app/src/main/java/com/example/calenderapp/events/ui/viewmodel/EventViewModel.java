@@ -1,6 +1,7 @@
 package com.example.calenderapp.events.ui.viewmodel;
 
 import android.app.Application;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -46,6 +47,7 @@ public class EventViewModel extends AndroidViewModel {
 
     public MutableLiveData<String> eventId = new MutableLiveData<>();
     public MutableLiveData<String> eventState = new MutableLiveData<>();
+    public MutableLiveData<String> eventImageUrl = new MutableLiveData<>();
     private MutableLiveData<EventModel> eventModelMutableLiveData ;
 
     public EventViewModel(@NonNull Application application) {
@@ -74,6 +76,7 @@ public class EventViewModel extends AndroidViewModel {
 
     private EventModel CreateEvent()
     {
+        String eventImageUrlValue = eventImageUrl.getValue() !=null ? eventImageUrl.getValue():"NoImage";
         String eventStateValue = eventState.getValue() !=null ? eventState.getValue():"inProgress";
         String eventIdValue = eventId.getValue() !=null ? eventId.getValue():"";
         String eventDateValue = eventDate.getValue() !=null ? eventDate.getValue():"";
@@ -84,7 +87,7 @@ public class EventViewModel extends AndroidViewModel {
         String recurringEventTypeValue = recurringEventType.getValue()!=null ? recurringEventType.getValue():"None";
         String eventDescriptionValue = eventDescription.getValue()!=null ? eventDescription.getValue():"Nothing";
         String eventWeightValue = eventWeight.getValue() !=null ?eventWeight.getValue():"None" ;
-        EventModel event = new EventModel(eventDateValue,eventNameValue, startingTimeValue,
+        EventModel event = new EventModel(eventDateValue,eventImageUrlValue,eventNameValue, startingTimeValue,
                 endingTimeValue, eventTypeValue, recurringEventTypeValue, eventDescriptionValue,eventWeightValue,eventIdValue,eventStateValue);
 
         return event;
@@ -210,6 +213,10 @@ public class EventViewModel extends AndroidViewModel {
         return repository.getCurrentUser();
     }
 
+    public MutableLiveData<Uri> uploadImage(Uri file)
+    {
+        return repository.uploadEventImageToStorage(file);
+    }
 
     //endregion
 

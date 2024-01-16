@@ -107,7 +107,6 @@ public class CreateTipsActivity extends AppCompatActivity {
         binding.AddTipButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v,"Add is Clicked",Snackbar.LENGTH_SHORT).show();
                 tipViewModel.uploadImageToRepo(currentUri).observe(CreateTipsActivity.this, new Observer<Uri>() {
                     @Override
                     public void onChanged(Uri uri) {
@@ -119,12 +118,12 @@ public class CreateTipsActivity extends AppCompatActivity {
                         }
                         String msg = tipViewModel.OnClickHandler();
                         Snackbar.make(v,msg,Snackbar.LENGTH_SHORT).show();
-
+                        Intent intent = new Intent(getApplicationContext(), AllTipsView.class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
-                Intent intent = new Intent(getApplicationContext(), AllTipsView.class);
-                startActivity(intent);
-                finish();
+
             }
         });
         binding.TipImageView.setOnClickListener(new View.OnClickListener() {

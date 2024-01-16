@@ -35,7 +35,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Dashboard extends AppCompatActivity {
 
-    //ToDo: wir brauchen überall in der App Profil und HomeButton (Leonie,Ehsan,Ibrahim)
     //Zwei-Variabeln, Einmal für User und einmal für Firebase Authentification
     FirebaseAuth auth;
 

@@ -58,8 +58,6 @@ public class DailyCalendarActivity extends AppCompatActivity{
     private ActivityDailyCalendarBinding binding;
     private EventListViewModel eventListViewModel;
 
-    //Todo Sort the events according to starting time
-
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
