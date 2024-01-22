@@ -7,17 +7,24 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.RootMatchers.isDialog;
+import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.hasToString;
 
 import android.os.SystemClock;
+import android.view.View;
 
 import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.example.calenderapp.Login.Login;
+import com.example.calenderapp.Login.Register;
 import com.example.calenderapp.R;
 
 public class LoginHelper {
@@ -40,14 +47,19 @@ public class LoginHelper {
     public void CheckResetPasswordScreenIsDisplayed()
     {
         onView(withId(R.id.resetPasswordLayout)).check(matches(isDisplayed()));
-
     }
-
-    public void CheckNotificationAlertIsDisplayed()
+    public void CheckRegisterScreenIsDisplayed()
     {
-        onView(withText("Allow CalenderApp to send you notifications")).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withId(R.id.registerLayout)).check(matches(isDisplayed()));
     }
+    public void CheckRegisteredSnackbarMsg(String username)
+    {
+        String msg = "Account Created " + username+ " .";
+        CheckToastMessage(msg);
+    }
+    //endregion
 
+    //region Main Actions
     public void EditEmail(String value)
     {
         EditingEditBoxesAndTexts(R.id.email,value);
@@ -58,6 +70,14 @@ public class LoginHelper {
         EditingEditBoxesAndTexts(R.id.password,value);
     }
 
+    public void EditUsername(String value)
+    {
+        EditingEditBoxesAndTexts(R.id.username,value);
+    }
+    public void EditConfirmPassword(String value)
+    {
+        EditingEditBoxesAndTexts(R.id.confirmPassword,value);
+    }
     public void PerformLoginClick()
     {
         PerformClick(R.id.btn_login);
@@ -66,6 +86,11 @@ public class LoginHelper {
     public void PerformGoToRestPasswordClick()
     {
         PerformClick(R.id.resetPassword);
+    }
+
+    public void PerformGoToRegisterScreenClick()
+    {
+        PerformClick(R.id.RegisterNow);
     }
 
     public void PerformRestPassword()
@@ -83,6 +108,10 @@ public class LoginHelper {
         onView(withId(R.id.profileMenu)).perform((click()));
         SystemClock.sleep(1000);
         onData(hasToString("Logout")).perform(click());
+    }
+    public void PerformRegisterClick()
+    {
+        PerformClick(R.id.btn_register);
     }
 
     //endregion
@@ -107,5 +136,15 @@ public class LoginHelper {
     }
 
 
-    //
+    //endregion
+
+    //region Toasts
+
+    private void CheckToastMessage(String msg)
+    {
+        onView(withText(msg)).check(matches(withEffectiveVisibility(
+                ViewMatchers.Visibility.VISIBLE
+        )));
+    }
+    //endregion
 }

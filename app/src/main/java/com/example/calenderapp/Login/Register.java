@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.calenderapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -117,7 +118,8 @@ public class Register extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
-                                                        Toast.makeText(Register.this, "Account Created " + username+ " .", Toast.LENGTH_SHORT).show();
+                                                        Snackbar.make(Register.this.getCurrentFocus(),"Account Created " + username+ " .",Snackbar.LENGTH_SHORT).show();
+                                                        //Toast.makeText(Register.this, "Account Created " + username+ " .", Toast.LENGTH_SHORT).show();
                                                         //Nach dem User erstellt wurde speichern wir diese in den Datenbank
                                                         String uid = user.getUid();
                                                         dbref.child(uid).child("name").setValue(username);
