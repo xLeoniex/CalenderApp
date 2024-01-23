@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -130,8 +131,14 @@ public class CreateTipsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Snackbar.make(v,"Pick a source",Snackbar.LENGTH_SHORT).show();
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK);
-                galleryIntent.setType("image/*");
+                //Intent galleryIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.apps.photos");
+                Intent galleryIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                if (galleryIntent != null) {
+                    startActivity(galleryIntent);
+                } else {
+                    Toast.makeText(CreateTipsActivity.this, "There is no package available in android", Toast.LENGTH_LONG).show();
+                }
+
                 galleryIntentActivityLauncher.launch(galleryIntent);
             }
         });
