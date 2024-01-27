@@ -129,7 +129,7 @@ public class Dashboard extends AppCompatActivity {
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED)
         {
-            Toast.makeText(this,"Permission is Granted",Toast.LENGTH_SHORT).show();
+
         }else if(ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.POST_NOTIFICATIONS))
         {
