@@ -1,19 +1,16 @@
-package com.example.calenderapp.tips.Helpers;
+package com.example.calenderapp.dashBoard.Helper;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-import static org.hamcrest.CoreMatchers.anything;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.hasToString;
 
@@ -24,50 +21,37 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import com.example.calenderapp.R;
 import com.example.calenderapp.login.Helper.LoginHelper;
 
-public class TipsHelper {
+public class DashBoardHelper {
 
     private LoginHelper loginHelper;
-    public TipsHelper() {
-        loginHelper = new LoginHelper();
+
+    public DashBoardHelper() {
+        this.loginHelper = new LoginHelper();
     }
-
-
-    //region Checks
 
     public void CheckDashboardScreenIsDisplayed()
     {
         onView(withId(R.id.dashboardLayout)).check(matches(isDisplayed()));
     }
+    public void CheckCalenderScreenIsDisplayed()
+    {
+        onView(withId(R.id.MainCalenderLayout)).check(matches(isDisplayed()));
+    }
+    public void CheckPointsScreenIsDisplayed()
+    {
+        onView(withId(R.id.PointsViewLayout)).check(matches(isDisplayed()));
+    }
+
+    public void CheckEventsScreenIsDisplayed()
+    {
+        onView(withId(R.id.AllEventsViewLayout)).check(matches(isDisplayed()));
+    }
+
 
     public void CheckTipListViewIsDisplayed()
     {
         onView(withId(R.id.tipsListLayout)).check(matches(isDisplayed()));
     }
-    public void CheckTipInformationIsDisplayed()
-    {
-        onView(withId(R.id.open_tip_Layout)).check(matches(isDisplayed()));
-    }
-
-    public void CheckCreateTipIsDisplayed()
-    {
-        onView(withId(R.id.CreateTipsLayout)).check(matches(isDisplayed()));
-    }
-
-    public void CheckTipIsDisplayedOnTipList(String name)
-    {
-        onView(withText(name)).check(matches(isDisplayed()));
-    }
-
-    public void CheckTipAtPositionIsInTipList(String TipOnList,int position)
-    {
-        onData(anything())
-                .inAdapterView(withId(R.id.list_allTips))
-                .atPosition(position)
-                .check(matches(withText(TipOnList)));
-    }
-    //endregion
-
-    //region MainActions
 
     public void PerformLogin()
     {
@@ -89,58 +73,22 @@ public class TipsHelper {
         onData(hasToString("Logout")).perform(click());
     }
 
-    public void PerformGoToTipList()
+    public void PerformGoToCalenderClick()
+    {
+        PerformClick(R.id.btn_calenderView);
+    }
+    public void PerformGoToPointsClick()
+    {
+        PerformClick(R.id.btn_pointsView);
+    }
+    public void PerformGoToTipListClick()
     {
         PerformClick(R.id.btn_tipsView);
     }
-
-    public void PerformGoToCreateTip()
+    public void PerformGoToAllEventsClick()
     {
-        PerformClick(R.id.btn_addTip);
+        PerformClick(R.id.btn_eventsView);
     }
-    public void PerformAddTipClick()
-    {
-        PerformClick(R.id.AddTipButton);
-    }
-
-    public void PerfromOnImageClick()
-    {
-        PerformClick(R.id.TipImageView);
-    }
-
-    public void EditTipTitle(String value)
-    {
-        EditingEditBoxesAndTexts(R.id.TipTitle,value);
-    }
-
-    public void EditTipDescription(String value)
-    {
-        EditingEditBoxesAndTexts(R.id.TipDescription,value);
-    }
-
-    public void ChoseTipType(String value)
-    {
-        getSpinnerValue(R.id.TipTypeSpinner,value);
-    }
-
-    public void AddTipWithoutImage(String Title,String Description,String Type)
-    {
-        EditTipTitle(Title);
-        ChoseTipType(Type);
-        EditTipDescription(Description);
-        PerformAddTipClick();
-    }
-
-    public void PerformTipInformationClickAtPosition(int position)
-    {
-        onData(anything())
-                .inAdapterView(withId(R.id.list_allTips))
-                .atPosition(position)
-                .perform(longClick());
-    }
-
-
-    //endregion
 
     //region Typing
 
@@ -153,7 +101,6 @@ public class TipsHelper {
         onView(ViewMatchers.isRoot()).perform(closeSoftKeyboard());
     }
     // endregion
-
 
     //region clicks
 
@@ -176,4 +123,5 @@ public class TipsHelper {
     }
 
     //endregion
+
 }

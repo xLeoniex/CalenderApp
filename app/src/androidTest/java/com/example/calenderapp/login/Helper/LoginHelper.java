@@ -109,6 +109,8 @@ public class LoginHelper {
         SystemClock.sleep(1000);
         onData(hasToString("Logout")).perform(click());
     }
+
+
     public void PerformRegisterClick()
     {
         PerformClick(R.id.btn_register);

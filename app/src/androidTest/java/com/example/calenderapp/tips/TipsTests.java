@@ -65,7 +65,7 @@ public class TipsTests extends TestCase {
     private TipsHelper myHelper = new TipsHelper();
 
     @Before
-    public void StartDashBoard()
+    public void setup()
     {
         init();
         ActivityScenario<Dashboard> scenario = ActivityScenario.launch(Dashboard.class);
@@ -76,13 +76,13 @@ public class TipsTests extends TestCase {
     @After
     public void tearDown()
     {
+        myHelper.PerformLogoutFromMenuBar();
         release();
         rule.getScenario().close();
     }
     @Test
     public void GivenDashboard_WhenUserClicksOnTips_ThenExpectTipsListIsDisplayed()
     {
-        myHelper.PerformLogin();
         myHelper.CheckDashboardScreenIsDisplayed();
         myHelper.PerformGoToTipList();
         myHelper.CheckTipListViewIsDisplayed();

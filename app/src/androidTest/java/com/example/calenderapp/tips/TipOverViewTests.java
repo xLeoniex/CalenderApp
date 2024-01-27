@@ -55,6 +55,7 @@ public class TipOverViewTests extends TestCase {
     @After
     public void tearDown()
     {
+        myHelper.PerformLogoutFromMenuBar();
         release();
         rule.getScenario().close();
     }
@@ -62,7 +63,6 @@ public class TipOverViewTests extends TestCase {
     @Test
     public void GivenDashboard_WhenUserClicksOnTips_ThenExpectTipsListIsDisplayed()
     {
-        myHelper.PerformLogin();
         myHelper.CheckDashboardScreenIsDisplayed();
         myHelper.PerformGoToTipList();
         myHelper.CheckTipListViewIsDisplayed();
@@ -81,7 +81,7 @@ public class TipOverViewTests extends TestCase {
         myHelper.CheckTipAtPositionIsInTipList(TipOnList,0);
         SystemClock.sleep(1000);
         myHelper.PerformTipInformationClickAtPosition(1);
-        SystemClock.sleep(8000);
+        SystemClock.sleep(1000);
         intended(hasComponent(OpenTipView.class.getName()));
     }
 
