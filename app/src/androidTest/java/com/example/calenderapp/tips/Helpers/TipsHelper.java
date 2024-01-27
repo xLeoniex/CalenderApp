@@ -5,6 +5,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -41,6 +42,10 @@ public class TipsHelper {
     public void CheckTipListViewIsDisplayed()
     {
         onView(withId(R.id.tipsListLayout)).check(matches(isDisplayed()));
+    }
+    public void CheckTipInformationIsDisplayed()
+    {
+        onView(withId(R.id.open_tip_Layout)).check(matches(isDisplayed()));
     }
 
     public void CheckCreateTipIsDisplayed()
@@ -117,6 +122,14 @@ public class TipsHelper {
         ChoseTipType(Type);
         EditTipDescription(Description);
         PerformAddTipClick();
+    }
+
+    public void PerformTipInformationClickAtPosition(int position)
+    {
+        onData(anything())
+                .inAdapterView(withId(R.id.list_allTips))
+                .atPosition(position)
+                .perform(longClick());
     }
 
 

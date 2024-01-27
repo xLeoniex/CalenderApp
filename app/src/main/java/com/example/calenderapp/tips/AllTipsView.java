@@ -143,7 +143,7 @@ public class AllTipsView extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String state = dataSnapshot.getValue(String.class);
                 if (state != null && state.equals("inProgress")) {
-                    Intent intent = new Intent(getApplicationContext(), OpenTipView.class);
+                    Intent intent = new Intent(AllTipsView.this, OpenTipView.class);
                     intent.putExtra("tip-ID",ID);
                     startActivity(intent);
                     finish();
