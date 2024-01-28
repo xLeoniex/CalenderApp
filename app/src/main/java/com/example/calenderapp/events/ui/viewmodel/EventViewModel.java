@@ -128,10 +128,6 @@ public class EventViewModel extends AndroidViewModel {
     {
         repository.updateEvent(eventModel);
     }
-    public void updateEvent(EventModel eventModel)
-    {
-
-    }
 
 
     //endregion

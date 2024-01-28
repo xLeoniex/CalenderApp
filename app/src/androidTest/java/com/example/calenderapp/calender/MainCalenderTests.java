@@ -1,4 +1,4 @@
-package com.example.calenderapp.dashBoard;
+package com.example.calenderapp.calender;
 
 
 import static androidx.test.espresso.intent.Intents.init;
@@ -12,8 +12,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner;
 import androidx.test.rule.GrantPermissionRule;
 
 import com.example.calenderapp.DashboardBar.Dashboard;
-import com.example.calenderapp.Login.Login;
-import com.example.calenderapp.dashBoard.Helper.DashBoardHelper;
+import com.example.calenderapp.calender.Helper.CalenderHelper;
 
 import junit.framework.TestCase;
 
@@ -24,8 +23,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4ClassRunner.class)
-public class DashBoardTests extends TestCase {
+public class MainCalenderTests extends TestCase {
 
+    private CalenderHelper myHelper = new CalenderHelper();
     @Rule
     public ActivityScenarioRule<Dashboard> rule = new ActivityScenarioRule(Dashboard.class);
     @Rule
@@ -45,13 +45,7 @@ public class DashBoardTests extends TestCase {
         release();
         rule.getScenario().close();
     }
-    private DashBoardHelper myHelper = new DashBoardHelper();
-    @Test
-    public void GivenLoggedInUser_WhenUserIsLoggedIn_ThenExpectToStartOnDashBoard()
-    {
-        //myHelper.PerformLogin();
-        myHelper.CheckDashboardScreenIsDisplayed();
-    }
+
 
     @Test
     public void GivenLoggedInUser_WhenUserClickCalenderButton_ThenExpectCalenderViewIsDisplayed()
@@ -61,18 +55,34 @@ public class DashBoardTests extends TestCase {
         myHelper.CheckCalenderScreenIsDisplayed();
     }
     @Test
-    public void GivenLoggedInUser_WhenUserClickPointsButton_ThenExpectPointsViewIsDisplayed()
+    public void GivenUserInCalenderView_WhenUserClickWeekButton_ThenExpectCalenderWeeklyViewIsDisplayed()
     {
         myHelper.CheckDashboardScreenIsDisplayed();
-        myHelper.PerformGoToPointsClick();
-        myHelper.CheckPointsScreenIsDisplayed();
+        myHelper.PerformGoToCalenderClick();
+        myHelper.CheckCalenderScreenIsDisplayed();
+        myHelper.PerformGoToWeeklyCalenderViewClick();
+        myHelper.CheckCalenderScreenIsOnWeekly();
     }
+
+    // verify Date
+
     @Test
-    public void GivenLoggedInUser_WhenUserClickTipsButton_ThenExpectTipsViewIsDisplayed()
+    public void GivenLoggedInUser_WhenUserClickOnCalenderButton_ThenExpectToDisplayCalenderWithRightMonthAndYear()
     {
         myHelper.CheckDashboardScreenIsDisplayed();
-        myHelper.PerformGoToTipListClick();
-        myHelper.CheckTipListViewIsDisplayed();
+        myHelper.PerformGoToCalenderClick();
+        myHelper.CheckCalenderScreenIsDisplayed();
+
+        myHelper.CheckCalenderCurrentDateIsCorrect();
+
+        myHelper.PerformGoToLastMonthClick();
+        myHelper.CheckCalenderLastMonthIsCorrect();
+
+        myHelper.PerformGoToNextMonthClick();
+        myHelper.CheckCalenderCurrentDateIsCorrect();
+
+        myHelper.PerformGoToNextMonthClick();
+        myHelper.CheckCalenderNextMonthIsCorrect();
     }
 
 }
