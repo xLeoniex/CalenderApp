@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CalenderApp</string>
+    <string name="app_name">Less Stress</string>
     <string name="forward"><![CDATA[->]]></string>
     <string name="back"><![CDATA[<-]]></string>
     <string name="sun">SUN</string>

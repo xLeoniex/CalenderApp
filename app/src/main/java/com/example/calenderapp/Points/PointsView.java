@@ -2,9 +2,11 @@ package com.example.calenderapp.Points;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatRadioButton;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +34,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class PointsView extends AppCompatActivity {
-    Switch swt_weekMonth;
+
+    RadioGroup radioGroup;
+    AppCompatRadioButton radioBtnMonth, radioBtnWeek;
 
     TextView total, points, highScoreTitle, highScore, totalLast, pointsLast;
     ListView recentEvents;
@@ -55,7 +60,6 @@ public class PointsView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_points_view);
 
-        swt_weekMonth = findViewById(R.id.swt_weekMonth);
         total = findViewById(R.id.totalPoints);
         points = findViewById(R.id.num_points);
         highScoreTitle = findViewById(R.id.highScore);
@@ -64,6 +68,9 @@ public class PointsView extends AppCompatActivity {
         pointsLast = findViewById(R.id.num_lastPoints);
         recentEvents = findViewById(R.id.list_recentEvents);
         btn_ViewAll = findViewById(R.id.btn_viewAchievments);
+        radioBtnWeek = findViewById(R.id.btn_radio_Week);
+        radioBtnMonth = findViewById(R.id.btn_radio_Month);
+        radioGroup = findViewById(R.id.radioGroup);
 
         adapter=new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,dataToShow);
@@ -72,11 +79,26 @@ public class PointsView extends AppCompatActivity {
         viewTotalPoints("Month");
         MonthWeekInfos(monthActivities,  "Month");
 
-
-        swt_weekMonth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.btn_radio_Month) {
+                    radioBtnMonth.setTextColor(Color.WHITE);
+                    radioBtnWeek.setTextColor(Color.GRAY);
+
+                    total.setText("Monthly points so far:");
+                    highScoreTitle.setText("Full month high score:");
+                    totalLast.setText("Total points last month:");
+                    viewTotalPoints("Month");
+                    monthActivities.clear();
+                    dataToShow.clear();
+                    recentEvents.setAdapter(adapter);
+                    MonthWeekInfos(monthActivities,  "Month");
+
+                } else if (checkedId == R.id.btn_radio_Week) {
+                    radioBtnWeek.setTextColor(Color.WHITE);
+                    radioBtnMonth.setTextColor(Color.GRAY);
+
                     total.setText("Weekly points so far:");
                     highScoreTitle.setText("Full week high score:");
                     totalLast.setText("Total points last week:");
@@ -87,20 +109,12 @@ public class PointsView extends AppCompatActivity {
                     recentEvents.setAdapter(adapter);
                     MonthWeekInfos(weekActivities,  "Week");
 
-
-                }else{
-                    total.setText("Monthly points so far:");
-                    highScoreTitle.setText("Full month high score:");
-                    totalLast.setText("Total points last month:");
-                    viewTotalPoints("Month");
-                    monthActivities.clear();
-                    dataToShow.clear();
-                    recentEvents.setAdapter(adapter);
-                    MonthWeekInfos(monthActivities,  "Month");
-
+                } else {
+                    throw new IllegalStateException("Unexpected value: " + checkedId);
                 }
             }
         });
+
 
         btn_ViewAll.setOnClickListener(new View.OnClickListener() {
             @Override

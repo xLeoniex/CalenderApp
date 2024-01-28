@@ -9,109 +9,128 @@
             type="com.example.calenderapp.calenderView.ui.viewmodel.EventListViewModel" />
     </data>
 
-    <LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".calenderView.DailyCalendarActivity">
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="5dp">
+        android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@null"
+        <View
+            android:id="@+id/top_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/bg_view" />
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/btn_round"
+            android:backgroundTint="@color/secondary_first"
+            android:src="@drawable/ic_calender_white"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:onClick="monthAction"
-            android:text="@string/month"
-            android:textColor="@color/blue"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:padding="20dp"
+            android:scaleType="fitXY" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/weekly"
-            android:textColor="@color/blue"
-            android:background="@null"
-            android:textStyle="bold"
-            android:onClick="weeklyAction"
-            android:textSize="20sp"/>
 
-    </LinearLayout>
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/top_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="-110dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="40dp"
+            android:columnCount="1"
+            android:rowCount="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_rowWeight="0"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="12dp">
 
-        <Button
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/back"
-            android:textColor="@color/blue"
-            android:background="@null"
-            android:textStyle="bold"
-            android:onClick="previousDayAction"
-            android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/monthDayText"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:text="@string/feb_2021"
-            android:textSize="20sp"
-            android:textAlignment="center"
-            android:textColor="@color/black"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginTop="20dp">
+                        <ImageButton
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/btn_round"
+                            android:src="@drawable/ic_backward"
+                            android:layout_marginLeft="30dp"
+                            android:onClick="previousDayAction"
+                            android:padding="20dp" />
 
-        <Button
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/forward"
-            android:textColor="@color/blue"
-            android:background="@null"
-            android:textStyle="bold"
-            android:onClick="nextDayAction"
-            android:textSize="20sp"/>
+                        <TextView
+                            android:id="@+id/monthDayText"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content"
+                            android:text="@string/feb_2021"
+                            android:textSize="22sp"
+                            android:textAlignment="center"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"/>
 
-    </LinearLayout>
+                        <ImageButton
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@drawable/btn_round"
+                            android:src="@drawable/ic_forward"
+                            android:layout_marginRight="30dp"
+                            android:onClick="nextDayAction"
+                            android:padding="20dp" />
 
-    <TextView
-        android:id="@+id/dayOfWeekTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/monday"
-        android:layout_marginBottom="20dp"
-        android:textColor="@color/gray"
-        android:textAlignment="center"
-        android:textSize="18sp"/>
+                    </LinearLayout>
+                <TextView
+                    android:id="@+id/dayOfWeekTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/monday"
+                    android:layout_marginBottom="20dp"
+                    android:textColor="@color/gray"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/new_event"
-        android:textColor="@color/blue"
-        android:background="@null"
-        android:textStyle="bold"
-        android:onClick="newEventAction"
-        android:layout_gravity="center"
-        android:textSize="20sp"/>
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@null"
+                        android:onClick="newEventAction"
+                        android:text="@string/new_event"
+                        android:textSize="20sp" />
 
-    <ListView
-        android:id="@+id/hourListView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"/>
+                <ListView
+                    android:id="@+id/hourListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"/>
 
-</LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+        </GridLayout>
+
+    </RelativeLayout>
 </layout>

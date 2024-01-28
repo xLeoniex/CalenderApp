@@ -62,4 +62,17 @@ public class DataChecker {
         }
         return false;
     }
+    // Überprüfen, ob ein Datum in der Zukunft liegt
+    public boolean isFutureDate(String eventDate) {
+        try {
+            date = dateForm.parse(eventDate);
+            if (date != null) {
+                cal.setTime(date);
+                return cal.getTime().after(Calendar.getInstance().getTime());
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

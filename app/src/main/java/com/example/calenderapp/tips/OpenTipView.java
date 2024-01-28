@@ -8,6 +8,9 @@ import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +20,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -83,10 +87,14 @@ public class OpenTipView extends AppCompatActivity {
                     name.setText(nameStr);
                     description.setText(descriptionStr);
                     type.setText(typeStr);
-                    Glide.with(OpenTipView.this).
-                            load(imageURL).
-                            diskCacheStrategy(DiskCacheStrategy.ALL).
-                            into(image);
+                    if (imageURL.equals("NoImage")) {
+                        image.setImageResource(R.drawable.relax_icon);
+                    }else {
+                        Glide.with(OpenTipView.this)
+                                .load(imageURL)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .into(image);
+                    }
                 } else {
                     Toast.makeText(OpenTipView.this, "Something wrong, retry!", Toast.LENGTH_SHORT).show();
                 }
@@ -106,6 +114,7 @@ public class OpenTipView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 tipRef.removeValue();
+                Toast.makeText(OpenTipView.this, "Tip has been deleted.", Toast.LENGTH_SHORT).show();
                 goBack();
             }
         });
@@ -113,15 +122,30 @@ public class OpenTipView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Datum von Zeitpunkt der Erledigung
-                Date currentDate = new Date();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                tipDate = dateFormat.format(currentDate);
-                addpoint("Month");
-                addpoint("Week");
-                Toast.makeText(OpenTipView.this, "You have received one point.", Toast.LENGTH_SHORT).show();
-                //State auf Done setzen
-                tipRef.child("tipState").setValue("Done");
-                startKonfetti();
+                tipRef.child("tipState").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String state = dataSnapshot.getValue(String.class);
+                        if (state != null && state.equals("inProgress")) {
+                            Date currentDate = new Date();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                            tipDate = dateFormat.format(currentDate);
+                            addpoint("Month");
+                            addpoint("Week");
+                            Toast.makeText(OpenTipView.this, "You have received one point.", Toast.LENGTH_SHORT).show();
+                            //State auf Done setzen
+                            tipRef.child("tipState").setValue("Done");
+                            startKonfetti();
+                        }else{
+                            Toast.makeText(OpenTipView.this, "The tip has already been issued!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getApplicationContext(),"Error",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
     }
@@ -167,10 +191,23 @@ public class OpenTipView extends AppCompatActivity {
                 .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
                 .addSizes(new Size(12, 5f))
                 .setPosition(-50f, viewKonfetti.getWidth() + 50f, -50f, -50f)
-                .streamFor(300, 2000L);
+                .streamFor(300, 3000L);
 
         //eine Verzögerung hinzuzufügen
         // nach der Konfetti-Animation zurueck gehen
-        new Handler().postDelayed(this::goBack, 2000L);
+        new Handler().postDelayed(this::goBack, 3000L);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.profile_bar, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(MenuHelper.handleMenuItem(item, user, this)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

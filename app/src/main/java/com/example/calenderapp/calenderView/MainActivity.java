@@ -6,6 +6,7 @@ import static com.example.calenderapp.calenderView.CalendarUtils.selectedDate;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,11 +14,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
@@ -35,6 +38,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener
 {
     private TextView monthYearText;
+    RadioGroup radioGroup;
+    AppCompatRadioButton radioBtnMonth, radioBtnWeek;
     private RecyclerView calendarRecyclerView;
     private EventListViewModel eventListViewModel;
 
@@ -53,9 +58,31 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         setContentView(R.layout.activity_main);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
         eventListViewModel = new ViewModelProvider(this).get(EventListViewModel.class);
+        radioBtnWeek = findViewById(R.id.btn_radio_Week);
+        radioBtnMonth = findViewById(R.id.btn_radio_Month);
+        radioGroup = findViewById(R.id.radioGroup);
         initWidgets();
         CalendarUtils.selectedDate = LocalDate.now();
         setMonthView();
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.btn_radio_Month) {
+                    radioBtnMonth.setTextColor(Color.WHITE);
+                    radioBtnWeek.setTextColor(Color.GRAY);
+
+
+                } else if (checkedId == R.id.btn_radio_Week) {
+                    radioBtnWeek.setTextColor(Color.WHITE);
+                    radioBtnMonth.setTextColor(Color.GRAY);
+                    weeklyAction();
+
+                } else {
+                    throw new IllegalStateException("Unexpected value: " + checkedId);
+                }
+            }
+        });
     }
 
     private void initWidgets()
@@ -114,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         }
     }
 
-    public void weeklyAction(View view)
+    public void weeklyAction()
     {
         startActivity(new Intent(this, WeekViewActivity.class));
     }

@@ -24,9 +24,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
 import com.example.calenderapp.calenderView.WeekViewActivity;
+import com.example.calenderapp.events.model.EventModel;
+import com.example.calenderapp.events.ui.view.CreateEventsActivity;
+import com.example.calenderapp.tips.OpenTipView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -53,9 +58,9 @@ public class ToDoneEventView extends AppCompatActivity {
     String eventID; //wird von Intent übergeben
     TextView name, date, time, description, typ;
     ImageView image;
-    String ImageUrl,endingTime,startingTime, eventDate, eventDescription, eventName, eventType, eventWeight;
-    Button btn_done, btn_cancel;
-    String point;
+    String ImageUrl,endingTime,startingTime, eventDate, eventDescription, eventName, eventType, eventWeight, recurring;
+    Button btn_done, btn_cancel, btn_edit, btn_delete;
+    String point, state;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference eventsRef;
@@ -81,6 +86,8 @@ public class ToDoneEventView extends AppCompatActivity {
         typ = findViewById(R.id.eventType);
         btn_done = findViewById(R.id.btn_doneEvent);
         btn_cancel = findViewById(R.id.btn_cancel);
+        btn_edit = findViewById(R.id.btn_edit);
+        btn_delete = findViewById(R.id.btn_delete);
         viewKonfetti = findViewById(R.id.view_konfetti);
 
         //Spinner Funktionalität definieren
@@ -120,6 +127,7 @@ public class ToDoneEventView extends AppCompatActivity {
                     eventName = dataSnapshot.child("eventName").getValue(String.class);
                     eventType = dataSnapshot.child("eventType").getValue(String.class);
                     eventWeight = dataSnapshot.child("eventWeight").getValue(String.class);
+                    recurring = dataSnapshot.child("recurringEventType").getValue(String.class);
                     name.setText(eventName);
                     date.setText(eventDate);
                     String tmp = startingTime + " - " + endingTime;
@@ -127,10 +135,14 @@ public class ToDoneEventView extends AppCompatActivity {
                     description.setText(eventDescription);
                     typ.setText(eventType);
                     spinner.setSelection(eventLevels.indexOf(eventWeight));
-                    Glide.with(ToDoneEventView.this).
-                            load(ImageUrl).
-                            diskCacheStrategy(DiskCacheStrategy.ALL).
-                            into(image);
+                    if (ImageUrl.equals("NoImage")) {
+                        image.setImageResource(R.drawable.relax_icon);
+                    }else {
+                        Glide.with(ToDoneEventView.this).
+                                load(ImageUrl).
+                                diskCacheStrategy(DiskCacheStrategy.ALL).
+                                into(image);
+                    }
                 } else {
                     Toast.makeText(ToDoneEventView.this, "Something wrong, retry!", Toast.LENGTH_SHORT).show();
                 }
@@ -156,27 +168,35 @@ public class ToDoneEventView extends AppCompatActivity {
                 eventRef.child("eventState").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String state = snapshot.getValue(String.class);
+                        state = snapshot.getValue(String.class);
                         if (state != null && state.equals("inProgress")) {
                             String selectedValue = spinner.getSelectedItem().toString();
                             point = pointsNumber(selectedValue);
                             //in Points DatenBank eintragen --> Datum ablesen Monat oder Woche zuordnen
-                            if(dataChecker.currentMonth(eventDate)) {
-                                addpoints("Month");
-                            }
-
-                            if(dataChecker.currentWeek(eventDate)){
-                                addpoints("Week");
-                            }else if(dataChecker.lastWeek(eventDate)){
-                                addpoints("lastWeek");
+                            if(!dataChecker.isFutureDate(eventDate)) {
+                                boolean check = false;
+                                if (dataChecker.currentMonth(eventDate)) {
+                                    addpoints("Month");
+                                    check = true;
+                                }
+                                if (dataChecker.currentWeek(eventDate)) {
+                                    addpoints("Week");
+                                    check = true;
+                                }else if (dataChecker.lastWeek(eventDate)) {
+                                    addpoints("lastWeek");
+                                    check = true;
+                                }
+                                if (check) {
+                                    Toast.makeText(ToDoneEventView.this, "You have received " + point + " points.", Toast.LENGTH_SHORT).show();
+                                    //State auf Done setzen
+                                    eventsRef.child(eventID).child("eventState").setValue("Done");
+                                    startKonfetti();
+                                }else{
+                                    Toast.makeText(ToDoneEventView.this, "Event is too old to collect points!", Toast.LENGTH_SHORT).show();
+                                }
                             }else{
-                                Toast.makeText(ToDoneEventView.this, "Events is too old to score points with it!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(ToDoneEventView.this, "You cannot collect points for events in the future", Toast.LENGTH_SHORT).show();
                             }
-
-                            Toast.makeText(ToDoneEventView.this, "You have received " + point + " points.", Toast.LENGTH_SHORT).show();
-                            //State auf Done setzen
-                            eventsRef.child(eventID).child("eventState").setValue("Done");
-                            startKonfetti();
                         }else{
                             Toast.makeText(ToDoneEventView.this, "Points already collected!", Toast.LENGTH_SHORT).show();
                             goBack();
@@ -191,6 +211,33 @@ public class ToDoneEventView extends AppCompatActivity {
 
 
 
+            }
+        });
+
+        btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editIntent = new Intent(ToDoneEventView.this, CreateEventsActivity.class);
+                editIntent.putExtra("Name",eventName);
+                editIntent.putExtra("Date",eventDate);
+                editIntent.putExtra("StartingTime",startingTime);
+                editIntent.putExtra("EndingTime",endingTime);
+                editIntent.putExtra("Description",eventDescription);
+                editIntent.putExtra("Id",eventID);
+                editIntent.putExtra("State",state);
+                editIntent.putExtra("Recurring",recurring);
+                editIntent.putExtra("Type",eventType);
+                editIntent.putExtra("Weight",eventWeight);
+                editIntent.putExtra("Url",ImageUrl);
+                startActivity(editIntent);
+            }
+        });
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eventRef.removeValue();
+                Toast.makeText(ToDoneEventView.this, "Event has been deleted.", Toast.LENGTH_SHORT).show();
+                goBack();
             }
         });
     }

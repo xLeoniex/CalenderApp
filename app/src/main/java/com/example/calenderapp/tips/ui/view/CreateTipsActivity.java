@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
@@ -49,6 +50,7 @@ public class CreateTipsActivity extends AppCompatActivity {
     private ActivityCreateTipsBinding binding;
     private TipViewModel tipViewModel;
     private Uri currentUri ;
+    TextView choseImage;
 
 
 
@@ -60,6 +62,8 @@ public class CreateTipsActivity extends AppCompatActivity {
         binding.setTipViewModel(tipViewModel);
         binding.setLifecycleOwner(CreateTipsActivity.this);
         tipViewModel.tipState.setValue("inProgress");
+        choseImage = findViewById(R.id.chooseImageText);
+
 
         // Notification Channel:
         TipNotificationChannel tipNotificationChannel = new TipNotificationChannel("TIP_ID","Tips_Notifications", NotificationManager.IMPORTANCE_HIGH);
@@ -77,6 +81,7 @@ public class CreateTipsActivity extends AppCompatActivity {
                             Intent data  = result.getData();
                             currentUri = data.getData();
                             binding.TipImageView.setImageURI(currentUri);
+                            binding.chooseImageText.setVisibility(View.GONE);
                         }
                     }
                 }

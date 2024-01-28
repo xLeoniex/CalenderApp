@@ -1,85 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:id="@+id/open_tip_Layout"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Points.PointsView">
 
-    <ImageView
-        android:id="@+id/tipImageView"
-        android:layout_width="135dp"
-        android:layout_height="122dp"
-        android:clickable="true"
-        android:src="@drawable/ic_image" />
-
-    <TextView
-        android:id="@+id/tipName"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Name"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
 
-
-
-    <TextView
+    <View
+        android:id="@+id/top_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Description:"
-        android:layout_marginTop="25dp"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tipDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Description Text"
-        android:textAlignment="center"
-        android:textSize="14sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Type:"
-        android:layout_marginTop="25dp"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tipType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Typ Name"
-        android:textAlignment="center"
-        android:textSize="14sp" />
+        android:layout_height="300dp"
+        android:background="@drawable/bg_view" />
 
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/view_konfetti"
         android:layout_width="match_parent"
-        android:layout_height="111dp"
+        android:layout_height="match_parent"
         android:background="#00FFFFFF" />
 
-    <Button
-        android:id="@+id/btn_doneTip"
+    <ImageView
+        android:id="@+id/tipImageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/relax_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"/>
+
+    <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Collect points" />
-    <Button
-        android:id="@+id/btn_deleteTip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete" />
-    <Button
-        android:id="@+id/btn_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cancel" />
+        android:layout_below="@id/tipImageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="-40dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="60dp"
+        android:columnCount="1"
+        android:rowCount="1">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tipName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
 
-</LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description:"
+                    android:layout_marginTop="25dp"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tipDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Description Text"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Type:"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tipType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Typ Name"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
+
+
+                <Button
+                    android:id="@+id/btn_doneTip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textSize="16sp"
+                    android:text="Collect a point" />
+                <Button
+                    android:id="@+id/btn_deleteTip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/red"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textSize="16sp"
+                    android:text="Delete" />
+                <Button
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textSize="16sp"
+                    android:text="Back" />
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </GridLayout>
+
+    </RelativeLayout></androidx.core.widget.NestedScrollView>
+

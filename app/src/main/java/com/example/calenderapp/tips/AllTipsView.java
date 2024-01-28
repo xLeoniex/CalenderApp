@@ -12,12 +12,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
-import com.example.calenderapp.Points.AllEventsView;
-import com.example.calenderapp.Points.ToDoneEventView;
 import com.example.calenderapp.R;
 import com.example.calenderapp.tips.ui.view.CreateTipsActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +34,8 @@ public class AllTipsView extends AppCompatActivity {
     FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference tipsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Tips");
 
-    Button btn_addTip , btn_reset, btn_delet;
+    Button  btn_reset, btn_delet;
+    ImageButton btn_addTip;
     ListView listView;
     ArrayAdapter<String> adapter;
     ArrayList<String> allTips = new ArrayList<>();
@@ -95,7 +94,10 @@ public class AllTipsView extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 //Int Position gibt uns an wo der Item sich befindet
                 String ID = tipsIDs.get(position);
-                openTip(ID);
+                Intent intent = new Intent(getApplicationContext(), OpenTipView.class);
+                intent.putExtra("tip-ID",ID);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -137,27 +139,7 @@ public class AllTipsView extends AppCompatActivity {
         });
     }
 
-    public void openTip(String ID){
-        tipsRef.child(ID).child("tipState").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String state = dataSnapshot.getValue(String.class);
-                if (state != null && state.equals("inProgress")) {
-                    Intent intent = new Intent(AllTipsView.this, OpenTipView.class);
-                    intent.putExtra("tip-ID",ID);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    Toast.makeText(AllTipsView.this, "The tip has already been issued!", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(),"Error",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

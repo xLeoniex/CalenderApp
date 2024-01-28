@@ -2,6 +2,7 @@ package com.example.calenderapp.DashboardBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -27,7 +28,6 @@ import com.example.calenderapp.Notification.PointsNotification.MyMonthlyBroadcas
 import com.example.calenderapp.Notification.PointsNotification.MyWeeklyBroadcastReceiver;
 import com.example.calenderapp.calenderView.MainActivity;
 import com.example.calenderapp.Login.Login;
-import com.example.calenderapp.Points.AllEventsView;
 import com.example.calenderapp.Points.PointsView;
 import com.example.calenderapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +38,7 @@ public class Dashboard extends AppCompatActivity {
     //Zwei-Variabeln, Einmal für User und einmal für Firebase Authentification
     FirebaseAuth auth;
 
-    Button btn_calender, btn_points, btn_tips, btn_events;
+    CardView btn_calender, btn_points, btn_tips;
     FirebaseUser user;
     TextView textView;
     TextView textWelcome;
@@ -52,7 +52,7 @@ public class Dashboard extends AppCompatActivity {
         btn_calender = findViewById(R.id.btn_calenderView);
         btn_points = findViewById(R.id.btn_pointsView);
         btn_tips = findViewById(R.id.btn_tipsView);
-        btn_events = findViewById(R.id.btn_eventsView);
+
 
         //Premission für Notifications
         requestRunTimePermission();
@@ -100,14 +100,6 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
-        btn_events.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AllEventsView.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
     }
 

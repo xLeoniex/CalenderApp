@@ -2,8 +2,10 @@ package com.example.calenderapp.Points;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatRadioButton;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +34,8 @@ import java.util.ArrayList;
 
 public class PointsAchievment extends AppCompatActivity {
     TextView achievments;
-    Switch swt_weekMonth;
+    RadioGroup radioGroup;
+    AppCompatRadioButton radioBtnMonth, radioBtnWeek;
 
     ListView listview;
     ArrayList<String> events = new ArrayList<>();
@@ -48,33 +52,46 @@ public class PointsAchievment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_points_achievment);
 
-        swt_weekMonth = findViewById(R.id.swt_weekMonth);
         achievments = findViewById(R.id.achievments);
         listview = findViewById(R.id.listview);
         btn_Back = findViewById(R.id.btn_backPointsView);
+        radioBtnWeek = findViewById(R.id.btn_radio_Week);
+        radioBtnMonth = findViewById(R.id.btn_radio_Month);
+        radioGroup = findViewById(R.id.radioGroup);
 
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,events);
         MonthWeekInfos(events, "Month");
 
-        swt_weekMonth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    events.clear();
-                    achievments.setText("Weekly achevements");
-                    events.clear();
-                    listview.setAdapter(adapter);
-                    MonthWeekInfos(events, "Week");
-                }else{
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.btn_radio_Month) {
+                    radioBtnMonth.setTextColor(Color.WHITE);
+                    radioBtnWeek.setTextColor(Color.GRAY);
+
                     events.clear();
                     achievments.setText("Monthly achevements");
                     events.clear();
                     listview.setAdapter(adapter);
                     MonthWeekInfos(events, "Month");
+
+                } else if (checkedId == R.id.btn_radio_Week) {
+                    radioBtnWeek.setTextColor(Color.WHITE);
+                    radioBtnMonth.setTextColor(Color.GRAY);
+
+                    events.clear();
+                    achievments.setText("Weekly achevements");
+                    events.clear();
+                    listview.setAdapter(adapter);
+                    MonthWeekInfos(events, "Week");
+
+                } else {
+                    throw new IllegalStateException("Unexpected value: " + checkedId);
                 }
             }
         });
+
 
         btn_Back.setOnClickListener(new View.OnClickListener() {
             @Override

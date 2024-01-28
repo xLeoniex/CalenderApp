@@ -60,6 +60,7 @@ public class CreateEventsActivity extends AppCompatActivity {
                             Intent data  = result.getData();
                             currentUri = data.getData();
                             binding.EventImageView.setImageURI(currentUri);
+                            binding.chooseImageText.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -80,10 +81,15 @@ public class CreateEventsActivity extends AppCompatActivity {
             myEventViewModel.startingTime.setValue(update.getStringExtra("StartingTime"));
             myEventViewModel.eventDate.setValue(update.getStringExtra("Date"));
             myEventViewModel.eventImageUrl.setValue(update.getStringExtra("Url"));
-            Glide.with(this).
-                    load(update.getStringExtra("Url")).
-                    diskCacheStrategy(DiskCacheStrategy.ALL).
-                    into(binding.EventImageView);
+
+            if (update.getStringExtra("Url").equals("NoImage")) {
+                binding.EventImageView.setImageResource(R.drawable.ic_image);
+            }else {
+                Glide.with(this).
+                        load(update.getStringExtra("Url")).
+                        diskCacheStrategy(DiskCacheStrategy.ALL).
+                        into(binding.EventImageView);
+            }
         }
 
         // if we are adding a new event then grab the date
