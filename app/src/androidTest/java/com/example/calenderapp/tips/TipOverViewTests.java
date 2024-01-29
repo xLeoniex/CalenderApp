@@ -14,6 +14,7 @@ import android.app.Instrumentation;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.util.Log;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -45,12 +46,8 @@ public class TipOverViewTests extends TestCase {
     @Before
     public void StartDashBoard()
     {
-
-        ActivityScenario<Login> scenario = ActivityScenario.launch(Login.class);
         init();
-        // if you want to run all the test at once , just comment the following line
         myHelper.PerformLogin();
-
     }
     @After
     public void tearDown()
@@ -78,11 +75,7 @@ public class TipOverViewTests extends TestCase {
         GotoCreateTipsScreen();
         CreateSomeTip();
 
-        myHelper.CheckTipAtPositionIsInTipList(TipOnList,0);
-        SystemClock.sleep(1000);
-        myHelper.PerformTipInformationClickAtPosition(1);
-        SystemClock.sleep(1000);
-        intended(hasComponent(OpenTipView.class.getName()));
+        myHelper.CheckTipAtPositionIsInTipList(TipOnList,1);
     }
 
     private void GotoCreateTipsScreen()

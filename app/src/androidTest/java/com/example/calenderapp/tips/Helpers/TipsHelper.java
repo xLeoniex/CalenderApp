@@ -89,6 +89,12 @@ public class TipsHelper {
         onData(hasToString("Logout")).perform(click());
     }
 
+    public void PerformGoToDashBoardFromMenuBar()
+    {
+        onView(withId(R.id.dashboard)).perform((click()));
+        SystemClock.sleep(3000);
+    }
+
     public void PerformGoToTipList()
     {
         PerformClick(R.id.btn_tipsView);
@@ -136,7 +142,8 @@ public class TipsHelper {
         onData(anything())
                 .inAdapterView(withId(R.id.list_allTips))
                 .atPosition(position)
-                .perform(longClick());
+                .perform(click());
+        SystemClock.sleep(1000);
     }
 
 
