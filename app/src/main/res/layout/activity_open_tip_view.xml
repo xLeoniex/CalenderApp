@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Points.PointsView">
+    tools:context=".tips.OpenTipView">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,11 +17,6 @@
         android:layout_height="300dp"
         android:background="@drawable/bg_view" />
 
-    <nl.dionsegijn.konfetti.KonfettiView
-        android:id="@+id/view_konfetti"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#00FFFFFF" />
 
     <ImageView
         android:id="@+id/tipImageView"
@@ -84,6 +79,8 @@
                     android:id="@+id/tipDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:text="Description Text"
                     android:textAlignment="center"
                     android:textSize="16sp" />
@@ -103,6 +100,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Typ Name"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:textAlignment="center"
                     android:textSize="16sp" />
 
@@ -140,6 +139,13 @@
         </androidx.cardview.widget.CardView>
 
     </GridLayout>
+
+        <nl.dionsegijn.konfetti.KonfettiView
+            android:id="@+id/view_konfetti"
+            android:layout_width="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_height="800dp"
+            android:background="#00FFFFFF" />
 
     </RelativeLayout></androidx.core.widget.NestedScrollView>
 

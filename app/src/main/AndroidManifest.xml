@@ -19,6 +19,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalenderApp">
         <activity
+            android:name=".Animations.KeepPowerAnimation"
+            android:exported="false" />
+        <activity
+            android:name=".Animations.LowPointsAnimation"
+            android:exported="false" />
+        <activity
+            android:name=".Animations.HighScoreAnimation"
+            android:exported="false" />
+        <activity
             android:name=".tips.OpenTipView"
             android:exported="false" />
 
@@ -40,9 +49,6 @@
             android:exported="false" />
         <activity
             android:name=".Points.ToDoneEventView"
-            android:exported="false" />
-        <activity
-            android:name=".Points.AllEventsView"
             android:exported="false" />
         <activity
             android:name=".events.ui.view.CreateEventsActivity"

@@ -2,6 +2,7 @@ package com.example.calenderapp.tips;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -191,7 +192,7 @@ public class OpenTipView extends AppCompatActivity {
                 .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
                 .addSizes(new Size(12, 5f))
                 .setPosition(-50f, viewKonfetti.getWidth() + 50f, -50f, -50f)
-                .streamFor(300, 3000L);
+                .streamFor(300, 4000L);
 
         //eine Verzögerung hinzuzufügen
         // nach der Konfetti-Animation zurueck gehen

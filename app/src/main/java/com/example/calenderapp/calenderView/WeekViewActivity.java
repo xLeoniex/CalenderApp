@@ -44,8 +44,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class WeekViewActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener
@@ -56,6 +58,7 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
     AppCompatRadioButton radioBtnMonth, radioBtnWeek;
 
     private EventListViewModel eventListViewModel;
+    private TextView dayOfWeekTV;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private ListView eventListView;
@@ -74,6 +77,7 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
         eventListViewModel = new ViewModelProvider(this).get(EventListViewModel.class);
         radioBtnWeek = findViewById(R.id.btn_radio_Week);
         radioBtnMonth = findViewById(R.id.btn_radio_Month);
+        dayOfWeekTV = findViewById(R.id.dayOfWeekTV);
         radioGroup = findViewById(R.id.radioGroup);
         initWidgets();
         setWeekView();
@@ -177,6 +181,8 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
                 RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
                 calendarRecyclerView.setLayoutManager(layoutManager);
                 calendarRecyclerView.setAdapter(calendarAdapter);
+                String dayOfWeek = selectedDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
+                dayOfWeekTV.setText(dayOfWeek);
                 setEventAdpater();
 
             }

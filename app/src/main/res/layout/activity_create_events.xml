@@ -17,7 +17,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Points.PointsView">
+        tools:context=".events.ui.view.CreateEventsActivity">
         <View
             android:id="@+id/top_view"
             android:layout_width="match_parent"

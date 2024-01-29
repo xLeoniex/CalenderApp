@@ -9,6 +9,7 @@
     <color name="primary">#ECF4D6</color>
     <color name="secondary_first">#37B3B5</color>
     <color name="secondary_second">#2D9596</color>
+    <color name="secondary_light">#65CACA</color>
     <color name="text">#265073</color>
     <color name="red">#B35050</color>
 </resources>

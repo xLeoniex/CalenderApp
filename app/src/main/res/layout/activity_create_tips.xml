@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:id="@+id/CreateTipsLayout"
         android:layout_height="match_parent"
-        tools:context=".Points.PointsView">
+        tools:context=".tips.ui.view.CreateTipsActivity">
     <View
         android:id="@+id/top_view"
         android:layout_width="match_parent"

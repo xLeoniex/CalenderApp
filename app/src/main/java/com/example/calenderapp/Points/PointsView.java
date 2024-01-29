@@ -21,8 +21,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.calenderapp.Animations.HighScoreAnimation;
+import com.example.calenderapp.Animations.KeepPowerAnimation;
+import com.example.calenderapp.Animations.LowPointsAnimation;
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
+import com.example.calenderapp.tips.AllTipsView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,9 +36,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PointsView extends AppCompatActivity {
-
+    String time;
     RadioGroup radioGroup;
     AppCompatRadioButton radioBtnMonth, radioBtnWeek;
 
@@ -60,6 +65,8 @@ public class PointsView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_points_view);
 
+        time = getIntent().getStringExtra("time");
+
         total = findViewById(R.id.totalPoints);
         points = findViewById(R.id.num_points);
         highScoreTitle = findViewById(R.id.highScore);
@@ -76,8 +83,24 @@ public class PointsView extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,dataToShow);
 
 
-        viewTotalPoints("Month");
-        MonthWeekInfos(monthActivities,  "Month");
+        if(time != null){
+            if(time.equals("Week")){
+                viewTotalPoints("Week");
+                MonthWeekInfos(monthActivities,  "Week");
+                radioBtnWeek.setChecked(true);
+                radioBtnWeek.setTextColor(Color.WHITE);
+                radioBtnMonth.setTextColor(Color.GRAY);
+            }else{
+                viewTotalPoints("Month");
+                MonthWeekInfos(monthActivities,  "Month");
+                radioBtnMonth.setChecked(true);
+                radioBtnMonth.setTextColor(Color.WHITE);
+                radioBtnWeek.setTextColor(Color.GRAY);
+            }
+        }else{
+            viewTotalPoints("Month");
+            MonthWeekInfos(monthActivities,  "Month");
+        }
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -94,6 +117,7 @@ public class PointsView extends AppCompatActivity {
                     dataToShow.clear();
                     recentEvents.setAdapter(adapter);
                     MonthWeekInfos(monthActivities,  "Month");
+                    runAnimation("Month");
 
                 } else if (checkedId == R.id.btn_radio_Week) {
                     radioBtnWeek.setTextColor(Color.WHITE);
@@ -108,12 +132,14 @@ public class PointsView extends AppCompatActivity {
                     dataToShow.clear();
                     recentEvents.setAdapter(adapter);
                     MonthWeekInfos(weekActivities,  "Week");
-
+                    runAnimation("Week");
                 } else {
                     throw new IllegalStateException("Unexpected value: " + checkedId);
                 }
             }
         });
+
+
 
 
         btn_ViewAll.setOnClickListener(new View.OnClickListener() {
@@ -233,5 +259,51 @@ public class PointsView extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //Die Punkte miteinander vergleichen und je nach dem eine Animatin ausführen
+    public void runAnimation(String MonthOrWeek){
+        int min;
+        if(MonthOrWeek.equals("Month")){
+            min = 30;
+        }else{
+            min = 7;
+        }
+        pointsRef.child(MonthOrWeek).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String sumPoints = dataSnapshot.child("Total_Current_"+MonthOrWeek).getValue(String.class);
+                String highScorePoints = dataSnapshot.child("High_Score_"+MonthOrWeek).getValue(String.class);
+                int currentPoints = Integer.parseInt(Objects.requireNonNull(sumPoints));
+                int currentHighScore = Integer.parseInt(Objects.requireNonNull(highScorePoints));
+
+                if(currentHighScore <= currentPoints){
+                    //High Score wurde erreicht
+                    Intent intent = new Intent(getApplicationContext(), HighScoreAnimation.class);
+                    intent.putExtra("time",MonthOrWeek);
+                    startActivity(intent);
+                    finish();
+                } else if(currentPoints <= min) {
+                    //Minimale Punktzahl wurde nicht erreicht
+                    Intent intent = new Intent(getApplicationContext(), LowPointsAnimation.class);
+                    intent.putExtra("time",MonthOrWeek);
+                    startActivity(intent);
+                    finish();
+
+                }else{
+                    Intent intent = new Intent(getApplicationContext(), KeepPowerAnimation.class);
+                    intent.putExtra("time",MonthOrWeek);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(),"Error",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }
