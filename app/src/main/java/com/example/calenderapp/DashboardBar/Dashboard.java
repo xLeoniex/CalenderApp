@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.calenderapp.Notification.PointsNotification.MyDailyBroadcastReceiver;
 import com.example.calenderapp.tips.AllTipsView;
 import com.example.calenderapp.Notification.PointsNotification.MyMonthlyBroadcastReceiver;
 import com.example.calenderapp.Notification.PointsNotification.MyWeeklyBroadcastReceiver;
@@ -60,6 +61,8 @@ public class Dashboard extends AppCompatActivity {
         startWeeklyAlert();
         //Alarm für letzten Tag des Monats 23:59
         startMonthlyAlert();
+        //Alarm für jeden Tag
+        startDailyAlert();
 
         //Firebase-Variablen
         auth = FirebaseAuth.getInstance();
@@ -147,6 +150,31 @@ public class Dashboard extends AppCompatActivity {
                     new String[]{Manifest.permission.POST_NOTIFICATIONS},
                     PERMISSION_CODE);
         }
+    }
+
+    //tages alarm für neue events
+    public void startDailyAlert() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this, MyDailyBroadcastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Alarm jeden Tag am 00:00
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        if (alarmManager != null) {
+            alarmManager.setRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(), //-----System.currentTimeMillis() + 1000, -------- calendar.getTimeInMillis()
+                    24 * 60 * 60 * 1000,  // Wiederhole jeden Tag-------1000 , -------- 24 * 60 * 60 * 1000
+                    pendingIntent
+            );
+
+            Log.d("DailyAlarmStarted","Alarm wird jeden Tag um 00:00 gestartet" );
+        }
+
     }
 
     //Wochen Alarm konfigurieren

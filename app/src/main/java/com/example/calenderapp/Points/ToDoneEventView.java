@@ -27,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import com.example.calenderapp.DashboardBar.MenuHelper;
 import com.example.calenderapp.R;
+import com.example.calenderapp.calenderView.DailyCalendarActivity;
 import com.example.calenderapp.calenderView.WeekViewActivity;
 import com.example.calenderapp.events.model.EventModel;
 import com.example.calenderapp.events.ui.view.CreateEventsActivity;
@@ -305,7 +306,7 @@ public class ToDoneEventView extends AppCompatActivity {
     }
 
     public void goBack() {
-        Intent intent = new Intent(getApplicationContext(), WeekViewActivity.class);
+        Intent intent = new Intent(getApplicationContext(), DailyCalendarActivity.class);
         startActivity(intent);
         finish();
     }
@@ -320,7 +321,7 @@ public class ToDoneEventView extends AppCompatActivity {
                 .addShapes(Shape.Square.INSTANCE, Shape.Circle.INSTANCE)
                 .addSizes(new Size(12, 5f))
                 .setPosition(-50f, viewKonfetti.getWidth() + 50f, -50f, -50f)
-                .streamFor(300, 2000L);
+                .streamFor(300, 4000L);
 
         //eine Verzögerung hinzuzufügen
         new Handler().postDelayed(new Runnable() {
@@ -329,7 +330,7 @@ public class ToDoneEventView extends AppCompatActivity {
                 // Hier wird der Code ausgeführt, der nach der Konfetti-Animation erfolgen soll
                 goBack();
             }
-        }, 2000L);
+        }, 4000L);
     }
 
     @Override

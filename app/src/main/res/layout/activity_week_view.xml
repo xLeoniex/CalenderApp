@@ -208,8 +208,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/calendarRecyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_weight="1"/>
+                        android:layout_height="100dp" />
                 </LinearLayout>
 
 
@@ -247,8 +246,7 @@
                     <ListView
                         android:id="@+id/eventListView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"/>
+                        android:layout_height="500dp" />
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>

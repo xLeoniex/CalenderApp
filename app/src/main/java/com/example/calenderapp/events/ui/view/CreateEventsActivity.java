@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.calenderapp.calenderView.CalendarUtils;
+import com.example.calenderapp.calenderView.DailyCalendarActivity;
 import com.example.calenderapp.calenderView.MainActivity;
 import com.example.calenderapp.calenderView.WeekViewActivity;
 import com.example.calenderapp.DashboardBar.MenuHelper;
@@ -140,7 +141,7 @@ public class CreateEventsActivity extends AppCompatActivity {
                         }
                         String msg = myEventViewModel.OnClickHandler();
                         Snackbar.make(v,msg,Snackbar.LENGTH_SHORT).show();
-                        Intent backtomonthlyIntent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent backtomonthlyIntent = new Intent(getApplicationContext(), DailyCalendarActivity.class);
                         startActivity(backtomonthlyIntent);
                         finish();
 

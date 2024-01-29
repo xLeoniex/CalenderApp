@@ -20,6 +20,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.calenderapp.DashboardBar.Dashboard;
 import com.example.calenderapp.R;
+import com.example.calenderapp.tips.OpenTipView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -98,7 +99,7 @@ public class MyWeeklyBroadcastReceiver extends BroadcastReceiver {
         builder.setContentTitle("Performance Report");
         builder.setContentText(text);
 
-        Intent notificationIntent = new Intent(context, Dashboard.class);
+        Intent notificationIntent = new Intent(context, OpenTipView.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(contentIntent);
 
@@ -110,6 +111,8 @@ public class MyWeeklyBroadcastReceiver extends BroadcastReceiver {
             notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
     }
+
+
 
 
 

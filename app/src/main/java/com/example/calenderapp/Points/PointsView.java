@@ -85,17 +85,11 @@ public class PointsView extends AppCompatActivity {
 
         if(time != null){
             if(time.equals("Week")){
-                viewTotalPoints("Week");
-                MonthWeekInfos(monthActivities,  "Week");
                 radioBtnWeek.setChecked(true);
-                radioBtnWeek.setTextColor(Color.WHITE);
-                radioBtnMonth.setTextColor(Color.GRAY);
+                setTextforWeek();
             }else{
-                viewTotalPoints("Month");
-                MonthWeekInfos(monthActivities,  "Month");
                 radioBtnMonth.setChecked(true);
-                radioBtnMonth.setTextColor(Color.WHITE);
-                radioBtnWeek.setTextColor(Color.GRAY);
+                setTextforMonth();
             }
         }else{
             viewTotalPoints("Month");
@@ -106,32 +100,11 @@ public class PointsView extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.btn_radio_Month) {
-                    radioBtnMonth.setTextColor(Color.WHITE);
-                    radioBtnWeek.setTextColor(Color.GRAY);
-
-                    total.setText("Monthly points so far:");
-                    highScoreTitle.setText("Full month high score:");
-                    totalLast.setText("Total points last month:");
-                    viewTotalPoints("Month");
-                    monthActivities.clear();
-                    dataToShow.clear();
-                    recentEvents.setAdapter(adapter);
-                    MonthWeekInfos(monthActivities,  "Month");
+                    setTextforMonth();
                     runAnimation("Month");
 
                 } else if (checkedId == R.id.btn_radio_Week) {
-                    radioBtnWeek.setTextColor(Color.WHITE);
-                    radioBtnMonth.setTextColor(Color.GRAY);
-
-                    total.setText("Weekly points so far:");
-                    highScoreTitle.setText("Full week high score:");
-                    totalLast.setText("Total points last week:");
-
-                    viewTotalPoints("Week");
-                    weekActivities.clear();
-                    dataToShow.clear();
-                    recentEvents.setAdapter(adapter);
-                    MonthWeekInfos(weekActivities,  "Week");
+                    setTextforWeek();
                     runAnimation("Week");
                 } else {
                     throw new IllegalStateException("Unexpected value: " + checkedId);
@@ -277,7 +250,7 @@ public class PointsView extends AppCompatActivity {
                 int currentPoints = Integer.parseInt(Objects.requireNonNull(sumPoints));
                 int currentHighScore = Integer.parseInt(Objects.requireNonNull(highScorePoints));
 
-                if(currentHighScore <= currentPoints){
+                if(currentHighScore < currentPoints){
                     //High Score wurde erreicht
                     Intent intent = new Intent(getApplicationContext(), HighScoreAnimation.class);
                     intent.putExtra("time",MonthOrWeek);
@@ -305,5 +278,34 @@ public class PointsView extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void setTextforMonth(){
+        radioBtnMonth.setTextColor(Color.WHITE);
+        radioBtnWeek.setTextColor(Color.GRAY);
+
+        total.setText("Monthly points so far:");
+        highScoreTitle.setText("Full month high score:");
+        totalLast.setText("Total points last month:");
+        viewTotalPoints("Month");
+        monthActivities.clear();
+        dataToShow.clear();
+        recentEvents.setAdapter(adapter);
+        MonthWeekInfos(monthActivities,  "Month");
+    }
+
+    public void setTextforWeek(){
+        radioBtnWeek.setTextColor(Color.WHITE);
+        radioBtnMonth.setTextColor(Color.GRAY);
+
+        total.setText("Weekly points so far:");
+        highScoreTitle.setText("Full week high score:");
+        totalLast.setText("Total points last week:");
+
+        viewTotalPoints("Week");
+        weekActivities.clear();
+        dataToShow.clear();
+        recentEvents.setAdapter(adapter);
+        MonthWeekInfos(weekActivities,  "Week");
     }
 }

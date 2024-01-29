@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,6 +49,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -127,7 +129,12 @@ public class DailyCalendarActivity extends AppCompatActivity{
         });
 
         initWidgets();
-        setDayView();
+        try {
+            setDayView();
+        }catch (Exception e){
+            setDayViewFromNotification();
+        }
+
 
     }
     private void initWidgets()
@@ -151,6 +158,18 @@ public class DailyCalendarActivity extends AppCompatActivity{
         dayOfWeekTV.setText(dayOfWeek);
         setHourAdapter();
     }
+
+    private void setDayViewFromNotification()
+    {
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        selectedDate = LocalDate.parse(dateFormat.format(currentDate));
+        monthDayText.setText(CalendarUtils.monthDayFromDate(selectedDate));
+        String dayOfWeek = selectedDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
+        dayOfWeekTV.setText(dayOfWeek);
+        setHourAdapter();
+    }
+
 
     private void setHourAdapter()
     {

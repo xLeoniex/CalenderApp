@@ -29,7 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class AllTipsView extends AppCompatActivity {
-    //Todo (Ehsan) this Activity shall also be accessble after collecting points
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference tipsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Tips");
@@ -51,6 +50,7 @@ public class AllTipsView extends AppCompatActivity {
         btn_reset = findViewById(R.id.btn_resetAll);
         listView = findViewById(R.id.list_allTips);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,allTips);
+        final boolean[] emptyList = {false};
 
         tipsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -60,6 +60,7 @@ public class AllTipsView extends AppCompatActivity {
                 if (snapshot.getChildrenCount() == 0) {
                     String tmp = "No tips available";
                     allTips.add(tmp);
+                    emptyList[0] = true;
                 }else{
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                         String ID = (String) dataSnapshot.getKey();
@@ -70,7 +71,6 @@ public class AllTipsView extends AppCompatActivity {
                             if (name != null && type != null && state != null) {
                                 String out = name + " (" +type + ") ";
                                 if(state.equals("inProgress")) {
-                                    //ToDo (Ehsan) oder auch hier alle zeigen und die erledigte mit grünes Hintergrund
                                     out = out + "Not completed";
                                 }
                                 allTips.add(out);
@@ -93,11 +93,13 @@ public class AllTipsView extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 //Int Position gibt uns an wo der Item sich befindet
-                String ID = tipsIDs.get(position);
-                Intent intent = new Intent(getApplicationContext(), OpenTipView.class);
-                intent.putExtra("tip-ID",ID);
-                startActivity(intent);
-                finish();
+                if(!emptyList[0]) {
+                    String ID = tipsIDs.get(position);
+                    Intent intent = new Intent(getApplicationContext(), OpenTipView.class);
+                    intent.putExtra("tip-ID", ID);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
 

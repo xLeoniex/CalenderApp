@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalenderApp">
         <activity
+            android:name=".DashboardBar.InformationView"
+            android:exported="false" />
+        <activity
             android:name=".Animations.KeepPowerAnimation"
             android:exported="false" />
         <activity
@@ -39,6 +42,9 @@
             android:enabled="true" />
         <receiver
             android:name=".Notification.PointsNotification.MyMonthlyBroadcastReceiver"
+            android:enabled="true" />
+        <receiver
+            android:name=".Notification.PointsNotification.MyDailyBroadcastReceiver"
             android:enabled="true" />
 
         <activity
