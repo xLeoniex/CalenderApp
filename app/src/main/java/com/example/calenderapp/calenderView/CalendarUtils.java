@@ -38,7 +38,7 @@ public class CalendarUtils
 
     public static String monthDayFromDate(LocalDate date)
     {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d",Locale.US);
         return date.format(formatter);
     }
 
