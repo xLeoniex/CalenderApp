@@ -167,7 +167,7 @@ public class Dashboard extends AppCompatActivity {
         if (alarmManager != null) {
             alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
-                    calendar.getTimeInMillis(), //-----System.currentTimeMillis() + 1000, -------- calendar.getTimeInMillis()
+                    calendar.getTimeInMillis(),
                     24 * 60 * 60 * 1000,  // Wiederhole jeden Tag-------1000 , -------- 24 * 60 * 60 * 1000
                     pendingIntent
             );
