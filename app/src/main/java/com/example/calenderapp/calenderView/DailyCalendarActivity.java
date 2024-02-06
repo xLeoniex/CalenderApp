@@ -154,7 +154,7 @@ public class DailyCalendarActivity extends AppCompatActivity{
     private void setDayView()
     {
         monthDayText.setText(CalendarUtils.monthDayFromDate(selectedDate));
-        String dayOfWeek = selectedDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
+        String dayOfWeek = selectedDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
         dayOfWeekTV.setText(dayOfWeek);
         setHourAdapter();
     }
