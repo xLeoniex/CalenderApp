@@ -23,8 +23,16 @@ public class HighScoreAnimation extends AppCompatActivity {
         setContentView(R.layout.activity_high_score_animation);
         time = getIntent().getStringExtra("time");
 
+
         message = findViewById(R.id.message);
         lottie = findViewById(R.id.lottie);
+
+        if(time.equals("Month")){
+            message.setText("Congratulations! Monthly high score reached");
+        }else{
+            message.setText("Congratulations! Weekly high score reached");
+        }
+
 
         message.animate().translationY(-1400).setDuration(4000).setStartDelay(0);
         lottie.animate().translationY(2000).setDuration(2000).setStartDelay(2900);

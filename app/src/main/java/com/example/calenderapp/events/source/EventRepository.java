@@ -1,5 +1,8 @@
 package com.example.calenderapp.events.source;
 
+import static com.example.calenderapp.calenderView.CalendarUtils.selectedDate;
+
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.util.Log;
 
@@ -21,12 +24,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.nio.channels.ScatteringByteChannel;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class EventRepository {
     private FirebaseDatabase database;
@@ -112,8 +118,14 @@ public class EventRepository {
                     Log.d("DataKey",currentKey);
                     currentEventModel = dataSnapshot.getValue(EventModel.class);
 
-
-                    LocalDate parsedDate = LocalDate.parse(currentEventModel.getEventDate());
+                    LocalDate parsedDate;
+                    try {
+                        parsedDate = LocalDate.parse(currentEventModel.getEventDate());
+                    }catch(Exception e){
+                        Date currentDate = new Date();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        parsedDate = LocalDate.parse(dateFormat.format(currentDate));
+                    }
                     if(parsedDate.isEqual(date))
                     {
                         eventModelListOfDateInRepository.add(currentEventModel);

@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CalenderApp">
         <activity
+            android:name=".DashboardBar.ApplicationInformation"
+            android:exported="false" />
+        <activity
             android:name=".DashboardBar.InformationView"
             android:exported="false" />
         <activity

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -21,8 +22,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Register extends AppCompatActivity {
     TextInputEditText editTextUsername ,editTextEmail, editTextPassword, editTextConfirmPassword;
@@ -129,7 +133,7 @@ public class Register extends AppCompatActivity {
                                                         dbref.child(uid).child("points").child("Week").child("High_Score_Week").setValue("0");
                                                         dbref.child(uid).child("points").child("Week").child("Total_Current_Week").setValue("0");
                                                         dbref.child(uid).child("points").child("Week").child("Total_Last_Week").setValue("0");
-                                                        //ToDo: (Ehsan) Default Events zuweisen
+                                                        defaultTips(uid);
                                                     }
                                                 }
                                             });
@@ -147,5 +151,43 @@ public class Register extends AppCompatActivity {
                         });
             }
         });
+    }
+    public void defaultTips(String uid){
+        //User Tip ref
+        DatabaseReference userTipRef = dbref.child(uid).child("Tips");
+        //default Tips ref
+        DatabaseReference defaultTipsRef = FirebaseDatabase.getInstance().getReference("Tips");
+
+        defaultTipsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    String ID = (String) dataSnapshot.getKey();
+                    if (ID != null) {
+                        String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
+                        String tipDescription = dataSnapshot.child("tipDescription").getValue(String.class);
+                        String tipState = dataSnapshot.child("tipState").getValue(String.class);
+                        String tipTitle = dataSnapshot.child("tipTitle").getValue(String.class);
+                        String tipType = dataSnapshot.child("tipType").getValue(String.class);
+
+                        String sKey = userTipRef.push().getKey();
+                        if(sKey != null){
+                            userTipRef.child(sKey).child("imageUrl").setValue(imageUrl);
+                            userTipRef.child(sKey).child("tipDescription").setValue(tipDescription);
+                            userTipRef.child(sKey).child("tipState").setValue(tipState);
+                            userTipRef.child(sKey).child("tipTitle").setValue(tipTitle);
+                            userTipRef.child(sKey).child("tipType").setValue(tipType);
+                            userTipRef.child(sKey).child("tipId").setValue(sKey);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error defaultTips", "Some thing went wrong from Database");
+            }
+        });
+
     }
 }

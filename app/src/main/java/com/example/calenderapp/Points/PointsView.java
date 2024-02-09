@@ -250,24 +250,25 @@ public class PointsView extends AppCompatActivity {
                 int currentPoints = Integer.parseInt(Objects.requireNonNull(sumPoints));
                 int currentHighScore = Integer.parseInt(Objects.requireNonNull(highScorePoints));
 
-                if(currentHighScore < currentPoints){
-                    //High Score wurde erreicht
-                    Intent intent = new Intent(getApplicationContext(), HighScoreAnimation.class);
-                    intent.putExtra("time",MonthOrWeek);
-                    startActivity(intent);
-                    finish();
-                } else if(currentPoints <= min) {
+                if(currentPoints <= min) {
                     //Minimale Punktzahl wurde nicht erreicht
                     Intent intent = new Intent(getApplicationContext(), LowPointsAnimation.class);
-                    intent.putExtra("time",MonthOrWeek);
+                    intent.putExtra("time", MonthOrWeek);
                     startActivity(intent);
                     finish();
-
-                }else{
-                    Intent intent = new Intent(getApplicationContext(), KeepPowerAnimation.class);
-                    intent.putExtra("time",MonthOrWeek);
-                    startActivity(intent);
-                    finish();
+                }else {
+                    if(currentHighScore < currentPoints) {
+                        //High Score wurde erreicht
+                        Intent intent = new Intent(getApplicationContext(), HighScoreAnimation.class);
+                        intent.putExtra("time", MonthOrWeek);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Intent intent = new Intent(getApplicationContext(), KeepPowerAnimation.class);
+                        intent.putExtra("time", MonthOrWeek);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
 
             }

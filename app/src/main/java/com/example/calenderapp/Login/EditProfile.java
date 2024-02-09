@@ -125,6 +125,8 @@ public class EditProfile extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     progressBar.setVisibility(View.GONE);
+                                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+                                    userRef.removeValue();
                                     Toast.makeText(EditProfile.this, "User account deleted.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), Login.class);
                                     startActivity(intent);

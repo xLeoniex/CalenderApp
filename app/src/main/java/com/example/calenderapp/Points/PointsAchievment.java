@@ -71,7 +71,7 @@ public class PointsAchievment extends AppCompatActivity {
                     radioBtnWeek.setTextColor(Color.GRAY);
 
                     events.clear();
-                    achievments.setText("Monthly achevements");
+                    achievments.setText("Monthly achievements");
                     events.clear();
                     listview.setAdapter(adapter);
                     MonthWeekInfos(events, "Month");
@@ -81,7 +81,7 @@ public class PointsAchievment extends AppCompatActivity {
                     radioBtnMonth.setTextColor(Color.GRAY);
 
                     events.clear();
-                    achievments.setText("Weekly achevements");
+                    achievments.setText("Weekly achievements");
                     events.clear();
                     listview.setAdapter(adapter);
                     MonthWeekInfos(events, "Week");

@@ -45,7 +45,7 @@ public class OpenTipView extends AppCompatActivity {
     String tipID;
     String tipDate;
     String point;
-    String imageURL , nameStr, descriptionStr, typeStr;
+    String imageURL , nameStr, descriptionStr, typeStr, state;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference tipsRef;
@@ -84,17 +84,22 @@ public class OpenTipView extends AppCompatActivity {
                     descriptionStr = dataSnapshot.child("tipDescription").getValue(String.class);
                     nameStr = dataSnapshot.child("tipTitle").getValue(String.class);
                     typeStr = dataSnapshot.child("tipType").getValue(String.class);
-
+                    state = dataSnapshot.child("tipState").getValue(String.class);
                     name.setText(nameStr);
                     description.setText(descriptionStr);
                     type.setText(typeStr);
-                    if (imageURL.equals("NoImage")) {
+                    if (imageURL.equals("NoImage") || imageURL.isEmpty()) {
                         image.setImageResource(R.drawable.relax_icon);
-                    }else {
+                    } else {
                         Glide.with(OpenTipView.this)
                                 .load(imageURL)
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(image);
+                    }
+                    if (state != null && state.equals("inProgress")) {
+                        btn_done.setText("COLLECT A POINT");
+                    }else{
+                        btn_done.setText("RESET TIP");
                     }
                 } else {
                     Toast.makeText(OpenTipView.this, "Something wrong, retry!", Toast.LENGTH_SHORT).show();
@@ -126,7 +131,7 @@ public class OpenTipView extends AppCompatActivity {
                 tipRef.child("tipState").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String state = dataSnapshot.getValue(String.class);
+                        state = dataSnapshot.getValue(String.class);
                         if (state != null && state.equals("inProgress")) {
                             Date currentDate = new Date();
                             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -138,7 +143,8 @@ public class OpenTipView extends AppCompatActivity {
                             tipRef.child("tipState").setValue("Done");
                             startKonfetti();
                         }else{
-                            Toast.makeText(OpenTipView.this, "The tip has already been issued!", Toast.LENGTH_SHORT).show();
+                            tipRef.child("tipState").setValue("inProgress");
+                            goBack();
                         }
                     }
                     @Override

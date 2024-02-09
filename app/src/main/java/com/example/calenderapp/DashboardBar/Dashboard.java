@@ -41,7 +41,7 @@ public class Dashboard extends AppCompatActivity {
 
     CardView btn_calender, btn_points, btn_tips;
     FirebaseUser user;
-    TextView textView;
+    TextView  information;
     TextView textWelcome;
     private static final int PERMISSION_CODE = 100;
     @Override
@@ -50,6 +50,7 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         textWelcome = findViewById(R.id.totalPoints);
+        information = findViewById(R.id.information);
         btn_calender = findViewById(R.id.btn_calenderView);
         btn_points = findViewById(R.id.btn_pointsView);
         btn_tips = findViewById(R.id.btn_tipsView);
@@ -98,6 +99,15 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), AllTipsView.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        information.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ApplicationInformation.class);
                 startActivity(intent);
                 finish();
             }

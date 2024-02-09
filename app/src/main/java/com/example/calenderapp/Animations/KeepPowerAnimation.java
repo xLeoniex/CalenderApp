@@ -26,6 +26,12 @@ public class KeepPowerAnimation extends AppCompatActivity {
         message = findViewById(R.id.message);
         lottie = findViewById(R.id.lottie);
 
+        if(time.equals("Month")){
+            message.setText("You are doing well this month, keep it up!");
+        }else{
+            message.setText("You are doing well this week, keep it up!");
+        }
+
         message.animate().translationY(-1400).setDuration(4000).setStartDelay(0);
         lottie.animate().translationY(2000).setDuration(2000).setStartDelay(2900);
         new Handler().postDelayed(new Runnable() {

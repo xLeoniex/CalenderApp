@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -56,10 +57,14 @@ public class MyDailyBroadcastReceiver extends BroadcastReceiver {
         String defaultID = String.valueOf(randomNumber);
         DatabaseReference defaultEvent = defaultEventsRef.child(defaultID);
 
-        //Datum von heute
+        //Datum von Morggigen Tag ablesen
         Date currentDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        Date tommorrow = calendar.getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        eventDate = dateFormat.format(currentDate);
+        eventDate = dateFormat.format(tommorrow);
 
         //Die Daten aus defaulEvent raus lesen
         defaultEvent.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -92,7 +97,7 @@ public class MyDailyBroadcastReceiver extends BroadcastReceiver {
                         userEventsRef.child(sKey).child("eventId").setValue(sKey);
                     }
 
-                    showNotification(context, "There is a new event for today, complete it to feel better and earn more points.",sKey);
+                    showNotification(context, "There is a new event for tomorrow, complete it to feel better and earn more points.",sKey);
                 } else {
                     Log.d("Error defaultEvent", "no defaultEvent exists");
                 }
