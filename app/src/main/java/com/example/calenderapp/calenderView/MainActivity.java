@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     {
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
         ArrayList<LocalDate> currentDates = new ArrayList<>();
-        eventListViewModel.getEventOfMonth(selectedDate).observe(this, new Observer<List<EventModel>>() {
+        eventListViewModel.getEventOfMonth(CalendarUtils.selectedDate).observe(this, new Observer<List<EventModel>>() {
             @Override
             public void onChanged(List<EventModel> eventModels) {
                 currentDates.clear();
@@ -103,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 // set date into a list :
                 for(EventModel eventModel: eventModels)
                 {
-                    currentDates.add(LocalDate.parse(eventModel.getEventDate()));
+                    try {
+                        currentDates.add(LocalDate.parse(eventModel.getEventDate()));
+                    }catch(Exception e){}
                 }
                 ArrayList<LocalDate> daysInMonth = daysInMonthArray();
 
