@@ -177,8 +177,10 @@ public class DailyCalendarActivity extends AppCompatActivity{
             @Override
             public void onChanged(List<EventModel> eventModels) {
                 List<EventModel> dailyEvents = new ArrayList<>();
-                dailyEvents.addAll(eventModels);
-                EventSorting.sortEventsByStartingTime(dailyEvents);
+                try {
+                    dailyEvents.addAll(eventModels);
+                    EventSorting.sortEventsByStartingTime(dailyEvents);
+                }catch(Exception e){}
                 EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
                 hourListView.setAdapter(eventAdapter);
             }

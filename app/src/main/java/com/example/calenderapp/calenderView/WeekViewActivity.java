@@ -168,13 +168,15 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
         ArrayList<LocalDate> days = daysInWeekArray(CalendarUtils.selectedDate);
         ArrayList<LocalDate> daysWithEvents = new ArrayList<>();
-        eventListViewModel.getEventOfMonth(selectedDate).observe(this, new Observer<List<EventModel>>() {
+        eventListViewModel.getEventOfMonth(CalendarUtils.selectedDate).observe(this, new Observer<List<EventModel>>() {
             @Override
             public void onChanged(List<EventModel> eventModels) {
                 daysWithEvents.clear();
                 for(EventModel eventModel: eventModels)
                 {
-                    daysWithEvents.add(LocalDate.parse(eventModel.getEventDate()));
+                    try {
+                        daysWithEvents.add(LocalDate.parse(eventModel.getEventDate()));
+                    }catch(Exception e){}
                 }
 
                 CalendarAdapter calendarAdapter = new CalendarAdapter(days,daysWithEvents, WeekViewActivity.this);
@@ -223,10 +225,12 @@ public class WeekViewActivity extends AppCompatActivity implements CalendarAdapt
             @Override
             public void onChanged(List<EventModel> eventModels) {
                 List<EventModel> dailyEvents = new ArrayList<>();
-                dailyEvents.addAll(eventModels);
-                EventSorting.sortEventsByStartingTime(eventModels);
-                EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
-                eventListView.setAdapter(eventAdapter);
+                try {
+                    dailyEvents.addAll(eventModels);
+                    EventSorting.sortEventsByStartingTime(eventModels);
+                    EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
+                    eventListView.setAdapter(eventAdapter);
+                }catch(Exception e){}
             }
         });
     }
