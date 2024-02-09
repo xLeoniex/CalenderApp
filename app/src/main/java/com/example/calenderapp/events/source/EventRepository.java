@@ -154,7 +154,14 @@ public class EventRepository {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren())
                 {
                     currentEventModel = dataSnapshot.getValue(EventModel.class);
-                    Month currentMonth = LocalDate.parse(currentEventModel.getEventDate()).getMonth();
+                    Month currentMonth;
+                    try {
+                        currentMonth = LocalDate.parse(currentEventModel.getEventDate()).getMonth();
+                    }catch(Exception e){
+                        Date currentDate = new Date();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        currentMonth = LocalDate.parse(dateFormat.format(currentDate)).getMonth();
+                    }
                     int currentMonthValue = currentMonth.getValue();
                     int givenMonthValue = month.getMonth().getValue();
                     if(currentMonthValue == givenMonthValue)
