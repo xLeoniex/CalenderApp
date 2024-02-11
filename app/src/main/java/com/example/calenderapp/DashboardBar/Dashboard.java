@@ -214,7 +214,7 @@ public class Dashboard extends AppCompatActivity {
         alarmIntent.putExtra("TipText",tipModel.getTipDescription());
         alarmIntent.putExtra("TipId","10");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        long intervalMillis = 5*1000; //every 6 hours
+        long intervalMillis = 6*60*60*1000; //every 6 hours
 
         if (alarmManager != null) {
             alarmManager.setInexactRepeating(
