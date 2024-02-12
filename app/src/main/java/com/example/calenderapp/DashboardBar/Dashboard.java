@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.app.AlarmManager;
@@ -14,6 +16,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.util.Calendar;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,14 +34,20 @@ import com.example.calenderapp.calenderView.MainActivity;
 import com.example.calenderapp.Login.Login;
 import com.example.calenderapp.Points.PointsView;
 import com.example.calenderapp.R;
+import com.example.calenderapp.tips.model.TipModel;
+import com.example.calenderapp.tips.ui.viewmodel.TipViewModel;
+import com.example.calenderapp.tips.ui.viewmodel.handlers.TipNotificationPublisher;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
+import java.util.Random;
 
 public class Dashboard extends AppCompatActivity {
 
     //Zwei-Variabeln, Einmal für User und einmal für Firebase Authentification
     FirebaseAuth auth;
-
+    private TipViewModel tipViewModel;
     CardView btn_calender, btn_points, btn_tips;
     FirebaseUser user;
     TextView  information;
@@ -54,7 +63,7 @@ public class Dashboard extends AppCompatActivity {
         btn_calender = findViewById(R.id.btn_calenderView);
         btn_points = findViewById(R.id.btn_pointsView);
         btn_tips = findViewById(R.id.btn_tipsView);
-
+        tipViewModel = new ViewModelProvider(this).get(TipViewModel.class);
 
         //Premission für Notifications
         requestRunTimePermission();
@@ -64,6 +73,18 @@ public class Dashboard extends AppCompatActivity {
         startMonthlyAlert();
         //Alarm für jeden Tag
         startDailyAlert();
+        tipViewModel.getDataFromRepository().observe(this, new Observer<List<TipModel>>() {
+            @Override
+            public void onChanged(List<TipModel> tipModels) {
+                if(!tipModels.isEmpty()){
+                    Random random = new Random();
+                    int idx = random.nextInt(tipModels.size());
+                    Log.d("AlarmStarted","Alarm is startin...." );
+                    setRepeatingAlarm(tipModels.get(idx));
+                }
+            }
+        });
+
 
         //Firebase-Variablen
         auth = FirebaseAuth.getInstance();
@@ -185,6 +206,26 @@ public class Dashboard extends AppCompatActivity {
             Log.d("DailyAlarmStarted","Alarm wird jeden Tag um 00:00 gestartet" );
         }
 
+    }
+    private void setRepeatingAlarm(TipModel tipModel) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this, TipNotificationPublisher.class);
+        alarmIntent.putExtra("TipTitle",tipModel.getTipTitle());
+        alarmIntent.putExtra("TipText",tipModel.getTipDescription());
+        alarmIntent.putExtra("TipId","10");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        long intervalMillis = 6*60*60*1000; //every 6 hours
+
+        if (alarmManager != null) {
+            alarmManager.setInexactRepeating(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + intervalMillis,
+                    intervalMillis,
+                    pendingIntent
+            );
+            Log.d("AlarmStarted","Alarm is startin...." );
+        }
+        //ToDo: (Ibrahim) Cancel Button --> to View, Home-Button, Profile-Button
     }
 
     //Wochen Alarm konfigurieren
