@@ -135,8 +135,8 @@ public class CreateTipsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Snackbar.make(v,"Pick a source",Snackbar.LENGTH_SHORT).show();
-                //Intent galleryIntent = getPackageManager().getLaunchIntentForPackage("com.google.android.apps.photos");
-                Intent galleryIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+                galleryIntent.setType("image/*");
                 if (galleryIntent != null) {
                     startActivity(galleryIntent);
                 } else {
