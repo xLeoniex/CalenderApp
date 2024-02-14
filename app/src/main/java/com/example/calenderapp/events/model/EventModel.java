@@ -1,3 +1,12 @@
+/*
+ * *************************************************
+ *   Author : Ahmed Ibrahim Almohamed
+ *   SubAuthor :
+ *   Beschreibung :
+ *   Letzte Änderung :
+ * *************************************************
+ */
+
 package com.example.calenderapp.events.model;
 
 import java.time.LocalTime;
