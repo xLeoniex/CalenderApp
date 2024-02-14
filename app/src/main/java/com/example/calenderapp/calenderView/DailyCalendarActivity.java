@@ -1,7 +1,7 @@
 /*
  * *************************************************
  *   Author :           Seika Leonie
- *   SubAuthor :        None
+ *   SubAuthor :        Ahmed Ibrahim Almohamed
  *   Beschreibung :     Main Class for the daily Acivity
  *   Letzte Änderung :  14/02/2024
  * *************************************************

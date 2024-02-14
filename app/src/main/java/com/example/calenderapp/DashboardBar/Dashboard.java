@@ -1,7 +1,7 @@
 /*
  * *************************************************
  *   Author :           Ehsan Khademi
- *   SubAuthor :        None
+ *   SubAuthor :        Ahmed Ibrahim Almohamed
  *   Beschreibung :     Das Dashboard bietet eine zentrale Anlaufstelle
  *                      mit einer Begrüßungsnachricht und Schaltflächen
  *                      für die wichtigsten Funktionen. Außerdem eine
