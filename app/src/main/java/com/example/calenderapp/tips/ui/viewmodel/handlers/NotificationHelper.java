@@ -34,7 +34,6 @@ public class NotificationHelper {
         this.tipNotification = tipNotification;
         this.tipNotificationChannel = tipNotificationChannel;
         this.tipcontext = tipcontext;
-        //ToDo intent to a certing tip with Tip Id
         NotificationIntent = new Intent(tipcontext, AllTipsView.class);
     }
 

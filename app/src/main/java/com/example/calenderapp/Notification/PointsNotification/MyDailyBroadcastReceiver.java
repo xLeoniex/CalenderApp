@@ -1,3 +1,16 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     Ein BroadcastReceiver, der auf tägliche Alarme
+ *                      reagiert und Aktionen ausführt. Er wählt zufällig
+ *                      ein Standard-Ereignis für den nächsten Tag aus
+ *                      der Datenbank aus und ordnet es dem benutzerdefinierten
+ *                      Datenbankbereich des Benutzers zu. Schließlich wird
+ *                      eine Benachrichtigung erstellt.
+ *   Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.Notification.PointsNotification;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -32,46 +45,48 @@ import java.util.Objects;
 import java.util.Random;
 
 public class MyDailyBroadcastReceiver extends BroadcastReceiver {
+    // Firebase Authentifizierung
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
     FirebaseUser user = mAuth.getCurrentUser();
+    // Referenzen zur Datenbank für Standard- und Benutzerereignisse
     DatabaseReference defaultEventsRef = FirebaseDatabase.getInstance().getReference("DefaultEvents");
     DatabaseReference userEventsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Events");
 
+    // Anzahl der Standardereignisse
     int numberOfdefaultEvents = 5;
 
+    // Datum für das ausgewählte Ereignis
     String eventDate;
 
+    // Notification Channel Attribute
     public static final String NOTIFICATION_CHANNEL_ID = "channel_id";
-    //User visible Channel Name
     public static final String CHANNEL_NAME = "Notification Channel";
-    // number to differentiate Notifications
     public static final int NOTIFICATION_ID = 123;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("DailyAlarmTriggerd", "Aktionen für jeden Tag um 00:00 durchgeführt");
-        //ein zufälligen event wählen
+
+        // Zufällige Auswahl eines Standardereignisses
         Random random = new Random();
         int randomNumber = random.nextInt(numberOfdefaultEvents) + 1;
         String defaultID = String.valueOf(randomNumber);
         DatabaseReference defaultEvent = defaultEventsRef.child(defaultID);
 
-        //Datum von Morggigen Tag ablesen
+        // Ablesen des Datums für den nächsten Tag
         Date currentDate = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
         calendar.add(Calendar.DAY_OF_YEAR, 1);
-        Date tommorrow = calendar.getTime();
+        Date tomorrow = calendar.getTime();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        eventDate = dateFormat.format(tommorrow);
+        eventDate = dateFormat.format(tomorrow);
 
-        //Die Daten aus defaulEvent raus lesen
+        // Lesen der Daten des ausgewählten Standardereignisses
         defaultEvent.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Daten für das Event gefunden
                     String ImageUrl = dataSnapshot.child("eventImageUrl").getValue(String.class);
                     String endingTime = dataSnapshot.child("endingTime").getValue(String.class);
                     String startingTime = dataSnapshot.child("startingTime").getValue(String.class);
@@ -84,6 +99,7 @@ public class MyDailyBroadcastReceiver extends BroadcastReceiver {
 
                     String sKey = userEventsRef.push().getKey();
                     if (sKey != null && ImageUrl != null && endingTime != null && startingTime != null && eventDescription != null && eventName != null && eventType != null && eventState != null && eventWeight != null && recurring != null && eventDate != null ) {
+                        // Hinzufügen des neuen Benutzerereignisses zur Datenbank
                         userEventsRef.child(sKey).child("eventImageUrl").setValue(ImageUrl);
                         userEventsRef.child(sKey).child("endingTime").setValue(endingTime);
                         userEventsRef.child(sKey).child("startingTime").setValue(startingTime);
@@ -96,6 +112,7 @@ public class MyDailyBroadcastReceiver extends BroadcastReceiver {
                         userEventsRef.child(sKey).child("recurringEventType").setValue(recurring);
                         userEventsRef.child(sKey).child("eventId").setValue(sKey);
 
+                        // Anzeigen der Benachrichtigung
                         showNotification(context, "There is a new event for tomorrow, complete it to feel better and earn more points.", sKey);
                     }
                 } else {
@@ -108,31 +125,28 @@ public class MyDailyBroadcastReceiver extends BroadcastReceiver {
 
             }
         });
-
-
-
-
     }
 
-    private void showNotification(Context context, String text,String id) {
+    // Methode zum Anzeigen der Benachrichtigung
+    private void showNotification(Context context, String text, String id) {
+        // Erstellen eines Notification Channels
         NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         builder.setSmallIcon(R.drawable.ic_info);
         builder.setContentTitle("New daily event");
         builder.setContentText(text);
 
+        // Intent für die Benachrichtigung
         Intent notificationIntent = new Intent(context, ToDoneEventView.class);
-        notificationIntent.putExtra("event-ID",id);
+        notificationIntent.putExtra("event-ID", id);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(contentIntent);
 
-
+        // Erstellen und Anzeigen der Benachrichtigung
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-
         if (notificationManager != null) {
             notificationManager.createNotificationChannel(notificationChannel);
             notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
     }
-
 }

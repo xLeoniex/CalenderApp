@@ -1,3 +1,11 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     Informationsseite zum verstehen der App.
+ *                      Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.DashboardBar;
 
 import androidx.annotation.NonNull;
@@ -38,6 +46,7 @@ public class ApplicationInformation extends AppCompatActivity {
         });
     }
 
+    //Aktionsbar wird freigeschaltet
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.profile_bar, menu);

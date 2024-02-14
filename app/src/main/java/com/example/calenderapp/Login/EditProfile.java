@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     In dieser Ansicht kann der Benutzer seinen Namen
+ *                      ändern, sein Konto löschen, sein Passwort zurücksetzen
+ *                      oder zum Dashboard zurückkehren.
+ *                      Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.Login;
 
 import androidx.annotation.NonNull;
@@ -44,23 +54,23 @@ public class EditProfile extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         back = findViewById(R.id.backHome);
 
-        //User identfizieren
+        // Benutzer identifizieren und Daten anzeigen
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         if (user != null) {
-            // Name, email address, and profile photo Url
+            // E-Mail-Adresse und Benutzername anzeigen
             strEmail  = user.getEmail();
             strUsername = user.getDisplayName();
             edtEmail.setText(strEmail);
             edtUsername.setText(strUsername);
-        }else{
-            //Hier können wir dann den Login-Layout öffnen
+        } else {
+            // Bei fehlendem Benutzer zum Anmeldebildschirm navigieren
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
         }
 
-        //Username ändern
+        // Benutzername ändern
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,20 +95,18 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-
-        //password ändern
+        // Passwort ändern
         btnPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                //Vordefinierte Funktion bei der Firebase (mit Sucess und unsucess)
+                // Passwortänderungs-E-Mail senden
                 auth.sendPasswordResetEmail(strEmail).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(EditProfile.this, "Changing Password link has been sent to your registered Email", Toast.LENGTH_SHORT).show();
-                        //Bei erfolg zu Login wechseln
-                        //Sign-Out befehl der User
+                        // Bei Erfolg zum Anmeldebildschirm wechseln
                         auth.signOut();
                         Intent intent = new Intent(getApplicationContext(), Login.class);
                         startActivity(intent);
@@ -114,7 +122,7 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
-        //Account löschen
+        // Konto löschen
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +139,7 @@ public class EditProfile extends AppCompatActivity {
                                     Intent intent = new Intent(getApplicationContext(), Login.class);
                                     startActivity(intent);
                                     finish();
-                                }else{
+                                } else {
                                     Toast.makeText(EditProfile.this, "Failed to delete account.", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -140,6 +148,7 @@ public class EditProfile extends AppCompatActivity {
             }
         });
 
+        // Zurück zur Anmeldung
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +157,7 @@ public class EditProfile extends AppCompatActivity {
                 finish();
             }
         });
+
 
 
     }

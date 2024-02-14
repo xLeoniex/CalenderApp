@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     Diese Ansicht wird verwendet, um einen Tip zu
+*                       öffnen und seine Daten anzuzeigen. Der Tip kann gelöscht,
+*                       zurückgesetzt oder abgeschlossen werden.
+ *   Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.tips;
 
 import androidx.annotation.NonNull;
@@ -58,8 +68,10 @@ public class OpenTipView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_tip_view);
 
+        // Erhalten der Tip-ID aus der übergebenen Liste
         tipID = getIntent().getStringExtra("tip-ID");
 
+        // Initialisierung der UI-Elemente
         name = findViewById(R.id.tipName);
         description = findViewById(R.id.tipDescription);
         type = findViewById(R.id.tipType);
@@ -69,25 +81,30 @@ public class OpenTipView extends AppCompatActivity {
         btn_cancel = findViewById(R.id.btn_cancel);
         viewKonfetti = findViewById(R.id.view_konfetti);
 
+        // Standardpunkte setzen
         point = "1";
         pointsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("points");
         tipsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Tips");
 
-        //Tip-Daten aus dem Datenbank ablesen
-        DatabaseReference tipRef = tipsRef.child(tipID); // Referenz zum spezifischen Event
+        // Lesen der Tip-Daten aus der Datenbank
+        DatabaseReference tipRef = tipsRef.child(tipID);
         tipRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    // Daten für das Event gefunden
+                    // Tip-Daten gefunden
                     imageURL = dataSnapshot.child("imageUrl").getValue(String.class);
                     descriptionStr = dataSnapshot.child("tipDescription").getValue(String.class);
                     nameStr = dataSnapshot.child("tipTitle").getValue(String.class);
                     typeStr = dataSnapshot.child("tipType").getValue(String.class);
                     state = dataSnapshot.child("tipState").getValue(String.class);
+
+                    // Setzen der UI-Elemente mit den Tip-Daten
                     name.setText(nameStr);
                     description.setText(descriptionStr);
                     type.setText(typeStr);
+
+                    // Laden des Bildes, falls vorhanden, oder setzen eines Standardbildes
                     if (imageURL.equals("NoImage") || imageURL.isEmpty()) {
                         image.setImageResource(R.drawable.relax_icon);
                     } else {
@@ -96,9 +113,11 @@ public class OpenTipView extends AppCompatActivity {
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(image);
                     }
+
+                    // Anpassen des Button-Textes basierend auf dem Tip-Zustand
                     if (state != null && state.equals("inProgress")) {
                         btn_done.setText("COLLECT A POINT");
-                    }else{
+                    } else {
                         btn_done.setText("RESET TIP");
                     }
                 } else {
@@ -110,6 +129,8 @@ public class OpenTipView extends AppCompatActivity {
                 Toast.makeText(OpenTipView.this, "Something wrong, retry later...", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Button-ClickListener für die Zurück- und Löschen-Aktionen
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,10 +145,12 @@ public class OpenTipView extends AppCompatActivity {
                 goBack();
             }
         });
+
+        // Button-ClickListener für die Abschlussaktion
         btn_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Datum von Zeitpunkt der Erledigung
+                // Datum des Abschlusses erhalten
                 tipRef.child("tipState").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -136,13 +159,16 @@ public class OpenTipView extends AppCompatActivity {
                             Date currentDate = new Date();
                             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                             tipDate = dateFormat.format(currentDate);
+
+                            // Punkte hinzufügen und Benachrichtigung anzeigen
                             addpoint("Month");
                             addpoint("Week");
                             Toast.makeText(OpenTipView.this, "You have received one point.", Toast.LENGTH_SHORT).show();
-                            //State auf Done setzen
+
+                            // Tip-Zustand auf "Done" setzen und Konfetti-Animation starten
                             tipRef.child("tipState").setValue("Done");
                             startKonfetti();
-                        }else{
+                        } else {
                             tipRef.child("tipState").setValue("inProgress");
                             goBack();
                         }
@@ -158,6 +184,7 @@ public class OpenTipView extends AppCompatActivity {
     }
 
     public void goBack() {
+        //Intent zurück zu der Tipp-Hauptansicht
         Intent intent = new Intent(getApplicationContext(), AllTipsView.class);
         startActivity(intent);
         finish();
@@ -165,9 +192,13 @@ public class OpenTipView extends AppCompatActivity {
 
 
     public void addpoint(String weekMonth){
+        // Wählen zwischen wöchentliche oder monatliche Aktivität handelt:
         if (weekMonth.equals("Week") || weekMonth.equals("Month")) {
+            // Punkte und Zeitpunkt der Aktivität in der Datenbank speichern
             pointsRef.child(weekMonth).child("object").child(tipID).child("point").setValue(point);
             pointsRef.child(weekMonth).child("object").child(tipID).child("time").setValue(tipDate);
+
+            // Gesamtpunktzahl aktualisieren
             String tmp = "Total_Current_" + weekMonth;
             pointsRef.child(weekMonth).child(tmp).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -186,9 +217,11 @@ public class OpenTipView extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     public void startKonfetti() {
+        //Konfetti-Animation Einstellungen
         viewKonfetti.build()
                 .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                 .setDirection(0.0, 359.0)
@@ -201,9 +234,12 @@ public class OpenTipView extends AppCompatActivity {
                 .streamFor(300, 4000L);
 
         //eine Verzögerung hinzuzufügen
-        // nach der Konfetti-Animation zurueck gehen
+        //nach der Konfetti-Animation zurueck gehen
         new Handler().postDelayed(this::goBack, 3000L);
     }
+
+
+    //Buttons für Aktionsleiste aktivieren
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

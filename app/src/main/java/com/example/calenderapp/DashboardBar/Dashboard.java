@@ -1,3 +1,16 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     Das Dashboard bietet eine zentrale Anlaufstelle
+ *                      mit einer Begrüßungsnachricht und Schaltflächen
+ *                      für die wichtigsten Funktionen. Außerdem eine
+ *                      Schaltfläche für die Informationsansicht. Die
+ *                      Alarmkonfiguration ist integriert, um Benachrichtigungen
+ *                      für tägliche, wöchentliche und monatliche Ereignisse zu planen.
+ *                      Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.DashboardBar;
 
 import androidx.annotation.NonNull;
@@ -58,6 +71,7 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        // Die MainActivity ist die Hauptaktivität der Anwendung, die nach dem Start angezeigt wird.
         textWelcome = findViewById(R.id.totalPoints);
         information = findViewById(R.id.information);
         btn_calender = findViewById(R.id.btn_calenderView);
@@ -65,33 +79,35 @@ public class Dashboard extends AppCompatActivity {
         btn_tips = findViewById(R.id.btn_tipsView);
         tipViewModel = new ViewModelProvider(this).get(TipViewModel.class);
 
-        //Premission für Notifications
+        // Berechtigung für Benachrichtigungen wird angefordert.
         requestRunTimePermission();
-        //Alarm für jeden Sonntag 23:59 konfiguriert
+        // Alarm für jeden Sonntag um 23:59 Uhr wird konfiguriert.
         startWeeklyAlert();
-        //Alarm für letzten Tag des Monats 23:59
+        // Alarm für den letzten Tag des Monats um 23:59 Uhr wird konfiguriert.
         startMonthlyAlert();
-        //Alarm für jeden Tag
+        // Alarm für jeden Tag wird gestartet.
         startDailyAlert();
+
+        // Ein Observer wird verwendet, um Tipps aus dem ViewModel zu erhalten und einen wiederkehrenden Alarm mit einem zufälligen Tipp zu setzen.
         tipViewModel.getDataFromRepository().observe(this, new Observer<List<TipModel>>() {
             @Override
             public void onChanged(List<TipModel> tipModels) {
                 if(!tipModels.isEmpty()){
                     Random random = new Random();
                     int idx = random.nextInt(tipModels.size());
-                    Log.d("AlarmStarted","Alarm is startin...." );
+                    Log.d("AlarmStarted","Alarm is starting...." );
                     setRepeatingAlarm(tipModels.get(idx));
                 }
             }
         });
 
-
-        //Firebase-Variablen
+        // Initialisierung der Firebase-Variablen
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        //nun schauen ob user login ist bzw. exisitiert
+
+        // Überprüfung, ob ein Benutzer angemeldet ist und eine Begrüßungsnachricht wird angezeigt.
         if(user == null || user.getDisplayName() == null){
-            //Dann muss sich Loggen --> zu login aktivity
+            // Wenn kein Benutzer angemeldet ist, wird zur Login-Aktivität navigiert.
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
@@ -100,6 +116,8 @@ public class Dashboard extends AppCompatActivity {
             welcome = welcome + " "+ user.getDisplayName() + "!";
             textWelcome.setText(welcome);
         }
+
+        // OnClickListener für den Kalender-Button, der zur MainActivity führt.
         btn_calender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +126,8 @@ public class Dashboard extends AppCompatActivity {
                 finish();
             }
         });
+
+        // OnClickListener für den Punkte-Button, der zur PointsView führt.
         btn_points.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +136,8 @@ public class Dashboard extends AppCompatActivity {
                 finish();
             }
         });
+
+        // OnClickListener für den Tipps-Button, der zur AllTipsView führt.
         btn_tips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,11 +147,11 @@ public class Dashboard extends AppCompatActivity {
             }
         });
 
+        // OnClickListener für die Informationsansicht, die zur ApplicationInformation führt.
         information.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),
-                        ApplicationInformation.class);
+                Intent intent = new Intent(getApplicationContext(), ApplicationInformation.class);
                 startActivity(intent);
                 finish();
             }
@@ -184,13 +206,13 @@ public class Dashboard extends AppCompatActivity {
         }
     }
 
-    //tages alarm für neue events
+    // Methode zum Starten des täglichen Alarms für neue Events
     public void startDailyAlert() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(this, MyDailyBroadcastReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Alarm jeden Tag am 00:00
+        // Alarm wird jeden Tag um 00:00 Uhr gestartet
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
@@ -200,14 +222,15 @@ public class Dashboard extends AppCompatActivity {
             alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
                     calendar.getTimeInMillis(),
-                    24 * 60 * 60 * 1000,  // Wiederhole jeden Tag-------1000 , -------- 24 * 60 * 60 * 1000
+                    24 * 60 * 60 * 1000,  // Wiederhole jeden Tag
                     pendingIntent
             );
 
             Log.d("DailyAlarmStarted","Alarm wird jeden Tag um 00:00 gestartet" );
         }
-
     }
+
+    // Methode zum Setzen eines wiederkehrenden Alarms mit einem zufälligen Tipp
     private void setRepeatingAlarm(TipModel tipModel) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(this, TipNotificationPublisher.class);
@@ -215,7 +238,7 @@ public class Dashboard extends AppCompatActivity {
         alarmIntent.putExtra("TipText",tipModel.getTipDescription());
         alarmIntent.putExtra("TipId","10");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        long intervalMillis = 24*60*60*1000; //every 6 hours 6*60*60*
+        long intervalMillis = 24*60*60*1000; // Jeden Tag nach 24 Stunden
 
         if (alarmManager != null) {
             alarmManager.setInexactRepeating(
@@ -224,17 +247,17 @@ public class Dashboard extends AppCompatActivity {
                     intervalMillis,
                     pendingIntent
             );
-            Log.d("AlarmStarted","Alarm is startin...." );
+            Log.d("AlarmStarted","Alarm wird gestartet...." );
         }
     }
 
-    //Wochen Alarm konfigurieren
+    // Methode zum Starten des wöchentlichen Alarms
     public void startWeeklyAlert() {
-       AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(this, MyWeeklyBroadcastReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Alarm auf jeden Sonntag um 23:59 Uhr
+        // Alarm wird jeden Sonntag um 23:59 Uhr gestartet
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -245,31 +268,32 @@ public class Dashboard extends AppCompatActivity {
             alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
                     calendar.getTimeInMillis(),
-                    7 * 24 * 60 * 60 * 1000 ,  // Wiederhole jede Woche
+                    7 * 24 * 60 * 60 * 1000,  // Wiederhole jede Woche
                     pendingIntent
             );
             Log.d("WeeklyAlarmStarted","Alarm wird jeden Sonntag um 23:59 gestartet" );
         }
     }
-    //Alarm am letzten Tag des Monats ausführen
+
+    // Methode zum Starten des monatlichen Alarms
     public void startMonthlyAlert() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(this, MyMonthlyBroadcastReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // Alarm am erster Tag des nächsten Monats um 00:00 Uhr
+        // Alarm wird am ersten Tag des nächsten Monats um 00:00 Uhr gestartet
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, 1); // Erster Tag des aktuellen Monats
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        calendar.add(Calendar.MONTH, 1); // Nächste Monat einstellen
+        calendar.add(Calendar.MONTH, 1); // Nächsten Monat einstellen
 
         if (alarmManager != null) {
             alarmManager.setRepeating(
                     AlarmManager.RTC_WAKEUP,
                     calendar.getTimeInMillis(),
-                     24 * 60 * 60 * 1000,  // Wiederhole jeden Tag
+                    24 * 60 * 60 * 1000,  // Wiederhole jeden Tag
                     pendingIntent
             );
 
@@ -277,4 +301,5 @@ public class Dashboard extends AppCompatActivity {
         }
 
     }
+
 }

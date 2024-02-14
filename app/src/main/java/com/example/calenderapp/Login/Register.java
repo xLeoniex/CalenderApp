@@ -1,3 +1,17 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     ermöglicht es Benutzern, sich für ein neues Konto
+ *                      zu registrieren, indem sie eine E-Mail-Adresse,
+ *                      ein Passwort und einen Benutzernamen eingeben.
+*                       Nach der erfolgreichen Registrierung werden ihre
+*                       Daten in der Firebase-Authentifizierung und in Realtime
+*                       Database gespeichert und sie werden automatisch zum Login
+*                       weitergeleitet. (Es werden auch alle default-Tipps zugewiesen)
+ *                      Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.Login;
 
 import androidx.annotation.NonNull;
@@ -46,85 +60,80 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //Firebase variable Authentification zuweisen
+        // Firebase-Authentifizierungsvariable initialisieren
         mAuth = FirebaseAuth.getInstance();
 
-        //Die Variablen der Layout zuweisen
+        // Layout-Variablen zuweisen
+        editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
-        editTextEmail = findViewById(R.id.email); //es gibt zwei felder dann die zu heißen
         editTextUsername = findViewById(R.id.username);
-        editTextConfirmPassword= findViewById(R.id.confirmPassword);
+        editTextConfirmPassword = findViewById(R.id.confirmPassword);
         buttonReg = findViewById(R.id.btn_register);
         progressBar = findViewById(R.id.progressBar);
-
-        //Diesen Text ist auch wie ein Button
         textView = findViewById(R.id.loginNow);
+
+        // Klicklistener für "Jetzt einloggen"-Text definieren
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Wir mussen ein Intent erstellen, um login-Aktivity zuzugreifen
+                // Zu Loginansicht wechseln
                 Intent intent = new Intent(getApplicationContext(), Login.class);
                 startActivity(intent);
                 finish();
             }
         });
 
-        //Button definieren
+        // Klicklistener für "Registrieren"-Button definieren
         buttonReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Progress-Bar anzeigen
+                // Progress-Bar anzeigen
                 progressBar.setVisibility(View.VISIBLE);
-                //Email-Passwort speichern
-                String username, email, password, confirmPassword;
+
+                // E-Mail, Passwort, Benutzername und Bestätigung des Passworts aus den Feldern abrufen
+                String email, password, username, confirmPassword;
                 email = editTextEmail.getText().toString();
                 password = editTextPassword.getText().toString();
                 confirmPassword = editTextConfirmPassword.getText().toString();
                 username = editTextUsername.getText().toString();
 
-                //Untersuchen, ob die Felder leer sind
-                if (TextUtils.isEmpty(email)){
-                    Toast.makeText(Register.this, "Enter a Email-Adress",Toast.LENGTH_SHORT).show();
+                // Überprüfen, ob die Felder nicht leer sind und das Passwort mit der Bestätigung übereinstimmt
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(Register.this, "Enter an Email-Address", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
-                if (TextUtils.isEmpty(password)){
-                    Toast.makeText(Register.this, "Enter a Password",Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(Register.this, "Enter a Password", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
                 if (!password.equals(confirmPassword)) {
-                    Toast.makeText(Register.this, "Passwords do not match",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
 
-                //Der Code um User zu erstellen unter ... kopieren (Ohne Log und updateUI)
-                //https://firebase.google.com/docs/auth/android/password-auth?hl=de#java_1
+                // Benutzer mit E-Mail und Passwort erstellen
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                //Progressbar wieder schließen
+                                // Progress-Bar schließen
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
-
-
-                                    //------------------------------------------------------------------------------------------------
+                                    // Anmeldung erfolgreich, Profil-Updates durchführen und Daten speichern
                                     FirebaseUser user = mAuth.getCurrentUser();
-
                                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(username).build(); // Hier setzt du den Benutzernamen
-
+                                            .setDisplayName(username).build();
                                     assert user != null;
                                     user.updateProfile(profileUpdates)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
-                                                        Snackbar.make(Register.this.getCurrentFocus(),"Account Created " + username+ " .",Snackbar.LENGTH_SHORT).show();
-                                                        //Toast.makeText(Register.this, "Account Created " + username+ " .", Toast.LENGTH_SHORT).show();
-                                                        //Nach dem User erstellt wurde speichern wir diese in den Datenbank
+                                                        // Benutzer erfolgreich erstellt, Daten speichern
+                                                        Toast.makeText(Register.this, "Account Created " + username + ".", Toast.LENGTH_SHORT).show();
                                                         String uid = user.getUid();
                                                         dbref.child(uid).child("name").setValue(username);
                                                         dbref.child(uid).child("points").child("Month").child("High_Score_Month").setValue("0");
@@ -134,18 +143,16 @@ public class Register extends AppCompatActivity {
                                                         dbref.child(uid).child("points").child("Week").child("Total_Current_Week").setValue("0");
                                                         dbref.child(uid).child("points").child("Week").child("Total_Last_Week").setValue("0");
                                                         defaultTips(uid);
+                                                        // Zu Loginansicht wechseln
+                                                        Intent intent = new Intent(getApplicationContext(), Login.class);
+                                                        startActivity(intent);
+                                                        finish();
                                                     }
                                                 }
                                             });
-
-                                    //---------------------------------------------------------------------------------------------------*/
-                                    Intent intent = new Intent(getApplicationContext(), Login.class);
-                                    startActivity(intent);
-                                    finish();
-
                                 } else {
+                                    // Anmeldung fehlgeschlagen, Fehlermeldung anzeigen
                                     Toast.makeText(Register.this, "Register failed.", Toast.LENGTH_SHORT).show();
-
                                 }
                             }
                         });
@@ -153,23 +160,27 @@ public class Register extends AppCompatActivity {
         });
     }
     public void defaultTips(String uid){
-        //User Tip ref
+        // User Tip-Referenz
         DatabaseReference userTipRef = dbref.child(uid).child("Tips");
-        //default Tips ref
+        // Default-Tipps-Referenz
         DatabaseReference defaultTipsRef = FirebaseDatabase.getInstance().getReference("Tips");
 
         defaultTipsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Iteration über die Default-Tipps
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    String ID = (String) dataSnapshot.getKey();
+                    // Schlüssel des Default-Tipps abrufen
+                    String ID = dataSnapshot.getKey();
                     if (ID != null) {
+                        // Daten des Default-Tipps abrufen
                         String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
                         String tipDescription = dataSnapshot.child("tipDescription").getValue(String.class);
                         String tipState = dataSnapshot.child("tipState").getValue(String.class);
                         String tipTitle = dataSnapshot.child("tipTitle").getValue(String.class);
                         String tipType = dataSnapshot.child("tipType").getValue(String.class);
 
+                        // Neuen Schlüssel für den Benutzer-Tipp erstellen und Daten speichern
                         String sKey = userTipRef.push().getKey();
                         if(sKey != null){
                             userTipRef.child(sKey).child("imageUrl").setValue(imageUrl);
@@ -188,6 +199,5 @@ public class Register extends AppCompatActivity {
                 Log.d("Error defaultTips", "Some thing went wrong from Database");
             }
         });
-
     }
 }

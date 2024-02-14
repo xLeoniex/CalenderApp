@@ -1,3 +1,16 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     Das Ziel dieser Klasse ist es, das Datum
+ *                      von Ereignissen zu überprüfen, so dass beim
+ *                      Punkt Sammlung die richtige Woche oder der
+ *                      richtige Monat zugeordnet werden kann.
+ *                      Oder wenn das Datum in der Zukunft liegt,
+ *                      ist dies nicht möglich.
+ *   Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.Points;
 
 import android.icu.text.SimpleDateFormat;
@@ -8,13 +21,18 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DataChecker {
+    // Kalenderinstanz für die Datumsmanipulation
     Calendar cal = Calendar.getInstance();
+    // Aktuelles Jahr und Monat ermitteln
     int currentYear = cal.get(Calendar.YEAR);
     int currentMonth = cal.get(Calendar.MONTH) + 1;
-    // Datum in ein Date-Objekt umwandeln
+
+    // Datum im Format "yyyy-MM-dd" für die Konvertierung
     SimpleDateFormat dateForm = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     Date date;
-    public boolean currentMonth(String eventDate){
+
+    // Methode zur Überprüfung, ob ein Datum im aktuellen Monat liegt
+    public boolean currentMonth(String eventDate) {
         try {
             date = dateForm.parse(eventDate);
             if (date != null) {
@@ -32,7 +50,8 @@ public class DataChecker {
         }
         return false;
     }
-    //Überprüfen ob ein Datum in aktuellen Monat Liegt
+
+    // Methode zur Überprüfung, ob ein Datum in der aktuellen Woche liegt
     public boolean currentWeek(String eventDate) {
         try {
             date = dateForm.parse(eventDate);
@@ -47,6 +66,8 @@ public class DataChecker {
         }
         return false;
     }
+
+    // Methode zur Überprüfung, ob ein Datum in der letzten Woche lag
     public boolean lastWeek(String eventDate) {
         try {
             date = dateForm.parse(eventDate);
@@ -62,7 +83,8 @@ public class DataChecker {
         }
         return false;
     }
-    // Überprüfen, ob ein Datum in der Zukunft liegt
+
+    // Methode zur Überprüfung, ob ein Datum in der Zukunft liegt
     public boolean isFutureDate(String eventDate) {
         try {
             date = dateForm.parse(eventDate);

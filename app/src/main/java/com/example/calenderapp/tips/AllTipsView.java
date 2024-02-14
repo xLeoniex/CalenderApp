@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     Diese Ansicht zeigt alle Tips, die Liste sollte auswählbar sein,
+ *                      man sollte die Möglichkeit haben, einen neuen Tip zu erstellen,
+ *                      alle Tips zurückzusetzen oder auch zu löschen.
+ *   Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.tips;
 
 import androidx.annotation.NonNull;
@@ -32,8 +42,7 @@ public class AllTipsView extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser user = mAuth.getCurrentUser();
     DatabaseReference tipsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Tips");
-
-    Button  btn_reset, btn_delet;
+    Button  btn_reset, btn_delete;
     ImageButton btn_addTip;
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -45,13 +54,15 @@ public class AllTipsView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_tips_view);
 
+        // Initialisierung der UI-Elemente und des Adapters für die ListView
         btn_addTip = findViewById(R.id.btn_addTip);
-        btn_delet = findViewById(R.id.btn_deleteAll);
+        btn_delete = findViewById(R.id.btn_deleteAll);
         btn_reset = findViewById(R.id.btn_resetAll);
         listView = findViewById(R.id.list_allTips);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,allTips);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allTips);
         final boolean[] emptyList = {false};
 
+        // Listener für Änderungen in der Datenbankstruktur für Tipps
         tipsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -61,16 +72,18 @@ public class AllTipsView extends AppCompatActivity {
                     String tmp = "No tips available";
                     allTips.add(tmp);
                     emptyList[0] = true;
-                }else{
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                } else {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         String ID = (String) dataSnapshot.getKey();
                         if (ID != null) {
+                            // Tip-Daten aus der Datenbank lesen
                             String name = dataSnapshot.child("tipTitle").getValue(String.class);
                             String type = dataSnapshot.child("tipType").getValue(String.class);
                             String state = dataSnapshot.child("tipState").getValue(String.class);
                             if (name != null && type != null && state != null) {
-                                String out = name + " (" +type + ") ";
-                                if(state.equals("inProgress")) {
+                                // Zusammenstellung des Listeneintrags basierend auf den Tip-Daten
+                                String out = name + " (" + type + ") ";
+                                if (state.equals("inProgress")) {
                                     out = out + "Not completed";
                                 }
                                 allTips.add(out);
@@ -85,15 +98,16 @@ public class AllTipsView extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Bei Fehler in der Datenbankabfrage
             }
         });
 
+        // Listener für Klicks auf ListView-Einträge
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                //Int Position gibt uns an wo der Item sich befindet
-                if(!emptyList[0]) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Behandlung des Klick-Ereignisses, falls die Liste nicht leer ist
+                if (!emptyList[0]) {
                     String ID = tipsIDs.get(position);
                     Intent intent = new Intent(getApplicationContext(), OpenTipView.class);
                     intent.putExtra("tip-ID", ID);
@@ -103,13 +117,16 @@ public class AllTipsView extends AppCompatActivity {
             }
         });
 
+        // Button-ClickListener für das Hinzufügen neuer Tipps
         btn_addTip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent createTipsIntent = new Intent(AllTipsView.this,CreateTipsActivity.class);
+                Intent createTipsIntent = new Intent(AllTipsView.this, CreateTipsActivity.class);
                 startActivity(createTipsIntent);
             }
         });
+
+        // Button-ClickListener für das Zurücksetzen aller Tipps auf den Status "inProgress"
         btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,26 +136,30 @@ public class AllTipsView extends AppCompatActivity {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             String ID = (String) dataSnapshot.getKey();
                             if (ID != null) {
+                                // Tipps auf den Status "inProgress" zurücksetzen
                                 DatabaseReference tipRef = tipsRef.child(ID);
                                 tipRef.child("tipState").setValue("inProgress");
-
                             }
                         }
-
                     }
+
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        // Bei Fehler in der Datenbankabfrage
                     }
                 });
             }
         });
-        btn_delet.setOnClickListener(new View.OnClickListener() {
+
+        // Button-ClickListener für das Löschen aller Tipps
+        btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Alle Tipps aus der Datenbank löschen
                 tipsRef.removeValue();
             }
         });
+
     }
 
 

@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     Hier sollte eine Punkteanzeige für Monat und Woche erfolgen,
+ *                      bei Betätigung von RadioButtons werden entsprechende Animationen
+ *                      ausgeführt.
+ *   Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.Points;
 
 import androidx.annotation.NonNull;
@@ -65,6 +75,7 @@ public class PointsView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_points_view);
 
+        //Ob man sich in Woche oder Monat Ansicht befindet
         time = getIntent().getStringExtra("time");
 
         total = findViewById(R.id.totalPoints);
@@ -82,7 +93,7 @@ public class PointsView extends AppCompatActivity {
         adapter=new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,dataToShow);
 
-
+        // Überprüfen des übergebenen Zeitraums (Woche oder Monat) und entsprechende Aktionen ausführen
         if(time != null){
             if(time.equals("Week")){
                 radioBtnWeek.setChecked(true);
@@ -92,10 +103,12 @@ public class PointsView extends AppCompatActivity {
                 setTextforMonth();
             }
         }else{
+            // Standardmäßige Anzeige für den Monat
             viewTotalPoints("Month");
             MonthWeekInfos(monthActivities,  "Month");
         }
 
+        // RadioGroup-Listener für die Auswahl zwischen Woche und Monat
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -127,7 +140,7 @@ public class PointsView extends AppCompatActivity {
 
     }
 
-    //Aufruden der erledigte Aktivitäten aus der DatenBank für den Monat oder Woche
+    // Funktion zum Abrufen der abgeschlossenen Aktivitäten aus der Datenbank für den Monat oder die Woche
     public void MonthWeekInfos(ArrayList<String> activities, String MonthWeek){
         DatabaseReference objectsRef = pointsRef.child(MonthWeek).child("object");
         objectsRef.addValueEventListener(new ValueEventListener() {
@@ -151,7 +164,7 @@ public class PointsView extends AppCompatActivity {
                                         String endingTime = dataSnapshot.child("endingTime").getValue(String.class);
                                         String weight = dataSnapshot.child("eventWeight").getValue(String.class);
 
-
+                                        //Element für die Liste erstellen
                                         if (name != null && date != null && startingTime != null && endingTime != null && weight != null) {
                                             String out = name + " at  " + date + " (" + startingTime + "-" + endingTime + ") " + " level: " + weight;
                                             activities.add(out);
@@ -169,6 +182,7 @@ public class PointsView extends AppCompatActivity {
                         }
                     }
                 }else {
+                    //Falls noch keine Punkte in dem Zeitraum gesammelt wurde
                     dataToShow.add("You have not yet completed any activities");
                     recentEvents.setAdapter(adapter);
                 }
@@ -281,6 +295,7 @@ public class PointsView extends AppCompatActivity {
 
     }
 
+    // Setzt den Text entsprechend für den Monat
     public void setTextforMonth(){
         radioBtnMonth.setTextColor(Color.WHITE);
         radioBtnWeek.setTextColor(Color.GRAY);
@@ -295,6 +310,7 @@ public class PointsView extends AppCompatActivity {
         MonthWeekInfos(monthActivities,  "Month");
     }
 
+    // Setzt den Text entsprechend für die Woche
     public void setTextforWeek(){
         radioBtnWeek.setTextColor(Color.WHITE);
         radioBtnMonth.setTextColor(Color.GRAY);

@@ -1,3 +1,16 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     In dieser Ansicht kann sich der Benutzer
+ *                      mit Email und Passwort einloggen, diese Ansicht
+ *                      ist der Launcher der Anwendung, wenn er eingeloggt
+ *                      ist, wechselt die Ansicht zum Dashboard. Von dieser
+ *                      Ansicht aus sollte man zusätzlich zu Registrierung
+ *                      und Passwort zurücksetzen gelangen.
+ *                      Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.Login;
 
 import androidx.annotation.NonNull;
@@ -41,7 +54,7 @@ public class Login extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            //Wenn angemeldet ist dann Main öffnen
+            //Wenn angemeldet ist dann Dashboard öffnen
             Intent intent = new Intent(getApplicationContext(), Dashboard.class);
             startActivity(intent);
             finish();
@@ -53,41 +66,43 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //Firebase variable Authentification zuweisen
+        // Firebase-Authentifizierungsvariable initialisieren
         mAuth = FirebaseAuth.getInstance();
 
-        //Die Variablen der Layout zuweisen
+        // Layout-Variablen zuweisen
         editTextPassword = findViewById(R.id.password);
-        editTextEmail = findViewById(R.id.email); //es gibt zwei felder dann die zu heißen
+        editTextEmail = findViewById(R.id.email);
         buttonLogin = findViewById(R.id.btn_login);
         progressBar = findViewById(R.id.progressBar);
-
-        //Diesen Text ist auch wie ein Button
         resetPassword = findViewById(R.id.resetPassword);
         textView = findViewById(R.id.RegisterNow);
+
+        // Klicklistener für "Registrieren"-Text definieren
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Wir mussen ein Intent erstellen, um login-Aktivity zuzugreifen
+                // Zu Registrierungsansicht navigieren
                 Intent intent = new Intent(getApplicationContext(), Register.class);
                 startActivity(intent);
                 finish();
             }
         });
-        //Login Button
+
+        // Klicklistener für "Login"-Button definieren
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Progress-Bar anzeigen
+                // Progress-Bar anzeigen
                 progressBar.setVisibility(View.VISIBLE);
-                //Email-Passwort speichern
+
+                // E-Mail und Passwort aus den Feldern abrufen
                 String email, password;
                 email = editTextEmail.getText().toString();
                 password = editTextPassword.getText().toString();
 
-                //Untersuchen, ob die Felder leer sind
+                // Überprüfen, ob die Felder nicht leer sind
                 if (TextUtils.isEmpty(email)) {
-                    Toast.makeText(Login.this, "Enter a Email-Adress", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Enter an Email-Address", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
@@ -97,31 +112,32 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                //Schau in der Docu beim Anmelden Punkt3
+                // Anmelden mit E-Mail und Passwort
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
+                                    // Anmeldung erfolgreich, zur Hauptansicht navigieren
                                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                                    //einen Intent um MainAktivity zu offnen
                                     Intent intent = new Intent(getApplicationContext(), Dashboard.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
+                                    // Anmeldung fehlgeschlagen, Fehlermeldung anzeigen
                                     Toast.makeText(Login.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
-
                                 }
                             }
                         });
-
             }
         });
+
+        // Klicklistener für "Passwort vergessen"-Text definieren
         resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Wir mussen ein Intent erstellen, um login-Aktivity zuzugreifen
+                // Zur Passwort-Zurücksetzen-Ansicht navigieren
                 Intent intent = new Intent(getApplicationContext(), ForgotPassword.class);
                 startActivity(intent);
                 finish();

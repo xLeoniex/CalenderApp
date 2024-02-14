@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ehsan Khademi
+ *   SubAuthor :        None
+ *   Beschreibung :     Es handelt sich um eine Einzelansicht der Veranstaltung. Diese können hier gelöscht werden.
+ *                      Die Besonderheit ist die Punktesammlung, da mit dem Datachecker zuerst geprüft wird,
+ *                      ob das Datum in den Rahmen passt.
+ *   Letzte Änderung :  13/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.Points;
 
 import androidx.annotation.NonNull;
@@ -76,6 +86,7 @@ public class ToDoneEventView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_done_event_view);
 
+        // Initialisierung der Referenzen und UI-Elemente
         eventsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("Events");
         pointsRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("points");
         eventID = getIntent().getStringExtra("event-ID");
@@ -91,17 +102,17 @@ public class ToDoneEventView extends AppCompatActivity {
         btn_delete = findViewById(R.id.btn_delete);
         viewKonfetti = findViewById(R.id.view_konfetti);
 
-        //Spinner Funktionalität definieren
+        // Spinner Funktionalität definieren
         spinner = findViewById(R.id.eventLevelSpinner);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,eventLevels);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eventLevels);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         eventLevels.add("Vital"); //5
@@ -112,12 +123,11 @@ public class ToDoneEventView extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         spinner.setAdapter(adapter);
 
-        //Event-Daten aus dem Datenbank ablesen
-        eventRef = eventsRef.child(eventID); // Referenz zum spezifischen Event
+        // Event-Daten aus der Datenbank lesen
+        eventRef = eventsRef.child(eventID);
         eventRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //WICHTIG: Alle Aktualisierungen der von der DatenBank abhängen müssen in diesen Block geschehen
                 if (dataSnapshot.exists()) {
                     // Daten für das Event gefunden
                     ImageUrl = dataSnapshot.child("eventImageUrl").getValue(String.class);
@@ -129,6 +139,8 @@ public class ToDoneEventView extends AppCompatActivity {
                     eventType = dataSnapshot.child("eventType").getValue(String.class);
                     eventWeight = dataSnapshot.child("eventWeight").getValue(String.class);
                     recurring = dataSnapshot.child("recurringEventType").getValue(String.class);
+
+                    // Setzen der UI-Elemente mit den Event-Daten
                     name.setText(eventName);
                     date.setText(eventDate);
                     String tmp = startingTime + " - " + endingTime;
@@ -136,9 +148,11 @@ public class ToDoneEventView extends AppCompatActivity {
                     description.setText(eventDescription);
                     typ.setText(eventType);
                     spinner.setSelection(eventLevels.indexOf(eventWeight));
+
+                    // Laden des Bildes oder setzen eines Standardbildes
                     if (ImageUrl.equals("NoImage")) {
                         image.setImageResource(R.drawable.relax_icon);
-                    }else {
+                    } else {
                         Glide.with(ToDoneEventView.this).
                                 load(ImageUrl).
                                 diskCacheStrategy(DiskCacheStrategy.ALL).
@@ -148,18 +162,18 @@ public class ToDoneEventView extends AppCompatActivity {
                     Toast.makeText(ToDoneEventView.this, "Something wrong, retry!", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(ToDoneEventView.this, "Something wrong, retry later...", Toast.LENGTH_SHORT).show();
             }
         });
 
-
-        //Buttons-Definieren
+        // Button-ClickListener definieren
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               goBack();
+                goBack();
             }
         });
 
@@ -173,8 +187,9 @@ public class ToDoneEventView extends AppCompatActivity {
                         if (state != null && state.equals("inProgress")) {
                             String selectedValue = spinner.getSelectedItem().toString();
                             point = pointsNumber(selectedValue);
-                            //in Points DatenBank eintragen --> Datum ablesen Monat oder Woche zuordnen
-                            if(!dataChecker.isFutureDate(eventDate)) {
+
+                            // Punkte hinzufügen und Benachrichtigung anzeigen
+                            if (!dataChecker.isFutureDate(eventDate)) {
                                 boolean check = false;
                                 if (dataChecker.currentMonth(eventDate)) {
                                     addpoints("Month");
@@ -183,22 +198,22 @@ public class ToDoneEventView extends AppCompatActivity {
                                 if (dataChecker.currentWeek(eventDate)) {
                                     addpoints("Week");
                                     check = true;
-                                }else if (dataChecker.lastWeek(eventDate)) {
+                                } else if (dataChecker.lastWeek(eventDate)) {
                                     addpoints("lastWeek");
                                     check = true;
                                 }
                                 if (check) {
                                     Toast.makeText(ToDoneEventView.this, "You have received " + point + " points.", Toast.LENGTH_SHORT).show();
-                                    //State auf Done setzen
+                                    // Event-Status auf "Done" setzen und Konfetti-Animation starten
                                     eventsRef.child(eventID).child("eventState").setValue("Done");
                                     startKonfetti();
-                                }else{
+                                } else {
                                     Toast.makeText(ToDoneEventView.this, "Event is too old to collect points!", Toast.LENGTH_SHORT).show();
                                 }
-                            }else{
+                            } else {
                                 Toast.makeText(ToDoneEventView.this, "You cannot collect points for events in the future", Toast.LENGTH_SHORT).show();
                             }
-                        }else{
+                        } else {
                             Toast.makeText(ToDoneEventView.this, "Points already collected!", Toast.LENGTH_SHORT).show();
                             goBack();
                         }
@@ -206,41 +221,41 @@ public class ToDoneEventView extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
-
-
-
             }
         });
 
         btn_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Editieren des Events
                 Intent editIntent = new Intent(ToDoneEventView.this, CreateEventsActivity.class);
-                editIntent.putExtra("Name",eventName);
-                editIntent.putExtra("Date",eventDate);
-                editIntent.putExtra("StartingTime",startingTime);
-                editIntent.putExtra("EndingTime",endingTime);
-                editIntent.putExtra("Description",eventDescription);
-                editIntent.putExtra("Id",eventID);
-                editIntent.putExtra("State",state);
-                editIntent.putExtra("Recurring",recurring);
-                editIntent.putExtra("Type",eventType);
-                editIntent.putExtra("Weight",eventWeight);
-                editIntent.putExtra("Url",ImageUrl);
+                editIntent.putExtra("Name", eventName);
+                editIntent.putExtra("Date", eventDate);
+                editIntent.putExtra("StartingTime", startingTime);
+                editIntent.putExtra("EndingTime", endingTime);
+                editIntent.putExtra("Description", eventDescription);
+                editIntent.putExtra("Id", eventID);
+                editIntent.putExtra("State", state);
+                editIntent.putExtra("Recurring", recurring);
+                editIntent.putExtra("Type", eventType);
+                editIntent.putExtra("Weight", eventWeight);
+                editIntent.putExtra("Url", ImageUrl);
                 startActivity(editIntent);
             }
         });
+
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Löschen des Events
                 eventRef.removeValue();
                 Toast.makeText(ToDoneEventView.this, "Event has been deleted.", Toast.LENGTH_SHORT).show();
                 goBack();
             }
         });
+
     }
 
 
