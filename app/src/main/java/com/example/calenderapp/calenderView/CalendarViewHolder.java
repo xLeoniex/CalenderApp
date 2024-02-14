@@ -10,7 +10,12 @@ import com.example.calenderapp.R;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+/***************************************************/
+/*  Author : Leonie Seika                          */
+/*  SubAuthor :                                    */
+/*  Beschreibung :                                 */
+/*  Letzte Änderung :                              */
+/***************************************************/
 public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 {
     private final ArrayList<LocalDate> days;

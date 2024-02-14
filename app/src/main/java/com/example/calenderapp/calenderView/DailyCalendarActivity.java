@@ -52,7 +52,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
+/***************************************************/
+/*  Author : Leonie Seika                          */
+/*  SubAuthor :                                    */
+/*  Beschreibung :                                 */
+/*  Letzte Änderung :                              */
+/***************************************************/
 public class DailyCalendarActivity extends AppCompatActivity{
     private TextView monthDayText;
     private TextView dayOfWeekTV;

@@ -34,7 +34,12 @@ import com.google.firebase.auth.FirebaseUser;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+/***************************************************/
+/*  Author : Leonie Seika                          */
+/*  SubAuthor :                                    */
+/*  Beschreibung :                                 */
+/*  Letzte Änderung :                              */
+/***************************************************/
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener
 {
     private TextView monthYearText;

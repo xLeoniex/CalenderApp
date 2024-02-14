@@ -48,8 +48,12 @@ import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-
+/***************************************************/
+/*  Author : Leonie Seika                          */
+/*  SubAuthor :                                    */
+/*  Beschreibung :                                 */
+/*  Letzte Änderung :                              */
+/***************************************************/
 public class WeekViewActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener
 {
 

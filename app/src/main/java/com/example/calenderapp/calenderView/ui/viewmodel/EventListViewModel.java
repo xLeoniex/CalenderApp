@@ -12,7 +12,12 @@ import com.example.calenderapp.events.source.EventRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-
+/***************************************************/
+/*  Author : Leonie Seika                          */
+/*  SubAuthor :                                    */
+/*  Beschreibung :                                 */
+/*  Letzte Änderung :                              */
+/***************************************************/
 public class EventListViewModel extends AndroidViewModel {
 
     private EventRepository repository;

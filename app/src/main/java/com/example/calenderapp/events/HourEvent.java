@@ -4,7 +4,12 @@ import com.example.calenderapp.events.model.EventModel;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-
+/***************************************************/
+/*  Author : Leonie Seika                          */
+/*  SubAuthor :                                    */
+/*  Beschreibung :                                 */
+/*  Letzte Änderung :                              */
+/***************************************************/
 public class HourEvent
 {
     LocalTime time;

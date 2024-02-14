@@ -15,7 +15,12 @@ import com.example.calenderapp.R;
 import com.example.calenderapp.events.model.EventModel;
 
 import java.util.List;
-
+/***************************************************/
+/*  Author : Leonie Seika                          */
+/*  SubAuthor :                                    */
+/*  Beschreibung :                                 */
+/*  Letzte Änderung :                              */
+/***************************************************/
 public class EventAdapter extends ArrayAdapter<EventModel>
 {
 

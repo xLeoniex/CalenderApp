@@ -10,7 +10,12 @@ import com.example.calenderapp.calenderView.CalendarUtils;
 import com.example.calenderapp.R;
 
 import java.time.LocalTime;
-
+/***************************************************/
+/*  Author : Leonie Seika                          */
+/*  SubAuthor :                                    */
+/*  Beschreibung :                                 */
+/*  Letzte Änderung :                              */
+/***************************************************/
 public class EventEditActivity extends AppCompatActivity
 {
     private EditText eventNameET;

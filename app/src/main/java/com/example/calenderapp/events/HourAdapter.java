@@ -18,7 +18,12 @@ import com.example.calenderapp.events.model.EventModel;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
+/***************************************************/
+/*  Author : Leonie Seika                          */
+/*  SubAuthor :                                    */
+/*  Beschreibung :                                 */
+/*  Letzte Änderung :                              */
+/***************************************************/
 public class HourAdapter extends ArrayAdapter<HourEvent>
 {
     public HourAdapter(@NonNull Context context, List<HourEvent> hourEvents)
