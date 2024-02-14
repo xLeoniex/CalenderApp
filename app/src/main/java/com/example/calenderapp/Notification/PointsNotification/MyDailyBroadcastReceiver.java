@@ -83,7 +83,7 @@ public class MyDailyBroadcastReceiver extends BroadcastReceiver {
                     String recurring = dataSnapshot.child("recurringEventType").getValue(String.class);
 
                     String sKey = userEventsRef.push().getKey();
-                    if (sKey != null){
+                    if (sKey != null && ImageUrl != null && endingTime != null && startingTime != null && eventDescription != null && eventName != null && eventType != null && eventState != null && eventWeight != null && recurring != null && eventDate != null ) {
                         userEventsRef.child(sKey).child("eventImageUrl").setValue(ImageUrl);
                         userEventsRef.child(sKey).child("endingTime").setValue(endingTime);
                         userEventsRef.child(sKey).child("startingTime").setValue(startingTime);
@@ -95,9 +95,9 @@ public class MyDailyBroadcastReceiver extends BroadcastReceiver {
                         userEventsRef.child(sKey).child("eventWeight").setValue(eventWeight);
                         userEventsRef.child(sKey).child("recurringEventType").setValue(recurring);
                         userEventsRef.child(sKey).child("eventId").setValue(sKey);
-                    }
 
-                    showNotification(context, "There is a new event for tomorrow, complete it to feel better and earn more points.",sKey);
+                        showNotification(context, "There is a new event for tomorrow, complete it to feel better and earn more points.", sKey);
+                    }
                 } else {
                     Log.d("Error defaultEvent", "no defaultEvent exists");
                 }

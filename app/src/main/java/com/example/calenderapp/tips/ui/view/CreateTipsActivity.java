@@ -86,17 +86,7 @@ public class CreateTipsActivity extends AppCompatActivity {
                     }
                 }
         );
-        tipViewModel.getDataFromRepository().observe(this, new Observer<List<TipModel>>() {
-            @Override
-            public void onChanged(List<TipModel> tipModels) {
-                if(!tipModels.isEmpty()){
-                    Random random = new Random();
-                    int idx = random.nextInt(tipModels.size());
-                    Log.d("AlarmStarted","Alarm is startin...." );
-                    setRepeatingAlarm(tipModels.get(idx));
-                }
-            }
-        });
+
         tipViewModel.getTipDetails().observe(this, new Observer<TipModel>() {
             @Override
             public void onChanged(TipModel tipModel) {
@@ -157,26 +147,7 @@ public class CreateTipsActivity extends AppCompatActivity {
         });
     }
 
-    private void setRepeatingAlarm(TipModel tipModel) {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent alarmIntent = new Intent(this, TipNotificationPublisher.class);
-        alarmIntent.putExtra("TipTitle",tipModel.getTipTitle());
-        alarmIntent.putExtra("TipText",tipModel.getTipDescription());
-        alarmIntent.putExtra("TipId","10");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        long intervalMillis = 30*60*1000; //every half hour
 
-        if (alarmManager != null) {
-            alarmManager.setInexactRepeating(
-                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + intervalMillis,
-                    intervalMillis,
-                    pendingIntent
-            );
-            Log.d("AlarmStarted","Alarm is startin...." );
-        }
-        //ToDo: (Ibrahim) Cancel Button --> to View, Home-Button, Profile-Button
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
