@@ -1,3 +1,12 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     A receiver class to handle the Receiving  of a notification
+ *   Letzte Änderung :  12/01/2024, 18:18
+ * *************************************************
+ */
+
 package com.example.calenderapp.tips.ui.viewmodel.handlers;
 
 import android.app.NotificationManager;

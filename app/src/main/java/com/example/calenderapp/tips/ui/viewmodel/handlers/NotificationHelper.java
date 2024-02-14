@@ -1,3 +1,12 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     A Helper class to help build a notifiaction about a tip
+ *   Letzte Änderung :  15/01/2024, 13:53
+ * *************************************************
+ */
+
 package com.example.calenderapp.tips.ui.viewmodel.handlers;
 
 import android.app.Notification;

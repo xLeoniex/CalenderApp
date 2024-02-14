@@ -1,3 +1,12 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     View Class for the creation of an Event
+ *   Letzte Änderung :  03/02/2024, 19:15
+ * *************************************************
+ */
+
 package com.example.calenderapp.events.ui.view;
 
 import androidx.activity.result.ActivityResult;

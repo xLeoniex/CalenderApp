@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     Repository class to handel Firebase queries and bind it
+ *                      to the TipViewModel
+ *   Letzte Änderung :  16/01/2024, 11:21
+ * *************************************************
+ */
+
 package com.example.calenderapp.tips.source;
 
 import android.net.Uri;

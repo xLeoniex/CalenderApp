@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     a View model class to bind the View in CreateEventView with the Database
+ *                      in the EventRepository using a EventModel
+ *   Letzte Änderung :  28/01/2024, 18:02
+ * *************************************************
+ */
+
 package com.example.calenderapp.events.ui.viewmodel;
 
 import android.app.Application;

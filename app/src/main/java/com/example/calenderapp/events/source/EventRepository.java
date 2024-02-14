@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     Repository class to handel Firebase queries and bind it
+ *                      to the EventViewModel
+ *   Letzte Änderung :  14/02/2024, 18:23
+ * *************************************************
+ */
+
 package com.example.calenderapp.events.source;
 
 import static com.example.calenderapp.calenderView.CalendarUtils.selectedDate;

@@ -1,3 +1,12 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     A TipNotification Model class to hold a Tip-Notification
+ *   Letzte Änderung :  12/01/2024, 18:10
+ * *************************************************
+ */
+
 package com.example.calenderapp.tips.model.HandlerItems;
 
 public class TipNotification {
