@@ -128,7 +128,8 @@ public class Dashboard extends AppCompatActivity {
         information.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ApplicationInformation.class);
+                Intent intent = new Intent(getApplicationContext(),
+                        ApplicationInformation.class);
                 startActivity(intent);
                 finish();
             }
@@ -214,7 +215,7 @@ public class Dashboard extends AppCompatActivity {
         alarmIntent.putExtra("TipText",tipModel.getTipDescription());
         alarmIntent.putExtra("TipId","10");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        long intervalMillis = 6*60*60*1000; //every 6 hours
+        long intervalMillis = 24*60*60*1000; //every 6 hours 6*60*60*
 
         if (alarmManager != null) {
             alarmManager.setInexactRepeating(
@@ -225,7 +226,6 @@ public class Dashboard extends AppCompatActivity {
             );
             Log.d("AlarmStarted","Alarm is startin...." );
         }
-        //ToDo: (Ibrahim) Cancel Button --> to View, Home-Button, Profile-Button
     }
 
     //Wochen Alarm konfigurieren

@@ -117,7 +117,6 @@ public class EventRepository {
                     currentKey = dataSnapshot.getKey();
                     Log.d("DataKey",currentKey);
                     currentEventModel = dataSnapshot.getValue(EventModel.class);
-
                     LocalDate parsedDate;
                     try {
                         parsedDate = LocalDate.parse(currentEventModel.getEventDate());
