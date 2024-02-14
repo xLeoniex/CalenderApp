@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     an ErrorMessages class to generate error messages related to the creation
+ *                      of an Tip
+ *   Letzte Änderung :  12/01/2024, 16:00
+ * *************************************************
+ */
+
 package com.example.calenderapp.tips.utils;
 
 public class ErrorMessages {

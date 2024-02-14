@@ -1,3 +1,12 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     A model Class to hold Tips of the LessStress
+ *   Letzte Änderung :  15/01/2024, 13:28
+ * *************************************************
+ */
+
 package com.example.calenderapp.tips.model;
 
 public class TipModel {

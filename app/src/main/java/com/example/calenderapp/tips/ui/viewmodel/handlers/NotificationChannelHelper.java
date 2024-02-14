@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     A Helper class the create a notification channel using a
+ *                      TipNotificaitonChannel model
+ *   Letzte Änderung :  12/01/2024, 18:18
+ * *************************************************
+ */
+
 package com.example.calenderapp.tips.ui.viewmodel.handlers;
 
 import android.app.NotificationChannel;

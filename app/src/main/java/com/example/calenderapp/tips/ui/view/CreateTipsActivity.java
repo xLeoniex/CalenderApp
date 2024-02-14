@@ -1,3 +1,12 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     View Class for the creation of a Tip
+ *   Letzte Änderung :  11/02/2024, 23:54
+ * *************************************************
+ */
+
 package com.example.calenderapp.tips.ui.view;
 
 import androidx.activity.result.ActivityResult;

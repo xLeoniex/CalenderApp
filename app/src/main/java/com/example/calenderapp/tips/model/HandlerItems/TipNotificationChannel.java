@@ -1,3 +1,12 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     A Model Class to hold information about the TipNotification Channel
+ *   Letzte Änderung :  12/01/2024, 18:11
+ * *************************************************
+ */
+
 package com.example.calenderapp.tips.model.HandlerItems;
 
 import android.app.NotificationManager;

@@ -1,3 +1,12 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     A model class for Calender Events
+ *   Letzte Änderung :  14/02/2024, 18:27
+ * *************************************************
+ */
+
 package com.example.calenderapp.events.model;
 
 import java.time.LocalTime;

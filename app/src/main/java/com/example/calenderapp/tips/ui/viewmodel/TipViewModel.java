@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     a View model class to bind the View in CreateTipView with the Database
+ *                      in the TipRepository using a TipModel
+ *   Letzte Änderung :  28/01/2024, 17:30
+ * *************************************************
+ */
+
 package com.example.calenderapp.tips.ui.viewmodel;
 
 import android.app.Application;

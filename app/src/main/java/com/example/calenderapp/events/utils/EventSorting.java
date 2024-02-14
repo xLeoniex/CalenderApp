@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     A sorting class to sort displayed events on the WeekViewActivity
+ *                      and DailyCalenderActivity
+ *   Letzte Änderung :  11/02/2024, 23:49
+ * *************************************************
+ */
+
 package com.example.calenderapp.events.utils;
 
 import com.example.calenderapp.events.model.EventModel;

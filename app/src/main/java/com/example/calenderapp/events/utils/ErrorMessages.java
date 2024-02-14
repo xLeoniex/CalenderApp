@@ -1,3 +1,13 @@
+/*
+ * *************************************************
+ *   Author :           Ahmed Ibrahim Almohamed
+ *   SubAuthor :        None
+ *   Beschreibung :     an ErrorMessages class to generate error messages related to the creation
+ *                      of an Event
+ *   Letzte Änderung :  16/01/2024, 13:14
+ * *************************************************
+ */
+
 package com.example.calenderapp.events.utils;
 
 public class ErrorMessages {
