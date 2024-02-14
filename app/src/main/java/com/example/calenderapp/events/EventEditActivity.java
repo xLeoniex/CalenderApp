@@ -1,3 +1,11 @@
+/*
+ * *************************************************
+ *   Author :           Seika Leonie
+ *   SubAuthor :        None
+ *   Beschreibung :     Edit Class for the Event Acivity
+ *   Letzte Änderung :  14/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.events;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,12 +18,6 @@ import com.example.calenderapp.calenderView.CalendarUtils;
 import com.example.calenderapp.R;
 
 import java.time.LocalTime;
-/***************************************************/
-/*  Author : Leonie Seika                          */
-/*  SubAuthor :                                    */
-/*  Beschreibung :                                 */
-/*  Letzte Änderung :                              */
-/***************************************************/
 public class EventEditActivity extends AppCompatActivity
 {
     private EditText eventNameET;

@@ -1,15 +1,17 @@
+/*
+ * *************************************************
+ *   Author :           Seika Leonie
+ *   SubAuthor :        None
+ *   Beschreibung :     Main Class for the Hour Events
+ *   Letzte Änderung :  14/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.events;
 
 import com.example.calenderapp.events.model.EventModel;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-/***************************************************/
-/*  Author : Leonie Seika                          */
-/*  SubAuthor :                                    */
-/*  Beschreibung :                                 */
-/*  Letzte Änderung :                              */
-/***************************************************/
 public class HourEvent
 {
     LocalTime time;

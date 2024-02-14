@@ -1,3 +1,11 @@
+/*
+ * *************************************************
+ *   Author :           Seika Leonie
+ *   SubAuthor :        None
+ *   Beschreibung :     Adapter Class for the Calendar Acivity
+ *   Letzte Änderung :  14/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.calenderView;
 
 import android.graphics.Color;
@@ -12,12 +20,6 @@ import com.example.calenderapp.R;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-/***************************************************/
-/*  Author : Leonie Seika                          */
-/*  SubAuthor :                                    */
-/*  Beschreibung :                                 */
-/*  Letzte Änderung :                              */
-/***************************************************/
 class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
 {
     private final ArrayList<LocalDate> days;

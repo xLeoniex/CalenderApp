@@ -1,3 +1,11 @@
+/*
+ * *************************************************
+ *   Author :           Seika Leonie
+ *   SubAuthor :        None
+ *   Beschreibung :     Adapter Class for the Event Acivity
+ *   Letzte Änderung :  14/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.events;
 
 import android.content.Context;
@@ -15,12 +23,6 @@ import com.example.calenderapp.R;
 import com.example.calenderapp.events.model.EventModel;
 
 import java.util.List;
-/***************************************************/
-/*  Author : Leonie Seika                          */
-/*  SubAuthor :                                    */
-/*  Beschreibung :                                 */
-/*  Letzte Änderung :                              */
-/***************************************************/
 public class EventAdapter extends ArrayAdapter<EventModel>
 {
 

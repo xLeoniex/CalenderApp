@@ -1,3 +1,11 @@
+/*
+ * *************************************************
+ *   Author :           Seika Leonie
+ *   SubAuthor :        None
+ *   Beschreibung :     Main Class for the calendar Acivity
+ *   Letzte Änderung :  14/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.calenderView;
 
 import static com.example.calenderapp.calenderView.CalendarUtils.daysInMonthArray;
@@ -34,12 +42,6 @@ import com.google.firebase.auth.FirebaseUser;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-/***************************************************/
-/*  Author : Leonie Seika                          */
-/*  SubAuthor :                                    */
-/*  Beschreibung :                                 */
-/*  Letzte Änderung :                              */
-/***************************************************/
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener
 {
     private TextView monthYearText;

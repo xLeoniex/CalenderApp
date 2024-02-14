@@ -1,7 +1,7 @@
 /*
  * *************************************************
  *   Author :           Ahmed Ibrahim Almohamed
- *   SubAuthor :        None
+ *   SubAuthor :        Seika Leonie
  *   Beschreibung :     Repository class to handel Firebase queries and bind it
  *                      to the EventViewModel
  *   Letzte Änderung :  14/02/2024, 18:23

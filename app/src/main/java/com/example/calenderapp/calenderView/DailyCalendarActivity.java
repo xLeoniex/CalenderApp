@@ -1,12 +1,11 @@
 /*
  * *************************************************
- *   Author :
- *   SubAuthor :
- *   Beschreibung :
- *   Letzte Änderung :
+ *   Author :           Seika Leonie
+ *   SubAuthor :        None
+ *   Beschreibung :     Main Class for the daily Acivity
+ *   Letzte Änderung :  14/02/2024
  * *************************************************
  */
-
 package com.example.calenderapp.calenderView;
 
 
@@ -61,12 +60,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-/***************************************************/
-/*  Author : Leonie Seika                          */
-/*  SubAuthor :                                    */
-/*  Beschreibung :                                 */
-/*  Letzte Änderung :                              */
-/***************************************************/
 public class DailyCalendarActivity extends AppCompatActivity{
     private TextView monthDayText;
     private TextView dayOfWeekTV;

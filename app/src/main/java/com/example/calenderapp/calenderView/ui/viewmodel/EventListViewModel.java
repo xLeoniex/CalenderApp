@@ -1,3 +1,12 @@
+/*
+ * *************************************************
+ *   Author :           Seika Leonie
+ *   SubAuthor :        None
+ *   Beschreibung :     View Class for the EventList
+ *   Letzte Änderung :  14/02/2024
+ * *************************************************
+ */
+
 package com.example.calenderapp.calenderView.ui.viewmodel;
 
 import android.app.Application;
@@ -12,12 +21,6 @@ import com.example.calenderapp.events.source.EventRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-/***************************************************/
-/*  Author : Leonie Seika                          */
-/*  SubAuthor :                                    */
-/*  Beschreibung :                                 */
-/*  Letzte Änderung :                              */
-/***************************************************/
 public class EventListViewModel extends AndroidViewModel {
 
     private EventRepository repository;

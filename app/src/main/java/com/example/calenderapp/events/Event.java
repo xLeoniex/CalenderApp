@@ -1,14 +1,16 @@
+/*
+ * *************************************************
+ *   Author :           Seika Leonie
+ *   SubAuthor :        None
+ *   Beschreibung :     Main Class for the Event Acivity
+ *   Letzte Änderung :  14/02/2024
+ * *************************************************
+ */
 package com.example.calenderapp.events;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-/***************************************************/
-/*  Author : Leonie Seika                          */
-/*  SubAuthor :                                    */
-/*  Beschreibung :                                 */
-/*  Letzte Änderung :                              */
-/***************************************************/
 public class Event
 {
     public static ArrayList<Event> eventsList = new ArrayList<>();
